@@ -11,9 +11,7 @@ import {
 function App() {
   return (
     <BrowserRouter>
-      <Header />
       <Routers />
-      <Footer />
     </BrowserRouter>
   );
 
