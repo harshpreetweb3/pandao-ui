@@ -1,7 +1,13 @@
 import React from 'react';
 import ReactTangleImages from './images';
+import { useEffect, useState, useRef } from 'react'
+import handleViewport, { InjectedViewportProps } from 'react-in-viewport';
+import { useInViewport } from 'react-in-viewport';
 
 const Brief = () => {
+
+
+
     return (
         <>
             <div className='bg-gradient-to-br from-gray-900 via-purple-800 to-indigo-600 h-full flex flex-col '>
@@ -29,12 +35,12 @@ const Brief = () => {
                     </div>
                 </div>
                 <div className='flex flex-row justify-center'>
-                     <h1 className='text-4xl'>Our services</h1>
+                    <h1 className='text-4xl'>Our services</h1>
                 </div>
-                <div className='flex flex row justify-between p-10 m-10'>
-                    <ReactTangleImages heading='sample heading' content = 'this is sample content'/>
-                    <ReactTangleImages/>
-                    <ReactTangleImages/>
+                <div id='apple' className={`fade-inflex flex row justify-between p-10 m-10 `} >
+                    <ReactTangleImages heading='sample heading' content='this is sample content' />
+                    <ReactTangleImages />
+                    <ReactTangleImages />
                 </div>
             </div>
         </>

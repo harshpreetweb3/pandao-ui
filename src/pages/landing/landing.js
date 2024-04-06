@@ -1,15 +1,14 @@
 import HeroSection from "../../components/layout/hero/hero";
 import Brief from "./components/brief";
+import { useRef } from 'react'
 
-function LandingPage(){
-   
+
+function LandingPage() {
     return (
         <>
-        <HeroSection/>
-        <Brief/>
+            <HeroSection />
+            <Brief />
         </>
-
-
     )
 }
 

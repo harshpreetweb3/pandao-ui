@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <header className="bg-black py-4 px-6 flex justify-between items-center">
-      <div className="flex items-center space-x-4">
+    <header className="bg-black py-4 px-6 flex justify-between items-center flex-wrap">
+      <div className="flex items-center space-x-4 flex-wrap">
         {/* Replace the span with your logo or icon */}
         <span className="text-xl font-bold"><Link to='/'><img src="https://i.postimg.cc/4xC2vGYG/icon.jpg"  style={{ width: '60px', height: '60px' }} alt='image'/></Link>Pan-DAO</span>
         <nav>
-          <ul className="flex space-x-4">
+          <ul className="flex space-x-4 flex-wrap">
             <li className="hover:underline hover:underline-offset-4 transition-all duration-300">
               <Link to='/' className='text-cyan-900'>About Us</Link>
             </li>

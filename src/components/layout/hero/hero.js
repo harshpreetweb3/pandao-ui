@@ -18,12 +18,12 @@ const HeroSection = () => {
             <div className=" to-indigo-600 h-screen flex flex-row justify-left items-center text-white">
                 <div className="text-center p-4 flex flex-col justify-space-between">
                     <div className='flex flex-row w-1/2 text-left justify-center pl-10 m-11'>
-                        <h1 className="text-4xl lg:text-6xl font-bold mb-4">
+                        <h1 className="fade-in-opacity text-4xl lg:text-6xl font-bold mb-4">
                             EMPOWERING DECENTRALIZED COLLABORATION
                         </h1>
                     </div>
                     <div className='text-left w-1/2 pl-10 ml-11'>
-                        <p className="text-xl lg:text-2xl mb-8">
+                        <p className=" fade-in-opacity text-xl lg:text-2xl mb-8">
                             EXPERIENCE SEAMLESS USER INTERACTION WITH OUR DAO, POWERED BY AN ULTRA-FRIENDLY TECH STACK.
                         </p>
 
