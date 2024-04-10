@@ -1,7 +1,30 @@
 import React from 'react';
+import {RadixDappToolkit, RadixNetwork } from '@radixdlt/radix-dapp-toolkit'
+import { useState ,useEffect} from 'react'
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+    
+    let navigate = useNavigate();
+    // hard code dapp definition for now 
+    const rdt = RadixDappToolkit({
+        dAppDefinitionAddress:
+          'account_tdx_2_12yyhl24hpxpat4d4k3mxsq24utlflsvpzv0zhn3r5d0eprfue4awh2',
+        networkId: RadixNetwork.Stokenet,
+        applicationName: 'Pandao Candies',
+        applicationVersion: '1.0.0',
+    })
+
+    rdt.walletApi.provideConnectResponseCallback((result) => {
+        if (result.isErr()) {
+          console.log(" aaah man !")
+        }else{
+            navigate("/candy-machine");
+        }
+    })
+  
     return (
+        
         <div className="bg-gradient-to-br from-gray-900 via-purple-800 to-indigo-600 h-screen flex flex-col ">
             <nav className="flex justify-between pb-10 pl-10 mt-6">
                 <div className="text-white text-2xl font-bold w-1/2">PANDAO</div>
@@ -13,6 +36,9 @@ const HeroSection = () => {
                     <a href="#" className="hover:text-gray-300">PRICING</a>
                     <span className="text-gray-400 pl-6 pr-6">|</span>
                     <a href="#" className="hover:text-gray-300">ABOUT US</a>
+                </div>
+                <div className="connect-btn pr-10 hover:scale-150">
+                    <radix-connect-button />
                 </div>
             </nav>
             <div className=" to-indigo-600 h-screen flex flex-row justify-left items-center text-white">
