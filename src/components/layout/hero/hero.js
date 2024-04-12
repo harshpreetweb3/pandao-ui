@@ -25,7 +25,7 @@ const HeroSection = () => {
   
     return (
         
-        <div className="bg-gradient-to-br from-gray-900 via-purple-800 to-indigo-600 h-screen flex flex-col ">
+        <div className="h-screen flex flex-col ">
             <nav className="flex justify-between pb-10 pl-10 mt-6">
                 <div className="text-white text-2xl font-bold w-1/2">PANDAO</div>
                 <div className=" w-1/2 flex flex-row justify-left text-white text-2xl space-x-2 pr-10  ">
@@ -37,7 +37,7 @@ const HeroSection = () => {
                     <span className="text-gray-400 pl-6 pr-6">|</span>
                     <a href="#" className="hover:text-gray-300">ABOUT US</a>
                 </div>
-                <div className="connect-btn pr-10 hover:scale-150">
+                <div className="connect-btn pr-10 hover:scale-110">
                     <radix-connect-button />
                 </div>
             </nav>
@@ -63,8 +63,8 @@ const HeroSection = () => {
                             </button>
                         </div>
                         <div>
-                            <button className="rounded px-6 py-2 hover:bg-gray-100 hover:scale-50 transition ease-in-out duration-300">
-                                REGISTER NOW
+                            <button className="rounded px-6 py-2 hover:bg-gray-100 hover:scale-110 transition ease-in-out duration-300">
+                                GET STARTED
                             </button>
 
                         </div>
