@@ -39,9 +39,9 @@ const HeroSection = () => {
                 </video>
             </div>
             <div className='absolute z-3'>
-                <nav className="flex justify-between pb-10 pl-10 mt-6">
+                <nav className="flex flex justify-between pb-10 pl-10 mt-6">
                     <div className="text-white text-2xl font-bold w-1/2">PANDAO</div>
-                    <div className="w-1/2 flex flex-row justify-left text-white text-2xl space-x-2 pr-10">
+                    <div className="hidden md:flex w-1/2 flex-row justify-left text-white text-2xl space-x-2 pr-10">
                         <a href="#" className="hover:text-gray-300">HOME</a>
                         <span className="text-gray-400 pl-6 pr-6">|</span>
                         <a href="#" className="hover:text-gray-300">RESOURCES</a>
@@ -57,19 +57,19 @@ const HeroSection = () => {
 
                 <div className="flex flex-col justify-center items-center text-white">
                     <div className="text-center p-4 flex flex-col justify-space-between">
-                        <div className='flex flex-row w-1/2 text-left justify-center pl-10 m-11'>
+                        <div className='flex flex-row md:w-1/2 w-full md:text-left text-center justify-center md:pl-10 md:m-11'>
                             <h1 className="text-4xl lg:text-6xl font-bold mb-4">
                                 EMPOWERING DECENTRALIZED COLLABORATION
                             </h1>
                         </div>
-                        <div className='text-left w-1/2 pl-10 ml-11'>
-                            <p className="text-xl lg:text-2xl mb-8">
+                        <div className='md:text-left text-center md:w-1/2 w-full md:pl-10 md:ml-11'>
+                            <p className="text-xl md:text-2xl mb-8">
                                 EXPERIENCE SEAMLESS USER INTERACTION WITH OUR DAO, POWERED BY AN ULTRA-FRIENDLY TECH STACK.
                             </p>
                         </div>
-                        <div className="flex justify-between pl-10 ml-11">
+                        <div className="flex flex-col md:flex-row md:justify-between items-center md:pl-10 md:ml-11">
                             <div className='flex flex-row'>
-                                <img className='h-14 w-20 pr-3' src={process.env.PUBLIC_URL + "/images/down-arrow.png"} alt="down-arrow" />
+                                <img className='h-14 w-20 pr-3 hidden md:flex' src={process.env.PUBLIC_URL + "/images/down-arrow.png"} alt="down-arrow" />
                                 <button className="bg-transparent border border-white text-white rounded px-6 py-2 mr-4 hover:bg-white hover:text-blue-900 transition ease-in-out duration-300">
                                     EXPLORE DAO
                                 </button>
