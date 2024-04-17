@@ -12,7 +12,7 @@ const Brief = () => {
         <>
             <div >
                 <div className="relative h-screen flex flex-col" >
-                    <div className="absolute top-0 left-0 h-full w-full z-[-1] ">
+                    <div className="absolute top-0 left-0 h-full w-full z-1 ">
                         <video
                             autoPlay
                             loop
@@ -23,7 +23,7 @@ const Brief = () => {
                             <source src={process.env.PUBLIC_URL + "/images/globeshape.mp4"} type="video/mp4" />
                         </video>
                     </div>
-                    <div className="absolute">
+                    <div className="absolute z-3">
                         <div className='flex flex-row justify-between ml-10 mr-10 mt-10 pl-10 pr-10 pt-10'>
                             <div className='w-1/2'>
                             </div>

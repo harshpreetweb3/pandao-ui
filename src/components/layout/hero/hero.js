@@ -27,7 +27,7 @@ const HeroSection = () => {
     return (
         <>
         <div className="relative h-screen flex flex-col">
-            <div className="absolute top-0 left-0 w-full z-[-1] ">
+            <div className="absolute top-0 left-0 w-full z-1 ">
                 <video
                     autoPlay
                     loop
@@ -38,7 +38,7 @@ const HeroSection = () => {
                     <source src={process.env.PUBLIC_URL + "/images/hero.mp4"} type="video/mp4" />
                 </video>
             </div>
-            <div className='absolute'>
+            <div className='absolute z-3'>
                 <nav className="flex justify-between pb-10 pl-10 mt-6">
                     <div className="text-white text-2xl font-bold w-1/2">PANDAO</div>
                     <div className="w-1/2 flex flex-row justify-left text-white text-2xl space-x-2 pr-10">
@@ -75,7 +75,7 @@ const HeroSection = () => {
                                 </button>
                             </div>
                             <div>
-                                <button className="rounded px-6 py-2 hover:bg-gray-100 hover:scale-110 transition ease-in-out duration-300">
+                                <button className="rounded px-6 py-2 hover:bg-gray-100 hover:scale-110 transition ease-in-out duration-300 hover:text-black">
                                     GET STARTED
                                 </button>
                             </div>
