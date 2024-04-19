@@ -18,12 +18,12 @@ function header() {
                     </div>
                     <div className='md:basis-2/5 flex flex-row pl-0 pr-0 w-1/2'>
                         <div className='w-full flex flex-row justify-center'>
-                            <button className='rounded-xl md:w-2/3 hover:scale-110 transition duration-300 ease-in-out h-10 px-5 overflow-hidden ' >
+                            <button className='rounded-xl w-full md:w-2/3 hover:scale-110  transition duration-300 ease-in-out h-10 md:px-5 overflow-hidden ' >
                                 What is dao?
                             </button>
                         </div>
-                        <div className='flex w-full flex-row justify-center items-center'>
-                            <button className='rounded-xl md:w-2/3 hover:scale-110 transition duration-300 ease-in-out h-10 px-2 overflow-hidden'>
+                        <div className='flex w-full flex-row justify-center '>
+                            <button className='rounded-xl w-full md:w-2/3 hover:scale-110 transition duration-300 ease-in-out h-10 md:px-2 overflow-hidden'>
                                 Launch DAO
                             </button>
 

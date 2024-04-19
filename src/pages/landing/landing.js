@@ -3,12 +3,12 @@ import Header from "../../components/header/header";
 function IntroText() {
     return (
         <>
-            <div className='w-full h-screen md:flex md:flex-col justify-center'>
-                <div className='flex flex-row w-1/2'>
+            <div className='w-full h-screen md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10'>
+                <div className='flex flex-row md:w-1/2 w-full'>
                     <div className='px-10'>
-                        <h1 className='text-white text-5xl'>
+                        <span className='text-white md:text-5xl'>
                             is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-                        </h1>
+                        </span>
 
                     </div>
 
