@@ -2,58 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes fadeIn {
-    0% {
-        transform : translate(-100%,0%) ;
-        opacity : 0 ;
-    }
-
-    100% {
-        transform : translate(0%,0%) ;
-        opacity : 1 ;
-    }
-}
-
-@keyframes fadeInOpacity{
-    0%{
-        opacity:0 ;
-    }
-
-    100%{
-        opacity : 1 ;
-    }
-}
-
-.fade-in-opacity{
-    animation : fadeInOpacity 1s ease-out ;
-}
-
-
-
-.fade-in {
-    animation: fadeIn 1s ease-out;
-}
-
-  button {
-    font: inherit;
-    color: inherit;
-    display: block;
-    border: 1px solid black;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
+@keyframes fadeinBottom {
+  from {
+    opacity: 0;
+    transform:translateY(-20);
   }
-  
-  button {
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    font-size: medium;
-    padding: 0.5rem 1rem;
+  to {
+    opacity: 1;
+    transform:translateY(0);
   }
-  
-  .connect-btn {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+}
+
+@keyframes fadeoutBottom {
+  from {
+    opacity: 1;
+    transform:translateY(0);
   }
-  
+  to {
+    opacity: 0;
+    transform:translateY(-20);
+  }
+}
+
+.fade-in-from-down {
+  animation: fadeinBottom 2s ease-out;
+}
+
+.fade-out-from-down {
+    animation:  fadeoutBottom 2s ease-out;
+  }
+
+button {
+  font: inherit;
+  color: inherit;
+  display: block;
+  border: 1px solid black;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+}
+
+button {
+  background-color: black;
+  color: white;
+  cursor: pointer;
+  font-size: medium;
+  padding: 0.5rem 1rem;
+}
+
+.connect-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function header() {
 
     return (
@@ -9,11 +10,11 @@ function header() {
                     </div>
                     <div className='hidden md:flex  md:basis-2/5 justify-left pt-4 pr-0 '>
                         <div className='flex flex-row justify-center w-full px-2'>
-                            <span className='px-2 text-2xl  underline font-bold hover:scale-110 transition duration-300 ease-in-out'>Resources</span>
-                            <span className='px-2 text-2xl font-bold '>|</span>
-                            <span className='px-2 text-2xl underline font-bold hover:scale-110 transition duration-300 ease-in-out'>Products</span>
-                            <span className='px-2 text-2xl font-bold '>|</span>
-                            <span className='px-2 text-2xl   font-bold hover:scale-110 transition duration-300 ease-in-out'>About us</span>
+                            <span className='px-2 text-2xl underline font-bold hover:scale-110 transition duration-300 ease-in-out text-white'>Resources</span>
+                            <span className='px-2 text-2xl font-bold text-white'>|</span>
+                            <span className='px-2 text-2xl underline font-bold hover:scale-110 transition duration-300 ease-in-out text-white'>Products</span>
+                            <span className='px-2 text-2xl font-bold text-white'>|</span>
+                            <span className='px-2 text-2xl underline  font-bold hover:scale-110 transition duration-300 ease-in-out text-white'><Link to="/resource">Resources</Link></span>
                         </div>
                     </div>
                     <div className='md:basis-2/5 flex flex-row pl-0 pr-0 w-1/2'>

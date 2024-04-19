@@ -8,6 +8,9 @@ module.exports = {
       backgroundImage: {
         'gradient-to-r-fuchsia': 'linear-gradient(to right, #C026D3, #E879F9)', // Tailwind colors for fuchsia-900 to fuchsia-800
       },
+      height: {
+        'height-third': '20rpx', // Adjust the value as needed
+      }
     },
   },
   plugins: [],
