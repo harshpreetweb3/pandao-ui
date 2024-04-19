@@ -1,19 +1,12 @@
-import HeroSection from "../../components/layout/hero/hero";
-import Brief from "./components/brief";
-import { useRef } from 'react'
-import EarlyReview from "./components/earlyreview";
-import LandingFooter from './components/landingfooter';
+import Header from "../../components/header/header";
 
 
 function LandingPage() {
     return (
         <>
-            <div className='bg-gradient-to-br from-gray-900'>
-                <HeroSection />
-                <Brief />
-                <EarlyReview />
-                <LandingFooter/>
-
+            <div >
+            <Header />
+                
             </div>
 
         </>
