@@ -1,6 +1,9 @@
 import Header from "../../components/header/header";
 import { useEffect, useState } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import Resource from "./resources";
+import Product from "./product";
+import Aboutus from "./aboutus";
 
 
 
@@ -28,7 +31,7 @@ function IntroText() {
 
     return (
         <>
-            <div className='w-full h-3/4 md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10 relative'>
+            <div className='w-full h-3/4 md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10 mt-10 relative'>
                 <div className='flex flex-row md:w-3/4 w-full'>
                     <div className='px-10 relative left-20'>
                         <span className='text-white md:text-5xl text-3xl'>
@@ -53,15 +56,6 @@ function IntroText() {
 }
 
 
-function Resources(){
-    return(
-        <>
-            <h1>hi i am LUke</h1>
-        </>
-    )
-}
-
-
 
 
 
@@ -69,20 +63,25 @@ function Resources(){
 function LandingPage() {
     return (
         <>
-            <div className='p-0 m-0 bg-purple-900 h-screen'>
+            
+                <div className='p-0 m-0 bg-gradient-to-r from-cyan-500 to-blue-500 h-screen'>
 
-                <Header />
-                <Routes>
-                    <Route index element={<IntroText />} />
-                    <Route path='home' element={<IntroText />} />
-                    <Route path='resource' element={<Resources />} />
-                </Routes>
+                    <Header />
+                    <Routes>
+                        <Route index element={<IntroText />} />
+                        <Route path='/' element={<IntroText />} />
+                        <Route path='resource' element={<Resource />} />
+                        <Route path='product' element={<Product />} />
+                        <Route path='/about-us' element={<Aboutus />} />
+                    </Routes>
 
 
-            </div>
+                </div>
+
+           
 
         </>
     )
 }
 
-export default LandingPage;
+export { LandingPage };
