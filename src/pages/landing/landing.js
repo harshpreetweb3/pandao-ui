@@ -4,6 +4,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Resource from "./resources";
 import Product from "./product";
 import Aboutus from "./aboutus";
+import './landing.css'
 
 
 
@@ -45,8 +46,8 @@ function IntroText() {
                     </div>
 
                 </div>
-                <div className='md:absolute md:left-3/4 '>
-                    <img className={` h-64 w-3/4 md:h-1/2 ${currentFadeIn}`} src={process.env.PUBLIC_URL + './images/connected_boxes.png'} />
+                <div className='md:absolute md:w-1/3 md:left-2/3 md:h-full'>
+                    <img className={` w-full md:h-full ${currentFadeIn}`} src={process.env.PUBLIC_URL + './images/connected_boxes.png'} />
                 </div>
 
             </div>
@@ -64,9 +65,9 @@ function LandingPage() {
     return (
         <>
             
-                <div className='bg-red-700 h-screen w-full md:w-full'>
-
+                <div className='landing-div'>
                     <Header />
+                    <div className='pt-10 h-screen'>
                     <Routes>
                         <Route index element={<IntroText />} />
                         <Route path='/' element={<IntroText />} />
@@ -75,7 +76,8 @@ function LandingPage() {
                         <Route path='/about-us' element={<Aboutus />} />
                     </Routes>
 
-
+                    </div>
+                    
                 </div>
 
            
