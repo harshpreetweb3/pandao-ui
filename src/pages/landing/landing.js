@@ -31,9 +31,9 @@ function IntroText() {
 
     return (
         <>
-            <div className='w-full h-3/4 md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10 mt-10 relative'>
-                <div className='flex flex-row md:w-3/4 w-full'>
-                    <div className='px-10 relative left-20'>
+            <div className='w-full h-3/4 md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10'>
+                <div className='flex flex-row md:w-3/4 w-full md:pl-10 pl-3'>
+                    <div className=''>
                         <span className='text-white md:text-5xl text-3xl'>
                             is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
                         </span>
@@ -45,8 +45,8 @@ function IntroText() {
                     </div>
 
                 </div>
-                <div className='absolute left-3/4 '>
-                    <img className={`h-1/2 ${currentFadeIn}`} src={process.env.PUBLIC_URL + './images/connected_boxes.png'} />
+                <div className='md:absolute md:left-3/4 '>
+                    <img className={` h-64 w-3/4 md:h-1/2 ${currentFadeIn}`} src={process.env.PUBLIC_URL + './images/connected_boxes.png'} />
                 </div>
 
             </div>
@@ -64,7 +64,7 @@ function LandingPage() {
     return (
         <>
             
-                <div className='p-0 m-0 bg-gradient-to-r from-cyan-500 to-blue-500 h-screen'>
+                <div className='bg-red-700 h-screen w-full md:w-full'>
 
                     <Header />
                     <Routes>
