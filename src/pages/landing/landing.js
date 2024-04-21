@@ -5,6 +5,7 @@ import Resource from "./resources";
 import Product from "./product";
 import Aboutus from "./aboutus";
 import './landing.css'
+import Footer from "../../components/header/footer";
 
 
 
@@ -64,10 +65,10 @@ function IntroText() {
 function LandingPage() {
     return (
         <>
-            
-                <div className='landing-div'>
-                    <Header />
-                    <div className='pt-10 h-screen'>
+
+            <div className=' h-auto landing-div'>
+                <Header />
+                <div className='h-auto overflow-auto'>
                     <Routes>
                         <Route index element={<IntroText />} />
                         <Route path='/' element={<IntroText />} />
@@ -76,11 +77,14 @@ function LandingPage() {
                         <Route path='/about-us' element={<Aboutus />} />
                     </Routes>
 
-                    </div>
-                    
                 </div>
+                <Footer />
 
-           
+
+
+            </div>
+
+
 
         </>
     )

@@ -1,6 +1,6 @@
 function Aboutus(){
     return (
-        <div className="h-screen  text-white p-8 m-8">
+        <div className="h-auto  text-white md:p-8 md:m-8 m-2 p-2">
           <h1 className="text-4xl font-bold mb-6">About Us</h1>
     
           {/* Company Overview */}

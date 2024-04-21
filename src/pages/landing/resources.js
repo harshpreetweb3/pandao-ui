@@ -1,7 +1,9 @@
 function Resource() {
 
     return (
-        <div className="h-screen text-white p-8 m-8">
+        <div className="h-auto  w-3/4 text-white md:p-8 md:m-8 p-2 m-2">
+            <img className='absolute' src={process.env.PUBLIC_URL + './images/linear-blocks.png'}>
+            </img>
             <h1 className="text-4xl font-bold mb-6">Radix Ecosystem Overview</h1>
 
             {/* Radix Blockchain Section */}
@@ -38,6 +40,7 @@ function Resource() {
                 </p>
             </section>
         </div>
+
     );
 
 }

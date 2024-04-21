@@ -58,7 +58,7 @@ function Header() {
                             <img onClick={toggelMenu} alt='pandao logo' src={process.env.PUBLIC_URL + "/images/hamburger2.png"} className='h-16 bg-green-700 p-0 bg-opacity-0' />
                         </div>
                         <div className='flex flex-row justify-end'>
-                            <div className={` ${hmburgerAnimation}  ${menuOpen} `}>
+                            <div className={`${hmburgerAnimation}`}>
                             {
                                 menuOpen && (
                                     <div class="right-auto  z-10 bg-white  rounded-lg shadow w-44 dark:bg-gray-700 ">

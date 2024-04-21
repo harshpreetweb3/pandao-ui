@@ -1,6 +1,6 @@
 function Product(){
     return (
-        <div className="h-screen  text-white p-8 m-8">
+        <div className="h-auto  text-white md:p-8 md:m-8 p-2 m-2">
           <h1 className="text-4xl font-bold mb-6">Welcome to Pandao</h1>
     
           {/* Pandao Overview Section */}
