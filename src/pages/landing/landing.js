@@ -33,7 +33,7 @@ function IntroText() {
 
     return (
         <>
-            <div className='w-full h-3/4 md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10'>
+            <div className='w-full h-screen md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10'>
                 <div className='flex flex-row md:w-3/4 w-full md:pl-10 pl-3'>
                     <div className=''>
                         <span className='text-white md:text-5xl text-3xl'>
