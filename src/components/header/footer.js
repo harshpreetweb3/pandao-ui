@@ -1,3 +1,5 @@
+import Chatbot from "../../utils/chatbot";
+
 function Footer() {
 
     return (
@@ -25,7 +27,7 @@ function Footer() {
                     </div>
                 </div>
                 <div>
-                    <span>chat with us</span>
+                    <Chatbot/>
                 </div>
 
             </div>
