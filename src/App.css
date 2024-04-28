@@ -46,6 +46,23 @@
   }
 }
 
+@keyframes slideUp {
+  0% {
+    transform: translateY(100%);
+  }
+  50% {
+    transform: translateY(-20%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Applying the animation to the class */
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
 
 
 .fade-out-from-left{

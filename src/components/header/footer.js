@@ -8,7 +8,7 @@ function Footer() {
                 <span className='text-3xl '>Follow us on</span>
             </div>
             <div className='flex flex-row md:w-1/3 justify-center text-white pl-10 h-18 w-72' >
-                <img src={process.env.PUBLIC_URL + "/images/social.png"}></img>
+                <img className='' src={process.env.PUBLIC_URL + "/images/social.png"}></img>
             </div>
             <div className='flex md:flex-row flex-col justify-between'>
                 <div className='flex flex-col pt-8 mt-8'>

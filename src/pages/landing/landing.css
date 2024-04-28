@@ -1,4 +1,4 @@
 .landing-div{
-    background: #ff6347 url('../../../public/images/bg-image.png')  center/cover fixed;
+    background: url('../../../public/images/bg-image.png')  center/cover fixed;
     z-index : 1 ;
 }

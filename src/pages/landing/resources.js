@@ -1,4 +1,4 @@
-function Resource() {
+function Resource(props) {
 
     return (
         <div className='flex flex-row-reverse w-full'>
@@ -7,7 +7,7 @@ function Resource() {
                 </img>
             </div>
 
-            <div className="h-auto  w-3/4 text-white md:p-8 md:m-8 p-2 m-2">
+            <div className={`h-auto  w-3/4 ${props.textColor} md:p-8 md:m-8 p-2 m-2`}>
                 <div className='flex flex-col w-full'>
                     <h1 className="text-4xl font-bold mb-6 basis-1/2">Radix Ecosystem Overview</h1>
                     <img className='md:hidden flex basis-1/2 fade-in-from-left' src={process.env.PUBLIC_URL + './images/linear-blocks.png'}>
