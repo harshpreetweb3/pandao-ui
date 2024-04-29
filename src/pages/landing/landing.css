@@ -2,3 +2,13 @@
     background: url('../../../public/images/bg-image.png')  center/cover fixed;
     z-index : 1 ;
 }
+
+
+@media (min-width:768px){
+    .block-image{
+        left : 850px ;
+        width:30cm;
+        padding: 0cm ;
+    }
+
+}

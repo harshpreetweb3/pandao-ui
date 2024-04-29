@@ -35,19 +35,19 @@ function IntroText(props) {
         <>
             <div className='w-full h-screen md:flex md:flex-col flex flex-col md:justify-center justify-start pt-10'>
                 <div className='flex flex-row md:w-1/2 w-full md:pl-10 pl-3'>
-                    <div className=''>
-                        <span className={`${props.textColor} md:text-5xl text-3xl`}>
+                    <div className='md:flex md:flex-col'>
+                        <span className={`${props.textColor} md:text-7xl text-3xl`}>
                             Bringing Governance to All: Effortless, Effective, Empowering.
                         </span>
                         <br />
-                        <span className={`${props.textColor} md:text-2xl pt-4 text-xl`}>
+                        <span className={`${props.textColor} md:text-4xl pt-4 text-xl `}>
                             Making Blockchain Accessible and DAO Governance Effortless.
                         </span>
 
                     </div>
 
                 </div>
-                <div className='md:absolute md:w-1/3 md:left-2/3 md:h-full'>
+                <div className='md:absolute md:h-full block-image'>
                     <img className={` h-fll w-full md:h-full ${currentFadeIn}`} src={process.env.PUBLIC_URL + './images/connected_boxes.png'} />
                 </div>
                 <div style={{ textAlign: 'center', padding: '50px' }}>
@@ -100,7 +100,7 @@ function LandingPage() {
         // set dark mode changing as true
         setDarkModeChangingStatusTrue()
         // then set dark mode changing after 1 sec
-        setTimeout(setDarkModeChangingStatusFalse,1000)
+        setTimeout(setDarkModeChangingStatusFalse, 1000)
 
     }
 
@@ -118,7 +118,7 @@ function LandingPage() {
                     </Routes>
 
                 </div>
-                <Footer />
+                <Footer/>
             </div>{
                 darkModeChanging && (
                     <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-10 animate-slide-up">
