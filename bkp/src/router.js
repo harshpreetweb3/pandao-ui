@@ -5,12 +5,12 @@ import {
 
 
 
-import {  LandingPage  } from './pages/landing/landing'
+import {  LandingPage  } from './pages/landing/landing.js'
 import Resource from './pages/landing/resources.js'
-import NotFound from './pages/notfound/404';
-import LoginPage from './pages/signin/login';
-import ContactUs from './pages/contactus/contactus';
-import CandyMachine from './pages/test_pages/pandao_candy';
+import NotFound from './pages/notfound/404.js';
+import LoginPage from './pages/signin/login.js';
+import ContactUs from './pages/contactus/contactus.js';
+import CandyMachine from './pages/test_pages/pandao_candy.js';
 import Product from './pages/landing/product.js';
 import Aboutus from './pages/landing/aboutus.js';
 import ComingSoon from './pages/comingsoon.js/c_s.js';
