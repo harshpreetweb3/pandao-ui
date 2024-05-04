@@ -39,7 +39,9 @@ const Resource = () => {
                 </section>
              </div>
              <div className="md:flex hidden items-center justify-center w-full  h-full">
-               <div className=" h-full bg-[url('./connected_boxes.png')] w-full  object-cover bg-no-repeat flex items-center justify-center "></div>
+               <div className=" h-full  w-full  object-cover bg-no-repeat flex items-center justify-center ">
+                <img src="./linear-blocks.png" alt="" />
+               </div>
              </div>
            </div>
            </div>
