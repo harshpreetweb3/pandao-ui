@@ -1,6 +1,6 @@
 const Aboutus = () => {
     return ( <div className="pt-20 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100%  border-b-2 border-purple-800 text-white">
-        <div className="min-h-screen p-5">
+        <div className="min-h-screen p-5 mx-auto max-w-[1440px]">
       
           <h1 className="text-4xl font-bold mb-6">About Us</h1>
     
