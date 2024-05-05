@@ -1,4 +1,4 @@
-import { Facebook, Linkedin, Twitter } from 'lucide-react'
+import { Facebook, Github, Linkedin, Twitter } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
@@ -47,25 +47,32 @@ const Footer = () => {
           <div className="flex flex-col gap-2 items-start justify-start ">
             <div className="px-3 font-bold  text-lg ">Follow us on</div>
             <ul className="px-3 flex flex-col gap-2">
-              <Link to={'https://twitter.com/m0rseb1ts'} target="_blank">
+              <Link to="/" target="_blank">
                 {' '}
                 <li className="flex  items-center gap-2">
                   {' '}
                   <Twitter className="h-4 w-4 " /> <span> Twiiter</span>{' '}
                 </li>
               </Link>
-              <Link to={'https://www.linkedin.com/company/morsebits'} target="_blank">
+              <Link to="/" target="_blank">
                 {' '}
                 <li className="flex  items-center gap-2">
                   {' '}
                   <Linkedin className="h-4 w-4 " /> <span> LinkedIn</span>{' '}
                 </li>
               </Link>
-              <Link to={'https://www.facebook.com/people/Mosrsebits/61558430195786'} target="_blank">
+              <Link to="/" target="_blank">
                 {' '}
                 <li className="flex  items-center gap-2">
                   {' '}
                   <Facebook className="h-4 w-4 " /> <span> Facebook</span>{' '}
+                </li>
+              </Link>
+              <Link to="/" target="_blank">
+                {' '}
+                <li className="flex  items-center gap-2">
+                  {' '}
+                  <Github className="h-4 w-4 " /> <span> Github</span>{' '}
                 </li>
               </Link>
             </ul>
