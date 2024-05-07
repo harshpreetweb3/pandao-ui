@@ -2,16 +2,11 @@ import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import MobileSidebar from "./MobileSidebar";
 import { Rocket } from "lucide-react";
-import { RadixDappToolkit, RadixNetwork } from "@radixdlt/radix-dapp-toolkit";
 
-const dappConfig = {
-  networkId: RadixNetwork.Stokenet,
-  applicationVersion: "1.0.0",
-  applicationName: "Pandao",
-  applicationDappDefinitionAddress:
-    "account_tdx_2_128wx75khgz5rstma5aapejz3656eluz43v3jruz2s3kv3n0urr8m23",
-};
+
+
 const Navbar = () => {
+
   return (
     <div className="w-full p-4 bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100%  border-b-2 border-purple-800  text-white fixed ">
       <div className="max-w-[1440px] mx-auto flex  items-center justify-between h-10   ">
