@@ -7,6 +7,8 @@ import Aboutus from "./Pages/AboutUs";
 import Resource from "./Pages/resources";
 import Footer from "./Pages/components/Footer";
 import UserDashboard from "./Pages/UserDashboard";
+import ExploreDao from "./Pages/exploreDao";
+import Deploy from "./Pages/Deploy";
 
 function App() {
   return (
@@ -18,7 +20,10 @@ function App() {
         <Route path="/products" element={<Product />} />
         <Route path="/resources" element={<Resource />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
-      </Routes>
+        <Route path="/exploreDao" element={<ExploreDao />} />
+        <Route path="/deploy" element={<Deploy />} />
+
+              </Routes>
       <Footer/>
     </Router>
   );
