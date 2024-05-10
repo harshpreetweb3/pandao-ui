@@ -72,9 +72,9 @@ function Deploy() {
       <h1>Radix Transaction Form</h1>
 
       <form className="text-black p-5 rounded-lg bg-white  flex flex-col gap-5 items-start">
-        <div className="flex flex-col justify-between">
+        <div className="flex  justify-between">
           <label>Organization Name:</label>
-          <Input />
+        
 
           <input
             type="text"
@@ -83,7 +83,7 @@ function Deploy() {
             onChange={(e) => setOrganizationName(e.target.value)}
           />
         </div>
-        {/* <div>
+        <div>
           <label>Number of Tokens:</label>
           <input
             type="number"
@@ -136,7 +136,7 @@ function Deploy() {
             className="border-2 border-black rounded-lg ml-10 text-black"
             onChange={(e) => setTokenIconUrl(e.target.value)}
           />
-        </div> */}
+        </div>
 
         <div>
           <Button type="button" onClick={() => handleClaimToken()}>
