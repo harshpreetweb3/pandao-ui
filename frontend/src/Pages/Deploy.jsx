@@ -2,6 +2,7 @@ import { useAccount } from "@/AccountContext";
 import { Button } from "@/components/ui/button";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 function Deploy() {
   const { accounts } = useAccount();
@@ -16,25 +17,25 @@ function Deploy() {
   const [orgIconUrl, setOrgIconUrl] = useState("");
   const [tokenIconUrl, setTokenIconUrl] = useState("");
 
-//   const generateString = () => {
-//     return `CALL_FUNCTION
-// Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
-// "TokenWeigtedDao"
-// "initiate"
-// "${organizationName}"
-// ${numberOfTokens}i32
-// ${divisibility}u8
-// Decimal("${tokenPrice}")
-// Decimal("${buyBackPrice}")
-// "${orgIconUrl}"
-// "${tokenIconUrl}"
-// ;
-// CALL_METHOD
-//     Address("${accounts[0].address}")
-//     "deposit_batch"
-//     Expression("ENTIRE_WORKTOP")
-// ;`;
-//   };
+  //   const generateString = () => {
+  //     return `CALL_FUNCTION
+  // Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
+  // "TokenWeigtedDao"
+  // "initiate"
+  // "${organizationName}"
+  // ${numberOfTokens}i32
+  // ${divisibility}u8
+  // Decimal("${tokenPrice}")
+  // Decimal("${buyBackPrice}")
+  // "${orgIconUrl}"
+  // "${tokenIconUrl}"
+  // ;
+  // CALL_METHOD
+  //     Address("${accounts[0].address}")
+  //     "deposit_batch"
+  //     Expression("ENTIRE_WORKTOP")
+  // ;`;
+  //   };
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
     if (!accounts[0].address) {
@@ -42,7 +43,6 @@ function Deploy() {
       return;
     }
     setLoading(true);
-   
 
     let manifest = `CALL_FUNCTION
     Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
@@ -60,7 +60,7 @@ function Deploy() {
         Address("${accounts[0].address}")
         "deposit_batch"
         Expression("ENTIRE_WORKTOP")
-    ;`
+    ;`;
 
     const { receipt } = await sendTransaction(manifest).finally(() =>
       setLoading(false)
@@ -70,9 +70,12 @@ function Deploy() {
   return (
     <div className="pt-20 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
       <h1>Radix Transaction Form</h1>
+
       <form className="text-black p-5 rounded-lg bg-white  flex flex-col gap-5 items-start">
-        <div className="flex justify-between">
+        <div className="flex flex-col justify-between">
           <label>Organization Name:</label>
+          <Input />
+
           <input
             type="text"
             value={organizationName}
@@ -80,7 +83,7 @@ function Deploy() {
             onChange={(e) => setOrganizationName(e.target.value)}
           />
         </div>
-        <div>
+        {/* <div>
           <label>Number of Tokens:</label>
           <input
             type="number"
@@ -133,7 +136,7 @@ function Deploy() {
             className="border-2 border-black rounded-lg ml-10 text-black"
             onChange={(e) => setTokenIconUrl(e.target.value)}
           />
-        </div>
+        </div> */}
 
         <div>
           <Button type="button" onClick={() => handleClaimToken()}>
