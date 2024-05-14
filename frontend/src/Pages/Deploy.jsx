@@ -32,7 +32,7 @@ function Deploy() {
   const [buyBackPrice, setBuyBackPrice] = useState("");
   const [orgIconUrl, setOrgIconUrl] = useState("");
   const [tokenIconUrl, setTokenIconUrl] = useState("");
-
+  const areFieldsFilled = organizationName && numberOfTokens && divisibility && tokenPrice && buyBackPrice && orgIconUrl && tokenIconUrl;
   //   const generateString = () => {
   //     return `CALL_FUNCTION
   // Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
@@ -144,7 +144,7 @@ function Deploy() {
         />
 
         <div className="w-full">
-          <Button className="w-1/2" onClick={() => handleClaimToken()}>
+          <Button  disabled={!areFieldsFilled || loading}  className="w-1/2" onClick={() => handleClaimToken()}>
             Generate String
           </Button>
         </div>
