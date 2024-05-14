@@ -95,7 +95,7 @@ function Deploy() {
       </h1>
 
       <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white  grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full ">
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <InputField
             label="Organization Name:"
             type="text"
