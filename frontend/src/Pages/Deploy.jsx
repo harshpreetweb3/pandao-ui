@@ -4,6 +4,18 @@ import { useSendTransaction } from "@/hooks/useSendTransaction";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 
+const InputField = ({ label, type, value, onChange }) => (
+  <div className="flex flex-col items-start gap-2 justify-between w-full">
+    <label className="font-semibold text-xl">{label}</label>
+    <Input
+      type={type}
+      value={value}
+      onChange={onChange}
+      className="border-2 border-black  text-black w-full"
+    />
+  </div>
+);
+
 function Deploy() {
   const { accounts } = useAccount();
   const [loading, setLoading] = useState(false);
@@ -68,78 +80,60 @@ function Deploy() {
     console.log("transaction receipt:", receipt);
   };
   return (
-    <div className="pt-20 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
-      <h1>Radix Transaction Form</h1>
+    <div className="  pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+      <h1 className="text-2xl font-semibold text-white pt-14">Radix Transaction Form</h1>
 
-      <form className="text-black p-5 rounded-lg bg-white  flex flex-col gap-5 items-start">
-        <div className="flex  justify-between">
-          <label>Organization Name:</label>
-        
-
-          <input
+      <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white  grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full ">
+        <div className="col-span-2">
+          <InputField
+            label="Organization Name:"
             type="text"
             value={organizationName}
-            className="border-2 border-black rounded-lg ml-10 text-black"
             onChange={(e) => setOrganizationName(e.target.value)}
           />
         </div>
-        <div>
-          <label>Number of Tokens:</label>
-          <input
-            type="number"
-            value={numberOfTokens}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setNumberOfTokens(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Divisibility:</label>
-          <input
-            type="number"
-            value={divisibility}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setDivisibility(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Token Price:</label>
-          <input
-            type="text"
-            value={tokenPrice}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setTokenPrice(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Buy Back Price:</label>
-          <input
-            type="text"
-            value={buyBackPrice}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setBuyBackPrice(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Organization Icon URL:</label>
-          <input
-            type="text"
-            value={orgIconUrl}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setOrgIconUrl(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Token Icon URL:</label>
-          <input
-            type="text"
-            value={tokenIconUrl}
-            className="border-2 border-black rounded-lg ml-10 text-black"
-            onChange={(e) => setTokenIconUrl(e.target.value)}
-          />
-        </div>
 
-        <div>
-          <Button type="button" onClick={() => handleClaimToken()}>
+        <InputField
+          label="Number of Tokens:"
+          type="number"
+          value={numberOfTokens}
+          onChange={(e) => setNumberOfTokens(e.target.value)}
+        />
+        <InputField
+          label="Divisibility:"
+          type="number"
+          value={divisibility}
+          onChange={(e) => setDivisibility(e.target.value)}
+        />
+        <InputField
+          label="Token Price:"
+          type="text"
+          value={tokenPrice}
+          onChange={(e) => setTokenPrice(e.target.value)}
+        />
+
+        <InputField
+          label="Buy Back Price:"
+          type="text"
+          value={buyBackPrice}
+          onChange={(e) => setBuyBackPrice(e.target.value)}
+        />
+
+        <InputField
+          label="Organization Icon URL:"
+          type="text"
+          value={orgIconUrl}
+          onChange={(e) => setOrgIconUrl(e.target.value)}
+        />
+        <InputField
+          label="Token Icon URL:"
+          type="text"
+          value={tokenIconUrl}
+          onChange={(e) => setTokenIconUrl(e.target.value)}
+        />
+
+        <div className="w-full">
+          <Button className="w-1/2" onClick={() => handleClaimToken()}>
             Generate String
           </Button>
         </div>
