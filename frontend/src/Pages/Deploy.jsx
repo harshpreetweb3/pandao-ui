@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 
 const InputField = ({ label, type, value, onChange }) => (
   <div className="flex flex-col items-start gap-2 justify-between w-full">
@@ -12,12 +13,19 @@ const InputField = ({ label, type, value, onChange }) => (
       value={value}
       onChange={onChange}
       className="border-2 border-black  text-black w-full"
+      required
     />
   </div>
 );
 
 function Deploy() {
   const { accounts } = useAccount();
+  const navigate = useNavigate();
+
+  if (!accounts || accounts.length === 0) {
+    navigate("/");
+    return null;
+  }
   const [loading, setLoading] = useState(false);
 
   const sendTransaction = useSendTransaction();
@@ -81,7 +89,9 @@ function Deploy() {
   };
   return (
     <div className="  pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
-      <h1 className="text-2xl font-semibold text-white pt-14">Radix Transaction Form</h1>
+      <h1 className="text-2xl font-semibold text-white pt-14">
+        Radix Transaction Form
+      </h1>
 
       <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white  grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full ">
         <div className="col-span-2">
