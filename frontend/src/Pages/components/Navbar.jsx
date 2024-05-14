@@ -11,7 +11,7 @@ const Navbar = () => {
   const navigate=useNavigate()
   rdt.walletApi.provideConnectResponseCallback((result) => {
     if (result.isErr()) {
-      console.log("ko")
+     console.log("Error")
     }else{
       navigate("/userDashboard")
     }

@@ -15,6 +15,7 @@ const UserDashboard = () => {
   const navigate = useNavigate();
 
   if (!accounts || accounts.length === 0) {
+    navigate("/")
     return null;
   }
 
