@@ -22,10 +22,6 @@ function Deploy() {
   const { accounts } = useAccount();
   const navigate = useNavigate();
 
-  if (!accounts || accounts.length === 0) {
-    navigate("/");
-    return null;
-  }
   const [loading, setLoading] = useState(false);
 
   const sendTransaction = useSendTransaction();
@@ -87,6 +83,11 @@ function Deploy() {
     );
     console.log("transaction receipt:", receipt);
   };
+  
+  if (!accounts || accounts.length === 0) {
+    navigate("/");
+    return null;
+  }
   return (
     <div className="  pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
       <h1 className="text-2xl font-semibold text-white pt-14">
