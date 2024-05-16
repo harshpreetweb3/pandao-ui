@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import AgreementModal from "./components/AgreementModal";
 import useModalStore from "@/store/modal";
+import axios from "axios";
 
 const InputField = ({ label, type, value, onChange }) => (
   <div className="flex flex-col items-start gap-2 justify-between w-full">
@@ -62,6 +63,9 @@ function Deploy() {
   //     Expression("ENTIRE_WORKTOP")
   // ;`;
   //   };
+
+
+
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
     if (!accounts[0].address) {
@@ -71,7 +75,7 @@ function Deploy() {
     setLoading(true);
 
     let manifest = `CALL_FUNCTION
-    Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
+    Address("package_tdx_2_1pk55nren5qpvr5xsrn48lnkuym83lf6wjjeq3z2mqhpydvme6kh5ml")
     "TokenWeigtedDao"
     "initiate"
     "${organizationName}"
@@ -91,7 +95,27 @@ function Deploy() {
     const { receipt } = await sendTransaction(manifest).finally(() =>
       setLoading(false)
     );
-    console.log("transaction receipt:", receipt);
+
+
+    let txId = receipt.transaction.intent_hash
+    console.log(txId)
+    let body = {
+      "intent_hash": txId,
+      "opt_ins": {
+        "affected_global_entities": true,
+        "balance_changes": true
+      }
+    }
+    try {
+      const response = await axios.post('https://babylon-stokenet-gateway.radixdlt.com/transaction/committed-details', body);
+      const results = await response.data;
+      window.alert(results.transaction.affected_global_entities)
+      
+    } catch (error) {
+      console.error('Error fetching transaction details:', error);
+      return null;
+    }
+
   };
 
   useEffect(() => {
