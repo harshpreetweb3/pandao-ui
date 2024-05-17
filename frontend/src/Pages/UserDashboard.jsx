@@ -36,8 +36,8 @@ const UserDashboard = () => {
 
   return (
     <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[url('/bg.svg')]  bg-cover bg-black p-7">
-      <div className="max-w-[1440px] flex w-full mx-auto gap-2">
-        <Card className=" w-[20%] flex flex-col items-center h-full mt-10 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
+      <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
+        <Card className=" md:w-[20%] flex flex-col items-center h-full mt-10 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
           <CardHeader>
             <Avatar className="h-40 w-40">
               <AvatarImage
@@ -77,7 +77,7 @@ const UserDashboard = () => {
             <p className="bg-purple-400 p-2 rounded-lg">{accounts[0].label}</p>
           </CardContent>
         </Card>
-        <div className=" w-[80%] mt-10 flex flex-col items-center justify-start ">
+        <div className=" md:w-[80%] mt-10 flex flex-col items-center justify-start ">
           <div className="flex gap-2 items-center justify-end w-full border-b-2 border-gray-500 pb-3">
             <Button
               onClick={() => {
