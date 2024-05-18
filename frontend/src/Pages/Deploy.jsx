@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import AgreementModal from "./components/AgreementModal";
 import useModalStore from "@/store/modal";
-import axios from "axios";
+
+import extractTransactionsData from "@/utils/TranscationsRecipt";
 
 const InputField = ({ label, type, value, onChange }) => (
   <div className="flex flex-col items-start gap-2 justify-between w-full">
@@ -26,7 +27,7 @@ function Deploy() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-
+  const [Recipt, setRecipt] = useState(null);
   const sendTransaction = useSendTransaction();
   const { open, setOpen } = useModalStore();
   const [organizationName, setOrganizationName] = useState("");
@@ -65,7 +66,6 @@ function Deploy() {
   //   };
 
 
-
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
     if (!accounts[0].address) {
@@ -98,25 +98,13 @@ function Deploy() {
 
 
     let txId = receipt.transaction.intent_hash
-    console.log(txId)
-    let body = {
-      "intent_hash": txId,
-      "opt_ins": {
-        "affected_global_entities": true,
-        "balance_changes": true
-      }
-    }
-    try {
-      const response = await axios.post('https://babylon-stokenet-gateway.radixdlt.com/transaction/committed-details', body);
-      const results = await response.data;
-      window.alert(results.transaction.affected_global_entities)
-      
-    } catch (error) {
-      console.error('Error fetching transaction details:', error);
-      return null;
-    }
+    // create a transaction recipt 
+    const recipt = await extractTransactionsData(txId)
+    setRecipt(() => recipt)
 
   };
+
+
 
   useEffect(() => {
     setOpen(true);
@@ -130,7 +118,13 @@ function Deploy() {
     <>
       <AgreementModal />
 
-      <div className="  pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+      <div className="pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+        {
+          Recipt ?
+            <div className='w-1/2'>
+              < Recipt className='w-[50%] relative bg-red-500' />
+            </div> : ""
+        }
         <h1 className="text-2xl font-semibold text-white pt-14">
           Radix Transaction Form
         </h1>
