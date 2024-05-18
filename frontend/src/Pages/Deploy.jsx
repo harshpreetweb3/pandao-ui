@@ -27,8 +27,7 @@ function Deploy() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [showRecipt,setShowRecipt] = useState(false);
-
+  const [Recipt, setRecipt] = useState(null);
   const sendTransaction = useSendTransaction();
   const { open, setOpen } = useModalStore();
   const [organizationName, setOrganizationName] = useState("");
@@ -67,7 +66,6 @@ function Deploy() {
   //   };
 
 
-  var TransactionRecipt ;
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
     if (!accounts[0].address) {
@@ -101,14 +99,12 @@ function Deploy() {
 
     let txId = receipt.transaction.intent_hash
     // create a transaction recipt 
-    TransactionRecipt = await extractTransactionsData(txId)
-
-    console.log( "this is my coonut" ,
-      TransactionRecipt
-    )
-    setShowRecipt(true)
+    const recipt = await extractTransactionsData(txId)
+    setRecipt(() => recipt)
 
   };
+
+
 
   useEffect(() => {
     setOpen(true);
@@ -121,14 +117,14 @@ function Deploy() {
   return (
     <>
       <AgreementModal />
-      {
-        showRecipt && (
-           <TransactionRecipt/>
-        )
-      }
-      
 
-      <div className="  pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+      <div className="pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+        {
+          Recipt ?
+            <div className='w-1/2'>
+              < Recipt className='w-[50%] relative bg-red-500' />
+            </div> : ""
+        }
         <h1 className="text-2xl font-semibold text-white pt-14">
           Radix Transaction Form
         </h1>

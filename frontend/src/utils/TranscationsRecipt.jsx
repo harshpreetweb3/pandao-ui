@@ -1,173 +1,155 @@
-import axios from "axios";
+import axios from 'axios';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-// define internals functions 
+// Define internal functions 
+function FeePaid({ xrdSpent }) {
+    return (
+        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center">
+            <span className="font-semibold text-gray-700 mr-2">XrdPaid:</span>
+            <span className="text-red-600 font-bold">{`-${xrdSpent}`}</span>
+        </div>
+    );
+}
+
+function ReceiptComponentAccount({ entityArrayAccount }) {
+    return (
+        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center">
+            <h1 className="text-xl font-semibold text-gray-800 mb-2">Changes in your Account</h1>
+            <ol className="space-y-4">
+                {entityArrayAccount.map((entity, index) => (
+                    <li key={index} className="flex flex-row items-center space-x-4">
+                        <img className="w-10 h-10 rounded-full" src={entity.entityUrl} alt={entity.entityName} />
+                        <span className="font-medium text-gray-700">{entity.entityName}</span>
+                        <span className={`${entity.balanceChange > 0 ? 'text-green-600': 'text-red-700'} font-bold`}>{entity.balanceChange > 0 ? `+ ${entity.balanceChange}`:`- ${entity.balanceChange}` }</span>
+                    </li>
+                ))}
+            </ol>
+        </div>
+    );
+}
+
+function ReceiptComponent({ entityArrayComponent }) {
+    return (
+        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center">
+            <h1 className="text-xl font-semibold text-gray-800 mb-2">Changes in Component</h1>
+            <ul className="space-y-4">
+                {entityArrayComponent.map((entity, index) => (
+                    <li key={index} className="flex flex-row items-center space-x-4">
+                        <img className="w-10 h-10 rounded-full" src={entity.entityUrl} alt={entity.entityName} />
+                        <span className="font-medium text-gray-700">{entity.entityName}</span>
+                        <span className={`${entity.balanceChange > 0 ? 'text-green-600': 'text-red-700'} font-bold`}>{entity.balanceChange > 0 ? `+ ${entity.balanceChange}`:`- ${entity.balanceChange}` }</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
 
 async function getEntityMetadata(entity) {
-    var name
-    var description
-    var iconurl
-    let reqBody = {
-        addresses: [
-            entity
-        ],
-        aggregation_level: "Vault",
-        opt_ins: {
-            "explicit_metadata": [
-                "name",
-                "description",
-                "icon_url"
-            ]
-        }
-    }
+    let name;
+    let description;
+    let iconUrl;
+
     try {
-        const response = await axios.post('https://stokenet.radixdlt.com/state/entity/details', reqBody)
-        const results = await response.data;
-        console.log(results)
-        const metaData = results.items[0].explicit_metadata.items.map((data) => {
+        let reqBody = {
+            "addresses": [entity],
+            "aggregation_level": "Vault",
+            "opt_ins": {
+                "ancestor_identities": true,
+                "component_royalty_config": true,
+                "component_royalty_vault_balance": true,
+                "package_royalty_vault_balance": true,
+                "non_fungible_include_nfids": true,
+                "explicit_metadata": [
+                    "name",
+                    "icon_url",
+                    "description"
+                ]
+            }
+        };
+
+        const response = await axios.post('https://stokenet.radixdlt.com/state/entity/details', reqBody);
+        const results = response.data;
+        results.items[0].explicit_metadata.items.forEach((data) => {
             if (data.key === 'name') {
-                name = data.value.fields.value
-                console.log(name)
+                name = data.value.typed.value;
+            } else if (data.key === 'icon_url') {
+                iconUrl = data.value.typed.value;
+            } else if (data.key === 'description') {
+                description = data.value.typed.value;
             }
-            if (data.key === 'icon_url') {
-                iconurl = data.value.fields.value
-                console.log(iconurl)
-            }
-            if (data.key === 'description') {
-                description = data.value.fields.value
-            }
+        });
 
-
-        })
         return {
             name: name,
-            iconurl: iconurl,
+            iconUrl: iconUrl,
             description: description
-        }
-    }
-    catch (error) {
-        console.error('error getting entity detail:', error);
+        };
+    } catch (error) {
+        console.error('Error getting entity detail:', error);
         return null;
     }
 }
+
 async function extractTransactionsData(txId) {
+    const accountRegex = /^account/i;
+    const componentRegex = /^component/i;
+    const entityArrayAccount = [];
+    const entityArrayComponent = [];
 
-    const accountRegex = /^account/i
-    const compnentRegex = /^component/i
-    var entityArryAccount = []
-    var entityArryComponent = []
-
-    // get transcations data
     let body = {
         "intent_hash": txId,
         "opt_ins": {
             "affected_global_entities": true,
             "balance_changes": true
         }
-    }
+    };
+
     try {
         const response = await axios.post('https://babylon-stokenet-gateway.radixdlt.com/transaction/committed-details', body);
         const results = await response.data;
-        const entitiesEffected = results.transaction.affected_global_entities
-        const commitedTime = results.transaction.confirmed_at
-        var xrdSpent = results.transaction.fee_paid
-        const TokenBalancesChnges = results.transaction.balance_changes.fungible_balance_changes
-        console.log(TokenBalancesChnges)
-        TokenBalancesChnges.map(async (balance) => {
+        const entitiesEffected = results.transaction.affected_global_entities;
+        const committedTime = results.transaction.confirmed_at;
+        const xrdSpent = results.transaction.fee_paid;
+        const TokenBalancesChanges = results.transaction.balance_changes.fungible_balance_changes;
 
+        await Promise.all(TokenBalancesChanges.map(async (balance) => {
             if (accountRegex.test(balance.entity_address)) {
-                let balanceChange = balance.balance_change
-                console.log(balance)
-                const changedEntityMetaData = await getEntityMetadata(balance.resource_address)
-                console.log( '&&&&&&&&&&&&&' + changedEntityMetaData)
-                entityArryAccount.push({
+                const balanceChange = balance.balance_change;
+                const changedEntityMetaData = await getEntityMetadata(balance.resource_address);
+                entityArrayAccount.push({
                     balanceChange: balanceChange,
                     entityName: changedEntityMetaData.name,
-                    entityUrl: changedEntityMetaData.iconurl
-                })
+                    entityUrl: changedEntityMetaData.iconUrl
+                });
             }
 
-            if (compnentRegex.test(balance.entity_address)) {
-                let balanceChange = balance.balance_change
-                const changedEntityMetaData = await getEntityMetadata(balance.resource_address)
-                console.log( '&&&&&&&&&&&&&' + changedEntityMetaData)
-                entityArryComponent.push({
+            if (componentRegex.test(balance.entity_address)) {
+                const balanceChange = balance.balance_change;
+                const changedEntityMetaData = await getEntityMetadata(balance.resource_address);
+                entityArrayComponent.push({
                     balanceChange: balanceChange,
                     entityName: changedEntityMetaData.name,
-                    entityUrl: changedEntityMetaData.iconurl
-                })
+                    entityUrl: changedEntityMetaData.iconUrl
+                });
             }
+        }));
 
-
-        })
-
-        // define component to return 
-        const ReciptComponentAccount = ({ entityArryAccount }) => (
-            <div>
-                <h1>Changes in your Account</h1>
-                <ol>
-                    {entityArryAccount.map((entity, index) => (
-                        <li key={index}>
-                            <div className='flex flex-row'>
-                                <span>
-                                    <img src={entity.entityUrl} alt={entity.entityName} />
-                                </span>
-                                <span>{entity.entityName}</span>
-                                <span>{entity.balanceChange}</span>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            </div>
-        );
-
-        const ReciptComponent = ({ entityArryComponent }) => (
-            <div>
-                <h1>Changes in Component</h1>
-                <ol>
-                    {entityArryComponent.map((entity, index) => (
-                        <li key={index}>
-                            <div className='flex flex-row'>
-                                <span>
-                                    <img src={entity.entityUrl} alt={entity.entityName} />
-                                </span>
-                                <span>{entity.entityName}</span>
-                                <span>{entity.balanceChange}</span>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            </div>
-        );
-
-        const FeePaid = ({ xrdSpent }) => (
-            <div className='flex flex-row'>
-                <span className=''>XrdPaid</span>
-                <span className='text-red-600'>{`-${xrdSpent}`}</span>
-            </div>
-        );
-
-        const MyComponent = ({ entityArryAccount, entityArryComponent, xrdSpent }) => (
-            <div>
+        const TransactionDetailsComponent = () => (
+            <div className='w-1/2'>
+                <span>{committedTime}</span>
                 <FeePaid xrdSpent={xrdSpent} />
-                <ReciptComponentAccount entityArryAccount={entityArryAccount} />
-                <ReciptComponent entityArryComponent={entityArryComponent} />
+                <ReceiptComponentAccount entityArrayAccount={entityArrayAccount} />
+                <ReceiptComponent entityArrayComponent={entityArrayComponent} />
             </div>
         );
-        return (
-            <div>
-            <FeePaid xrdSpent={xrdSpent} />
-            <ReciptComponentAccount entityArryAccount={entityArryAccount} />
-            <ReciptComponent entityArryComponent={entityArryComponent} />
-            </div>
-        )
 
-
-
+        return TransactionDetailsComponent;
     } catch (error) {
         console.error('Error fetching transaction details:', error);
         return null;
     }
-
 }
 
-export default extractTransactionsData
+export default extractTransactionsData;
