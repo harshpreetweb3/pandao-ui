@@ -2,10 +2,11 @@ import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
 // Define internal functions 
 function FeePaid({ xrdSpent }) {
     return (
-        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center">
+        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center w-full">
             <span className="font-semibold text-gray-700 mr-2">XrdPaid:</span>
             <span className="text-red-600 font-bold">{`-${xrdSpent}`}</span>
         </div>
@@ -31,7 +32,7 @@ function ReceiptComponentAccount({ entityArrayAccount }) {
 
 function ReceiptComponent({ entityArrayComponent }) {
     return (
-        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center">
+        <div className="p-4 bg-white shadow-md rounded-lg mt-4 flex flex-col items-center ">
             <h1 className="text-xl font-semibold text-gray-800 mb-2">Changes in Component</h1>
             <ul className="space-y-4">
                 {entityArrayComponent.map((entity, index) => (
@@ -137,7 +138,7 @@ async function extractTransactionsData(txId) {
         }));
 
         const TransactionDetailsComponent = () => (
-            <div className='w-1/2'>
+            <div className='w-full '>
                 <span>{committedTime}</span>
                 <FeePaid xrdSpent={xrdSpent} />
                 <ReceiptComponentAccount entityArrayAccount={entityArrayAccount} />

@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 const useModalStore = create((set) => ({
-
-    open: true,
-
-    setOpen: () => set((state) => ({ open: !state.open })),
+  open: true,
+  successOpen: false,
+  setSuccessOpen: () => set((state) => ({ successOpen: !state.successOpen })),
+  setOpen: () => set((state) => ({ open: !state.open })),
 }));
-export default useModalStore
+export default useModalStore;
