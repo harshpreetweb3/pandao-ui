@@ -24,7 +24,7 @@ const Navbar = () => {
             <img src="/logo.png" alt="Logo" className=" h-14 " />
           </Link>
         </div>
-        <ul className="md:flex hidden items-center justify-center gap-5 w-full font-semibold text-2xl">
+        <ul className="md:flex hidden items-center justify-center gap-5 w-full font-semibold text-lg">
           <Link to="/aboutus">
             <li>About Us</li>
           </Link>

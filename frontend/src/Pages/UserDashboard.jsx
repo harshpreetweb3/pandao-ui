@@ -35,7 +35,7 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[url('/bg.svg')]  bg-cover bg-black p-7">
+    <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% p-7">
       <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
         <Card className=" md:w-[20%] flex flex-col items-center h-full mt-10 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
           <CardHeader>
@@ -98,7 +98,7 @@ const UserDashboard = () => {
               Explore DAO
             </Button>
           </div>
-          <Card className=" w-full flex flex-col items-center p-5 text-2xl font-bold  mt-2 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
+          <Card className=" w-full flex flex-col items-center p-5 text-xl font-bold  mt-2 bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
             Currently there is no Activity by User
           </Card>
         </div>
