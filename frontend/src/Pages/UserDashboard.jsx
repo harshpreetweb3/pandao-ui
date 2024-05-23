@@ -14,8 +14,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import axios from "axios";
 import { Check, Copy } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
@@ -29,11 +30,26 @@ const UserDashboard = () => {
       setCopied(false);
     }, 1000);
   };
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchBluePrint = async () => {
+      try {
+        const res = await axios.get(
+          `https://pandao-backend.onrender.com/community/${accounts[0].address}`
+        );
+        setData(res.data);
+      } catch (error) {
+        console.error("Error fetching blueprint data:", error);
+      }
+    };
+    fetchBluePrint();
+  }, []);
   if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
   }
-
+console.log(data)
   return (
     <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% p-7">
       <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
@@ -79,15 +95,15 @@ const UserDashboard = () => {
         </Card>
         <div className=" md:w-[80%] mt-10 flex flex-col items-center justify-start ">
           <div className="flex gap-2 items-center justify-end w-full border-b-2 border-gray-500 pb-3">
-            <Button
+            {/* <Button
               onClick={() => {
-                navigate("/exploreDao");
+                navigate("/myCommunities");
               }}
               variant="outline"
               className="text-white bg-purple-600"
             >
               My Communities
-            </Button>
+            </Button> */}
             <Button
               onClick={() => {
                 navigate("/exploreDao");
