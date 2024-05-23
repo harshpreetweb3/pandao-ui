@@ -114,7 +114,7 @@ function Deploy() {
         owner_address: accounts[0].address
       }
       try {
-          const response = await axios.post('http://127.0.0.1:8000/community', communityPostBody, {
+          const response = await axios.post('https://pandao-backend.onrender.com/community', communityPostBody, {
           headers: {
             'Content-Type': 'application/json'
           }

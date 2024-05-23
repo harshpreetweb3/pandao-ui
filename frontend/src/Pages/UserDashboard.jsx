@@ -36,7 +36,7 @@ const UserDashboard = () => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `https://pandao-backend.onrender.com/community/${accounts[0].address}`
+          `https://pandao-backend.onrender.com/community`
         );
         setData(res.data);
       } catch (error) {
@@ -49,7 +49,7 @@ const UserDashboard = () => {
     navigate("/");
     return null;
   }
-console.log(data)
+  console.log(data)
   return (
     <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% p-7">
       <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
@@ -73,21 +73,21 @@ console.log(data)
                   <TooltipTrigger> {accounts[0].address}</TooltipTrigger>
                   <TooltipContent>
                     {accounts[0].address}
-                  
+
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
               <button
-                      onClick={()=>handleCopy(accounts[0].address)}
-                      disabled={copied}
-                      className="py-0 bg-purple-500 text-white rounded-md px-2  h-6 text-xs absolute top-2 right-2 group-hover:block hidden "
-                    >
-                      {copied ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </button>
+                onClick={() => handleCopy(accounts[0].address)}
+                disabled={copied}
+                className="py-0 bg-purple-500 text-white rounded-md px-2  h-6 text-xs absolute top-2 right-2 group-hover:block hidden "
+              >
+                {copied ? (
+                  <Check className="h-4 w-4" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
             </div>
 
             <p className="bg-purple-400 p-2 rounded-lg">{accounts[0].label}</p>
@@ -114,9 +114,27 @@ console.log(data)
               Explore DAO
             </Button>
           </div>
-          <Card className=" w-full flex flex-col items-center p-5 text-xl font-bold  mt-2 bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
-            Currently there is no Activity by User
-          </Card>
+          <div>
+            {data.length == 0 &&
+              <Card className=" w-full flex flex-col items-center p-5 text-xl font-bold  mt-2 bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
+                Currently there is no Activity by User
+              </Card>
+            }
+            <div className="grid grid-cols-1  gap-6">
+              {data.map((item) => (
+                <div key={item.id} className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
+                  <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+                  <p className="text-gray-700"><span className="font-bold">Description:</span> {item.description}</p>
+                  <p className="text-gray-700"><span className="font-bold">Component Address:</span> {item.component_address}</p>
+                  <p className="text-gray-700"><span className="font-bold">Owner Address:</span> {item.owner_address}</p>
+                  <p className="text-gray-700"><span className="font-bold">Owner Name:</span> {item.owner.name}</p>
+                  <p className="text-gray-700"><span className="font-bold">Owner Public Address:</span> {item.owner.public_address}</p>
+                  <hr className="mt-4" />
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
