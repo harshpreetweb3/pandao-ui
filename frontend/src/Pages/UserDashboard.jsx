@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const { accounts } = useAccount();
+  
   const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   const handleCopy = (address) => {
@@ -53,7 +54,7 @@ const UserDashboard = () => {
   return (
     <div className="pt-20 relative flex  items-start gap-3 justify-start min-h-screen  bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% p-7">
       <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
-        <Card className=" md:w-[20%] flex flex-col items-center h-full mt-10 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
+        <Card className=" md:w-[20%] md:sticky md:top-20 flex flex-col items-center h-full mt-10 bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
           <CardHeader>
             <Avatar className="h-40 w-40">
               <AvatarImage
@@ -114,22 +115,22 @@ const UserDashboard = () => {
               Explore DAO
             </Button>
           </div>
-          <div>
+          <div className="w-full">
             {data.length == 0 &&
               <Card className=" w-full flex flex-col items-center p-5 text-xl font-bold  mt-2 bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30  max-w-[1440px]  ">
                 Currently there is no Activity by User
               </Card>
             }
-            <div className="grid grid-cols-1  gap-6">
+            <div className="grid grid-cols-1  gap-6 mt-5 ">
               {data.map((item) => (
-                <div key={item.id} className="bg-white p-6 rounded-lg shadow-md overflow-hidden">
-                  <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
-                  <p className="text-gray-700"><span className="font-bold">Description:</span> {item.description}</p>
-                  <p className="text-gray-700"><span className="font-bold">Component Address:</span> {item.component_address}</p>
-                  <p className="text-gray-700"><span className="font-bold">Owner Address:</span> {item.owner_address}</p>
-                  <p className="text-gray-700"><span className="font-bold">Owner Name:</span> {item.owner.name}</p>
-                  <p className="text-gray-700"><span className="font-bold">Owner Public Address:</span> {item.owner.public_address}</p>
-                  <hr className="mt-4" />
+                <div key={item.id} className=" md:p-6 pb-5  shadow-md overflow-hidden cursor-pointer border-b-2  md:mx-2 text-white border-gray-500 " >
+                  <h3 className="text-4xl font-semibold mb-2">{item.name}</h3>
+                  <p className="text-gray-400"><span className="font-bold">Description:</span> {item.description}</p>
+                  <p className="text-gray-400"><span className="font-bold">Component Address:</span> {item.component_address}</p>
+                  <p className="text-gray-400"><span className="font-bold">Owner Address:</span> {item.owner_address}</p>
+                  <p className="text-gray-400"><span className="font-bold">Owner Name:</span> {item.owner.name}</p>
+                  <p className="text-gray-400"><span className="font-bold">Owner Public Address:</span> {item.owner.public_address}</p>
+              
                 </div>
               ))}
             </div>

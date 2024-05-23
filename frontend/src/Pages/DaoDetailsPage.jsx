@@ -12,7 +12,7 @@ const DaoDetailsPage = () => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `http://127.0.0.1:8000/blueprint/${param.slug}`
+          `https://pandao-backend.onrender.com/blueprint/${param.slug}`
         );
         setData(res.data);
       } catch (error) {
@@ -28,8 +28,11 @@ const DaoDetailsPage = () => {
       {data && (
         
         <div className="max-w-[1440px] flex flex-col  mx-auto p-3 text-white gap-2">
-   
+          <div className="sticky top-20">
           <BreadCrumb name={param.slug}/>
+
+          </div>
+   
 
       
           <div className="text-4xl font-bold mt-8 text-center">{data.slug}</div>
