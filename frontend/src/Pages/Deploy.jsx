@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import AgreementModal from "./components/AgreementModal";
 import useModalStore from "@/store/modal";
+import axios from 'axios';
 
 import extractTransactionsData from "@/utils/TranscationsRecipt";
 import ReceiptModal from "./components/ReceiptModal";
@@ -30,7 +31,7 @@ function Deploy() {
   const [loading, setLoading] = useState(false);
   const [Recipt, setRecipt] = useState(null);
   const sendTransaction = useSendTransaction();
-  const { open, setOpen,setSuccessOpen } = useModalStore();
+  const { open, setOpen, setSuccessOpen } = useModalStore();
   const [organizationName, setOrganizationName] = useState("");
   const [organizationDescription, setOrganizationDescription] = useState("");
 
@@ -102,8 +103,25 @@ function Deploy() {
     // create a transaction recipt
     const recipt = await extractTransactionsData(txId);
     console.log(receipt)
-    if(receipt){
+    if (receipt) {
       setSuccessOpen(true)
+
+      // also send community registrartion data
+      let communityPostBody = {
+        name: organizationName,
+        component_address: "not defined",
+        description: organizationDescription,
+        owner_address: accounts[0].address
+      }
+      try {
+          const response = await axios.post('http://127.0.0.1:8000/community', communityPostBody, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      } catch (error) {
+        window.alert(error)
+      }
     }
     setRecipt(() => recipt);
   };
@@ -120,8 +138,8 @@ function Deploy() {
     <>
       <AgreementModal />
       <ReceiptModal>
-        
-      {Recipt ? (
+
+        {Recipt ? (
           <div className="w-full ">
             <Recipt className="w-full relative bg-red-500" />
           </div>
@@ -202,7 +220,7 @@ function Deploy() {
             </Button>
           </div>
         </form>
-   
+
       </div>
     </>
   );

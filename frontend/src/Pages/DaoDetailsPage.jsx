@@ -12,7 +12,7 @@ const DaoDetailsPage = () => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `https://pandao-backend.onrender.com/blueprint/${param.slug}`
+          `http://127.0.0.1:8000/blueprint/${param.slug}`
         );
         setData(res.data);
       } catch (error) {
