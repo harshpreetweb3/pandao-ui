@@ -9,6 +9,7 @@ import Footer from "./Pages/components/Footer";
 import UserDashboard from "./Pages/UserDashboard";
 import ExploreDao from "./Pages/exploreDao";
 import Deploy from "./Pages/Deploy";
+import DaoDetailsPage from "./Pages/DaoDetailsPage";
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
         <Route path="/resources" element={<Resource />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/exploreDao" element={<ExploreDao />} />
-        <Route path="/deploy" element={<Deploy />} />
+        <Route path="/exploreDao/:slug" element={<DaoDetailsPage />} />
+        <Route path="/exploreDao/:slug/deploy" element={<Deploy />} />
 
               </Routes>
       <Footer/>

@@ -32,6 +32,8 @@ function Deploy() {
   const sendTransaction = useSendTransaction();
   const { open, setOpen,setSuccessOpen } = useModalStore();
   const [organizationName, setOrganizationName] = useState("");
+  const [organizationDescription, setOrganizationDescription] = useState("");
+
   const [numberOfTokens, setNumberOfTokens] = useState("");
   const [divisibility, setDivisibility] = useState("");
   const [tokenPrice, setTokenPrice] = useState("");
@@ -99,6 +101,7 @@ function Deploy() {
     let txId = receipt.transaction.intent_hash;
     // create a transaction recipt
     const recipt = await extractTransactionsData(txId);
+    console.log(receipt)
     if(receipt){
       setSuccessOpen(true)
     }
@@ -139,6 +142,14 @@ function Deploy() {
               type="text"
               value={organizationName}
               onChange={(e) => setOrganizationName(e.target.value)}
+            />
+          </div>
+          <div className="md:col-span-2">
+            <InputField
+              label="Organization Description:"
+              type="text"
+              value={organizationDescription}
+              onChange={(e) => setOrganizationDescription(e.target.value)}
             />
           </div>
 
