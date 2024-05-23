@@ -10,6 +10,7 @@ import UserDashboard from "./Pages/UserDashboard";
 import ExploreDao from "./Pages/exploreDao";
 import Deploy from "./Pages/Deploy";
 import DaoDetailsPage from "./Pages/DaoDetailsPage";
+import MyCommunity from "./Pages/MyCommunites";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/products" element={<Product />} />
         <Route path="/resources" element={<Resource />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
+        <Route path="/myCommunities" element={<MyCommunity />} />
         <Route path="/exploreDao" element={<ExploreDao />} />
         <Route path="/exploreDao/:slug" element={<DaoDetailsPage />} />
         <Route path="/exploreDao/:slug/deploy" element={<Deploy />} />

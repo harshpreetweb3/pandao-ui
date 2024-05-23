@@ -13,6 +13,7 @@ const Navbar = () => {
     if (result.isErr()) {
      console.log("Error")
     }else{
+      console.log(result)
       navigate("/userDashboard")
     }
   })
