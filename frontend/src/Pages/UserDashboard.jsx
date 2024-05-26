@@ -39,7 +39,7 @@ const UserDashboard = () => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `https://pandao-backend.onrender.com/community`
+          `${import.meta.env.VITE_BACKEND_URL}/community`
         );
         setData(res.data);
       } catch (error) {
