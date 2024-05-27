@@ -21,9 +21,7 @@ import {
           <BreadcrumbItem className="text-white hover:text-white/80">
             <BreadcrumbLink>{name}</BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
-          </BreadcrumbItem>
+         
         </BreadcrumbList>
       </Breadcrumb>
     )

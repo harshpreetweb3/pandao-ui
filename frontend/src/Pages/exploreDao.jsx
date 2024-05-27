@@ -12,8 +12,7 @@ const ExploreDao = () => {
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
-        const res = await axios.get(
-          "https://pandao-backend.onrender.com/blueprint"
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blueprint`
         );
         setData(res.data);
       } catch (error) {
@@ -36,7 +35,7 @@ const ExploreDao = () => {
             onClick={() => {
               navigate(`/exploreDao/${project.slug}`);
             }}
-            className="bg-gradient-to-r from-indigo-500 to-blue-500 shadow-md rounded-lg p-6 hover:to-purple-400 cursor-pointer"
+            className="bg-purple-400 shadow-md rounded-lg p-6 hover:bg-purple-300 cursor-pointer"
           >
             <h2 className="text-2xl font-bold mb-2">{project.slug}</h2>
             <p className="text-gray-900 mb-4">{project.description}</p>
