@@ -38,7 +38,7 @@ const ExploreDao = () => {
             className="bg-purple-400 shadow-md rounded-lg p-6 hover:bg-purple-300 cursor-pointer"
           >
             <h2 className="text-2xl font-bold mb-2">{project.slug}</h2>
-            <p className="text-gray-900 mb-4">{project.description}</p>
+            <p className="text-gray-900 mb-4 line-clamp-3">{project.description}</p>
           </div>
         ))}
       </div>

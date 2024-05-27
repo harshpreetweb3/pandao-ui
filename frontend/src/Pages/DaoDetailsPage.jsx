@@ -46,12 +46,14 @@ const DaoDetailsPage = () => {
             <div className="text-4xl font-bold mt-8 text-left">{data.slug}</div>
             <div className="text-xl font-bold mt-4 text-left">
               {" "}
-              Description - {data.package_addr}
+              Address - {data.package_addr}
             </div>
             <div className="text-xl font-bold mt-2 text-left">
               Price - {data.price}
             </div>
-
+            <div className="text-3xl mt-3 font-semibold text-left">
+              Description
+            </div>
             <div className="text-lg font-semibold text-left">
               {data.description}
             </div>
