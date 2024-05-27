@@ -125,6 +125,7 @@ const SignupPage = () => {
                     required
                     value={formData.about}
                     onChange={handleChange}
+                    maxlength="150"
                   />
                 </div>
                 <div className="grid gap-2">

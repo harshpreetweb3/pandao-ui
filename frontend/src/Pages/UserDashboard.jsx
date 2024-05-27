@@ -114,6 +114,7 @@ const UserDashboard = () => {
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
                   className="w-full"
+                  maxlength="150"
                 />
                 <div
                   className="bg-purple-400 py-1 px-2 rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
