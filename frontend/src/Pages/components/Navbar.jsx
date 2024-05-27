@@ -21,18 +21,20 @@ const Navbar = () => {
       if (response.data.exist === false) {
         navigate("/signup");
       } else {
-        try {
-          const loginResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
-            public_address: result.value.accounts[0].address
-          });
-          console.log("Login successful", loginResponse.data);
-          if(loginResponse.status==200){
+        
+        navigate("/userDashboard");
+        // try {
+        //   const loginResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/login`, {
+        //     public_address: result.value.accounts[0].address
+        //   });
+        //   console.log("Login successful", loginResponse.data);
+        //   if(loginResponse.status==200){
 
-          navigate("/userDashboard");
-          }
-        } catch (loginError) {
-          console.log("Error during login API call", loginError);
-        }
+        //   navigate("/userDashboard");
+        //   }
+        // } catch (loginError) {
+        //   console.log("Error during login API call", loginError);
+        // }
       }
     } catch (error) {
       console.log("Error in API call", error);
