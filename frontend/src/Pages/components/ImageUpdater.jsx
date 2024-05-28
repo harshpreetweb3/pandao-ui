@@ -9,6 +9,8 @@ const ImageUpdater = ({ onUploadSuccess }) => {
   const [signature, setSignature] = useState("");
   const [expire, setExpire] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(null);
+
 
   useEffect(() => {
     const fetchSignature = async () => {
@@ -21,9 +23,11 @@ const ImageUpdater = ({ onUploadSuccess }) => {
           setExpire(response.data.expire);
         } else {
           setUploadStatus("Failed to fetch upload signature.");
+          setIsSuccess(false);
         }
       } catch (error) {
         setUploadStatus("Failed to fetch upload signature.");
+        setIsSuccess(false);
       }
     };
 
@@ -33,11 +37,13 @@ const ImageUpdater = ({ onUploadSuccess }) => {
   const handleUpload = async (file) => {
     if (!file) {
       setUploadStatus("Please select a file first.");
+      setIsSuccess(false);
       return;
     }
 
     if (!signature || !expire) {
       setUploadStatus("Failed to get upload signature. Please try again.");
+      setIsSuccess(false);
       return;
     }
 
@@ -59,12 +65,14 @@ const ImageUpdater = ({ onUploadSuccess }) => {
         }
       );
       setUploadStatus("File uploaded successfully.");
+      setIsSuccess(true);
       if (onUploadSuccess) {
         onUploadSuccess(response.data.file);
       }
       console.log("Response:", response.data.file);
     } catch (error) {
       setUploadStatus("File upload failed.");
+      setIsSuccess(false);
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -82,7 +90,11 @@ const ImageUpdater = ({ onUploadSuccess }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 mt-2">
       <Input type="file" onChange={handleFileChange} className="w-1/2 m-0" />
-      {uploadStatus && <p className="text-sm text-red-500">{uploadStatus}</p>}
+      {uploadStatus && (
+        <p className={`text-sm ${isSuccess ? "text-green-500" : "text-red-500"}`}>
+          {uploadStatus}
+        </p>
+      )}
       {loading && <p className="text-sm text-blue-500">Uploading...</p>}
     </div>
   );
