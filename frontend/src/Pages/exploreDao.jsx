@@ -2,6 +2,7 @@ import { useAccount } from "@/AccountContext";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BackButton from "./components/BackButton";
 
 
 const ExploreDao = () => {
@@ -28,7 +29,9 @@ const ExploreDao = () => {
   }
   return (
     <div className="pt-20 pb-10  items-start gap-3 justify-start min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+     <BackButton/>
       <div className="max-w-[1440px]  grid md:grid-cols-3 grid-cols-1 mx-auto p-3 gap-3">
+      
       {data && data.map((project, index) => (
           <div
             key={index}
