@@ -13,16 +13,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Globe } from "lucide-react";
 import ImageUpdater from "./components/ImageUpdater";
 import { Textarea } from "@/components/ui/textarea";
+import { FaLinkedinIn, FaTiktok, FaXTwitter } from "react-icons/fa6";
 
 const UserDashboard = () => {
   const { accounts } = useAccount();
@@ -34,6 +34,12 @@ const UserDashboard = () => {
   const [edit, setEdit] = useState(false);
   const [fileUrl, setFileUrl] = useState("");
   const [about, setAbout] = useState("");
+  const [socialLinks, setSocialLinks] = useState({
+    x_url: "",
+    website_url: "",
+    linkedin: "",
+    tiktok: "",
+  });
 
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
@@ -52,7 +58,9 @@ const UserDashboard = () => {
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/community`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/community`
+        );
         setData(res.data);
       } catch (error) {
         console.error("Error fetching blueprint data:", error);
@@ -61,9 +69,20 @@ const UserDashboard = () => {
 
     const fetchUserData = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/details/${accounts[0].address}`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/details/${
+            accounts[0].address
+          }`
+        );
+        console.log(res.data);
         setUserData(res.data);
-        setAbout(res.data.about);  // Initialize about state
+        setAbout(res.data.about);
+        setSocialLinks({
+          x_url: res.data.x_url || "",
+          website_url: res.data.website_url || "",
+          linkedin: res.data.linkedin || "",
+          tiktok: res.data.tiktok || "",
+        });
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -79,8 +98,12 @@ const UserDashboard = () => {
         ...userData,
         about,
         image_url: fileUrl || userData.image_url,
+        ...socialLinks,
       };
-      await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/user/update-user`, updatedData);
+      await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
+        updatedData
+      );
       setUserData(updatedData);
       setEdit(false);
     } catch (error) {
@@ -101,7 +124,10 @@ const UserDashboard = () => {
             <Card className="border-0 md:w-[25%] md:sticky md:top-20 flex flex-col items-center h-full mt-1 bg-transparent max-w-[1440px] gap-3">
               <CardHeader className="p-0 mt-4 flex flex-col items-center">
                 <Avatar className="h-72 w-72 border-[5px] border-pink-500">
-                  <AvatarImage src={fileUrl || userData.image_url} className="h-72 w-72 object-cover" />
+                  <AvatarImage
+                    src={fileUrl || userData.image_url}
+                    className="h-72 w-72 object-cover"
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
                 <ImageUpdater onUploadSuccess={handleFileId} />
@@ -114,8 +140,7 @@ const UserDashboard = () => {
                   value={about}
                   onChange={(e) => setAbout(e.target.value)}
                   className="w-full bg-transparent text-white"
-                  maxlength="150"
-                  
+                  maxLength="150"
                 />
                 <div
                   className="bg-purple-400 py-1 px-2 rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
@@ -132,25 +157,88 @@ const UserDashboard = () => {
                     disabled={copied}
                     className="py-0 bg-purple-500 text-white rounded-md px-2 h-6 text-xs absolute top-2 right-2 group-hover:block hidden"
                   >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    {copied ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
-                <div className="flex gap-2 items-center">
-                <Button onClick={handleUpdateUser} className="bg-green-600 hover:bg-green-700 border-2">
-                  Save
-                </Button>
-                <Button onClick={() => setEdit(false)} className="bg-slate-700 border-2 ">
-                  Cancel
-                </Button>
+                <div className="text-white text-sm">Social Accounts</div>
+                <div className="flex items-center w-full gap-2">
+                  <FaXTwitter className="text-white" />
+                  <input
+                    value={socialLinks.x_url}
+                    onChange={(e) =>
+                      setSocialLinks({ ...socialLinks, x_url: e.target.value })
+                    }
+                    placeholder="Your X url"
+                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
+                  />
                 </div>
-               
+                <div className="flex items-center w-full gap-2">
+                  <Globe className="text-white" />
+                  <input
+                    value={socialLinks.website_url}
+                    onChange={(e) =>
+                      setSocialLinks({
+                        ...socialLinks,
+                        website_url: e.target.value,
+                      })
+                    }
+                    placeholder="Your website URL"
+                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
+                  />
+                </div>
+                <div className="flex items-center w-full gap-2">
+                  <FaLinkedinIn className="text-white" />
+                  <input
+                    value={socialLinks.linkedin}
+                    onChange={(e) =>
+                      setSocialLinks({
+                        ...socialLinks,
+                        linkedin: e.target.value,
+                      })
+                    }
+                    placeholder="Your LinkedIn"
+                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
+                  />
+                </div>{" "}
+                <div className="flex items-center w-full gap-2">
+                  <FaTiktok className="text-white" />
+                  <input
+                    value={socialLinks.tiktok}
+                    onChange={(e) =>
+                      setSocialLinks({ ...socialLinks, tiktok: e.target.value })
+                    }
+                    placeholder="Your Placeholder"
+                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
+                  />
+                </div>
+                <div className="flex gap-2 items-center">
+                  <Button
+                    onClick={handleUpdateUser}
+                    className="bg-green-600 hover:bg-green-700 border-2"
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    onClick={() => setEdit(false)}
+                    className="bg-slate-700 border-2 "
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           ) : (
             <Card className="border-0 md:w-[25%] md:sticky md:top-20 flex flex-col items-center h-full mt-1 bg-transparent max-w-[1440px]">
               <CardHeader className="p-0 mt-4">
                 <Avatar className="h-72 w-72 border-[5px] border-pink-500">
-                  <AvatarImage src={userData.image_url} className="h-72 w-72 object-cover" />
+                  <AvatarImage
+                    src={userData.image_url}
+                    className="h-72 w-72 object-cover"
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </CardHeader>
@@ -176,10 +264,49 @@ const UserDashboard = () => {
                     disabled={copied}
                     className="py-0 bg-purple-500 text-white rounded-md px-2 h-6 text-xs absolute top-2 right-2 group-hover:block hidden"
                   >
-                    {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                    {copied ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
-                <Button onClick={() => setEdit(true)} className="bg-slate-700 border-2">
+                {socialLinks.x_url && (
+                  <div className="flex items-center w-full gap-2">
+                    <FaXTwitter className="text-white" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                      {socialLinks.x_url}
+                    </div>
+                  </div>
+                )}
+                {socialLinks.website_url && (
+                  <div className="flex items-center w-full gap-2">
+                    <Globe className="text-white" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                      {socialLinks.website_url}
+                    </div>
+                  </div>
+                )}
+                {socialLinks.linkedin && (
+                  <div className="flex items-center w-full gap-2">
+                    <FaLinkedinIn className="text-white" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                      {socialLinks.linkedin}
+                    </div>
+                  </div>
+                )}{" "}
+                {socialLinks.tiktok && (
+                  <div className="flex items-center w-full gap-2">
+                    <FaTiktok className="text-white" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                      {socialLinks.tiktok}
+                    </div>
+                  </div>
+                )}
+                <Button
+                  onClick={() => setEdit(true)}
+                  className="bg-slate-700 border-2"
+                >
                   Edit Profile
                 </Button>
               </CardContent>
