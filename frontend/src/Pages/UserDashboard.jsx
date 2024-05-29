@@ -336,6 +336,7 @@ const UserDashboard = () => {
                   <Card
                     key={item.id}
                     className="rounded-sm bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-purple-400 to-purple-300 hover:to-purple-400 hover:from-purple-400 cursor-pointer"
+                 
                   >
                     <CardHeader>
                       <div className="flex items-center justify-between">
@@ -366,7 +367,9 @@ const UserDashboard = () => {
                     </CardContent>
                     <CardFooter>
                       <div className="flex items-center justify-end gap-2">
-                        <Button size="sm" variant="outline">
+                        <Button  onClick={()=>{
+                    navigate(`/community/detail/${item.id}`)
+                  }} size="sm" variant="outline">
                           Interact
                         </Button>
                       </div>
