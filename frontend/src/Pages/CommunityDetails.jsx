@@ -80,7 +80,7 @@ const CommunityDetails = () => {
         )}
         <div className="flex flex-col gap-3 md:w-[30%]">
           <h2 className="text-xl font-semibold">DAO Participants</h2>
-          <div className="grid grid-cols-1 items-start justify-start">
+          <div className="grid grid-cols-1 items-start justify-start gap-2">
             {participants.length > 0 &&
               participants.map((participant, index) => (
                 <Card key={index} className="flex items-center gap-2 p-4 h-fit">
