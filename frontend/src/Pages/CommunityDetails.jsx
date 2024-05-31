@@ -29,6 +29,7 @@ const CommunityDetails = () => {
         data
       );
       console.log("Response:", response.data);
+      fetchParticipant()
     } catch (error) {
       console.error("Error joining community:", error);
     }
