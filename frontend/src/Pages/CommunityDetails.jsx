@@ -1,5 +1,6 @@
 import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -11,6 +12,23 @@ const CommunityDetails = () => {
   const params = useParams();
   const [data, setData] = useState([]);
   const [participants, setParticipants] = useState([]);
+
+  const handleJoinCommunity = async () => {
+    const data = {
+      community_id: params.id,
+      participant_address: accounts[0].address,
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/community/participant`,
+        data
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error joining community:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -26,7 +44,9 @@ const CommunityDetails = () => {
     const fetchParticipant = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/community/participant/${params.id}`
+          `${import.meta.env.VITE_BACKEND_URL}/community/participant/${
+            params.id
+          }`
         );
         setParticipants(res.data);
       } catch (error) {
@@ -47,8 +67,14 @@ const CommunityDetails = () => {
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto text-white">
         {data && (
           <div className="space-y-6 md:w-[70%]">
-            <div>
+            <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold">{data.name}</h1>
+              <Button
+                onClick={handleJoinCommunity}
+                className="bg-purple-400 hover:bg-purple-300 text-black"
+              >
+                Join Community
+              </Button>
             </div>
             <div className="grid gap-4">
               <div>
