@@ -109,7 +109,7 @@ const CommunityDetails = () => {
           <div className="grid grid-cols-1 items-start justify-start gap-2">
             {participants.length > 0 &&
               participants.map((participant, index) => (
-                <Card key={index} className="flex items-center gap-2 p-4 h-fit">
+                <Card key={index} onClick={()=>navigate(`/userProfile/${participant.participant}`)} className="flex items-center gap-2 p-4 h-fit cursor-pointer hover:bg-slate-100 hover:translate-x-3 duration-300 transition-transform">
                   <Avatar>
                     <AvatarImage alt="Avatar" src={participant.image_url} />
                     <AvatarFallback>JD</AvatarFallback>

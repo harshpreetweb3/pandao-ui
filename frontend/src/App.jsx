@@ -13,6 +13,7 @@ import DaoDetailsPage from "./Pages/DaoDetailsPage";
 import MyCommunity from "./Pages/MyCommunites";
 import SignupPage from "./Pages/SignUpPage";
 import CommunityDetails from "./Pages/CommunityDetails";
+import UserPublicProfile from "./Pages/UsersPublicProfile";
 
 
 function App() {
@@ -31,6 +32,8 @@ function App() {
         <Route path="/exploreDao/:slug" element={<DaoDetailsPage />} />
         <Route path="/exploreDao/:slug/deploy" element={<Deploy />} />
         <Route path="/community/detail/:id" element={<CommunityDetails />} />
+        <Route path="/userProfile/:id" element={<UserPublicProfile />} />
+
 
               </Routes>
       <Footer/>
