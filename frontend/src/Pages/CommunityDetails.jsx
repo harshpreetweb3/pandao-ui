@@ -48,7 +48,7 @@ const CommunityDetails = () => {
       );
       console.log("Comment Response:", response.data);
       setComment("");
-      fetchComments()
+      fetchComments();
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -66,9 +66,7 @@ const CommunityDetails = () => {
   const fetchParticipant = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/participant/${
-          params.id
-        }`
+        `${import.meta.env.VITE_BACKEND_URL}/community/participant/${params.id}`
       );
       setParticipants(res.data);
     } catch (error) {
@@ -86,9 +84,6 @@ const CommunityDetails = () => {
     }
   };
   useEffect(() => {
-    
-  
-   
     fetchDetails();
     fetchParticipant();
     fetchComments();
@@ -153,18 +148,22 @@ const CommunityDetails = () => {
                         className="flex items-start gap-4 bg-purple-300 p-3 rounded-lg text-black"
                       >
                         <Avatar className="shrink-0 object-cover">
-                          <img
-                            src={comment.user_image}
-                            alt="Avatar"
-                          />
+                          <img src={comment.user_image} alt="Avatar" />
                           <AvatarFallback>JD</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 space-y-2">
                           <div className="flex items-center justify-between">
-                            <div>
-                              <div className="font-medium">{comment.user_name}</div>
-                              <div className="font-light">
-{comment.user_address}
+                            <div
+                              className="group"
+                              onClick={() =>
+                                navigate(`/userProfile/${comment.user_address}`)
+                              }
+                            >
+                              <div className="font-medium group-hover:underline cursor-pointer">
+                                {comment.user_name}
+                              </div>
+                              <div className="font-light group-hover:underline cursor-pointer">
+                                {comment.user_address}
                               </div>
                             </div>
                             {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
