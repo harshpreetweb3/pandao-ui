@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Comments = () => {
   const { accounts } = useAccount();
@@ -60,6 +61,7 @@ const Comments = () => {
         data
       );
       console.log("Comment Response:", response.data);
+      toast.success("Comment Added")
       setComment("");
       fetchComments();
     } catch (error) {

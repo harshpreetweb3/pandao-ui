@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const CommunityDetails = () => {
   const { accounts } = useAccount();
@@ -36,6 +37,7 @@ const CommunityDetails = () => {
         data
       );
       console.log("Response:", response.data);
+      toast.success("Welcome to the Community")
       fetchParticipant();
     } catch (error) {
       console.error("Error joining community:", error);

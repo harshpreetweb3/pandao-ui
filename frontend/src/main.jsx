@@ -7,6 +7,7 @@ import './index.css'
 import { GatewayApiProvider } from "./context/GatewayApiProvider.jsx";
 import { RdtProvider } from "./context/RdtProvider.jsx";
 import { AccountProvider } from "./AccountContext.jsx";
+import { Toaster } from "./components/ui/sonner.jsx";
 
 
 
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <GatewayApiProvider value={gatewayApi}>
         <AccountProvider>
           <App />
+          <Toaster />
         </AccountProvider>
       </GatewayApiProvider>
     </RdtProvider>
