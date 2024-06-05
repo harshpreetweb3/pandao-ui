@@ -31,7 +31,7 @@ const ExploreSection = () => {
         <div className="w-full min-h-1/2 grid md:grid-cols-3 grid-cols-1 gap-3 ">
           <Card className=" p-5 w-full gap-4 flex flex-col items-center justify-between bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90   ">
             <div className=" w-full">
-              <Building2 className="h-14 w-14 text-blue-600" />
+              <Building2 className="h-14 w-14 text-purple-900" />
             </div>
             <div className="w-full text-2xl font-semibold mt-2">
               Create your DAO
@@ -40,14 +40,14 @@ const ExploreSection = () => {
               Create your own DAO on Radix Blockchain
             </p>
             <div className="w-full">
-              <Button className="bg-[#3164fa] hover:bg-[#614fbc]">
+              <Button className="bg-purple-900 hover:bg-[#614fbc]">
                 Create a DAO
               </Button>
             </div>
           </Card>
           <Card className=" p-5 w-full gap-4 flex flex-col items-center justify-between bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90   ">
             <div className=" w-full">
-              <GraduationCap className="h-14 w-14 text-blue-600" />
+              <GraduationCap className="h-14 w-14 text-purple-800" />
             </div>
             <div className="w-full text-2xl font-semibold mt-2">
               Learn about DAOs
@@ -56,7 +56,7 @@ const ExploreSection = () => {
               Learn about DAOs.How to create them using Radix
             </p>
             <div className="w-full">
-              <Button className="bg-[#3164fa] hover:bg-[#614fbc]">
+              <Button className="bg-purple-900 hover:bg-[#614fbc]">
                 Learn about DAOs
               </Button>
             </div>

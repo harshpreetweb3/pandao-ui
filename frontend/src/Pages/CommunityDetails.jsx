@@ -110,7 +110,7 @@ const CommunityDetails = () => {
     return null;
   }
   return (
-    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100  text-black px-2">
+    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100 text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
@@ -122,7 +122,7 @@ const CommunityDetails = () => {
                 <div className="flex items-end md:items-start md:justify-end w-full">
                   <Button
                     onClick={handleJoinCommunity}
-                    className="bg-blue-600 hover:bg-blue-500 text-white"
+                    className="bg-purple-600 hover:bg-purple-500 text-white"
                   >
                     Join Community
                   </Button>

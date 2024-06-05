@@ -44,7 +44,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="z-10 p-4  w-full bg-[#3164fa]  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50   text-white fixed ">
+    <div className="z-10 p-4  w-full bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100%   bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10   text-white fixed ">
       <div className="max-w-[1440px] mx-auto flex  items-center justify-between h-10   ">
         <div className="w-full ">
           <Link to="/">

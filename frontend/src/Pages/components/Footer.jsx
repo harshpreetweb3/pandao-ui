@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
-    <div className="flex items-center justify-center mx-auto border-t-2  bg-[#3164fa] text-white">
+    <div className="flex items-center justify-center mx-auto border-t-2  bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-white">
       <div className="w-full flex md:flex-row flex-col max-w-[1440px] p-5">
         <div className="flex flex-col gap-2 items- w-1/2">
           <img src="/logo.png"alt="Logo" className='h-20 w-64'/>
