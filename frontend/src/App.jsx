@@ -1,11 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./Pages/HomePage";
-import Navbar from "./Pages/components/Navbar";
 import Product from "./Pages/product";
 import Aboutus from "./Pages/AboutUs";
 import Resource from "./Pages/resources";
-import Footer from "./Pages/components/Footer";
 import UserDashboard from "./Pages/UserDashboard";
 import ExploreDao from "./Pages/exploreDao";
 import Deploy from "./Pages/Deploy";
