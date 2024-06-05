@@ -117,7 +117,7 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50% to-[#0D1E3B] to-100% p-7">
+    <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black p-7">
       {userData && (
         <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
           {edit ? (

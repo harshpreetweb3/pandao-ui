@@ -1,7 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "../../components/ui/button";
-import MobileSidebar from "./MobileSidebar";
-import { Rocket } from "lucide-react";
 import { useRdt } from "@/hooks/useRdt";
 import axios from "axios";
 
@@ -44,7 +41,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="z-10 p-4  w-full bg-[#3164fa]  bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50   text-white fixed ">
+    <div className="z-10 p-4  w-full bg-[#3164fa]     text-white fixed ">
       <div className="max-w-[1440px] mx-auto flex  items-center justify-between h-10   ">
         <div className="w-full ">
           <Link to="/">
@@ -68,7 +65,7 @@ const Navbar = () => {
           <radix-connect-button  />
         </div>
         <div className="md:hidden block">
-          <MobileSidebar />
+          {/* <MobileSidebar /> */}
         </div>
       </div>
     </div>

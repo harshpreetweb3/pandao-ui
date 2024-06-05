@@ -16,6 +16,7 @@ import CommunityDetailsLayout from "./Layout/CommunityDetailsLayout";
 import HomePageLayout from "./Layout/HomePageLayout";
 import Members from "./Pages/CommunityPage/Members";
 import Comments from "./Pages/CommunityPage/Comments";
+import UserDashboardLayout from "./Layout/UserDashboardLayout";
 
 function App() {
   return (
@@ -23,8 +24,13 @@ function App() {
       <Routes>
       <Route path="/" element={<HomePageLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="aboutus" element={<Aboutus />} />
+      
         </Route>
-        <Route path="/aboutus" element={<Aboutus />} />
+        <Route path="/userDashboard" element={<UserDashboardLayout />}>
+        <Route index element={<UserDashboard />} />
+        </Route>
+      
         <Route path="/products" element={<Product />} />
         <Route path="/resources" element={<Resource />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
