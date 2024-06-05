@@ -2,14 +2,13 @@ import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
 import {
-  ArrowBigLeft,
-  ArrowRight,
-  ChevronLeft,
+
+  Check,
   ChevronRight,
+  Copy,
   Users,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -22,9 +21,16 @@ const CommunityDetails = () => {
   const params = useParams();
   const [data, setData] = useState([]);
   const [participants, setParticipants] = useState([]);
-  const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [copied, setCopied] = useState(false);
 
+  const handleCopy = (address) => {
+    navigator.clipboard.writeText(address);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
   const handleJoinCommunity = async () => {
     const data = {
       community_id: params.id,
@@ -43,26 +49,26 @@ const CommunityDetails = () => {
       console.error("Error joining community:", error);
     }
   };
-  const handleAddComment = async () => {
-    const data = {
-      user_addr: accounts[0].address,
+  // const handleAddComment = async () => {
+  //   const data = {
+  //     user_addr: accounts[0].address,
 
-      comment: comment,
-      community_id: params.id,
-    };
+  //     comment: comment,
+  //     community_id: params.id,
+  //   };
 
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comment`,
-        data
-      );
-      console.log("Comment Response:", response.data);
-      setComment("");
-      fetchComments();
-    } catch (error) {
-      console.error("Error adding comment:", error);
-    }
-  };
+  //   try {
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_BACKEND_URL}/community/comment`,
+  //       data
+  //     );
+  //     console.log("Comment Response:", response.data);
+  //     setComment("");
+  //     fetchComments();
+  //   } catch (error) {
+  //     console.error("Error adding comment:", error);
+  //   }
+  // };
   const fetchDetails = async () => {
     try {
       const res = await axios.get(
@@ -135,9 +141,20 @@ const CommunityDetails = () => {
                 </div>
                 <div>
                   <h2 className="text-md font-semibold">Owner Address</h2>
+                  <div className="flex items-center  gap-2">
                   <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
                     {clipAddress(data.owner_address || "N/A")}
                   </p>
+                  <p  className="cursor-pointer"  onClick={() => handleCopy(data.owner_address)}>
+                  {copied ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+
+                  </p>
+                  </div>
+                 
                 </div>
                 <div>
                   <h2 className="text-md font-semibold">Component Address</h2>
