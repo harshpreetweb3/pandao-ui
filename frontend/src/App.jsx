@@ -16,6 +16,7 @@ import CommunityDetails from "./Pages/CommunityDetails";
 import UserPublicProfile from "./Pages/UsersPublicProfile";
 import CommunityDetailsLayout from "./Layout/CommunityDetailsLayout";
 import HomePageLayout from "./Layout/HomePageLayout";
+import Members from "./Pages/CommunityPage/Members";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/exploreDao/:slug/deploy" element={<Deploy />} />
         <Route path="/community/detail/:id" element={<CommunityDetailsLayout />}>
           <Route index element={<CommunityDetails />} />
+          <Route path="members" element={<Members />} />
         </Route>
         <Route path="/userProfile/:id" element={<UserPublicProfile />} />
       </Routes>

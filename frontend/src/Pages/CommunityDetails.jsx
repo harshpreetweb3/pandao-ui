@@ -3,10 +3,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
+import { ArrowBigLeft, ArrowRight, ChevronLeft, ChevronRight, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useStore } from "zustand";
 
 const CommunityDetails = () => {
   const { accounts } = useAccount();
@@ -29,7 +30,7 @@ const CommunityDetails = () => {
         data
       );
       console.log("Response:", response.data);
-      fetchParticipant()
+      fetchParticipant();
     } catch (error) {
       console.error("Error joining community:", error);
     }
@@ -94,48 +95,110 @@ const CommunityDetails = () => {
     navigate("/");
     return null;
   }
-  console.log(comments);
-
+  console.log(participants.length);
   return (
-    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50% to-[#0D1E3B] to-100% text-black px-2">
-      <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto text-white">
+    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100  text-black px-2">
+      <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
-          <div className="space-y-6 md:w-[70%]">
-            <div className="flex items-center justify-between">
-              <h1 className="text-3xl font-bold">{data.name}</h1>
-              <Button
-                onClick={handleJoinCommunity}
-                className="bg-purple-400 hover:bg-purple-300 text-black"
-              >
-                Join Community
-              </Button>
+          <div className="space-y-6 md:w-[100%] ">
+            <Card className="bg-white md:w-[90%] mx-auto md:p-10 p-6 shadow-lg">
+              <div className="flex md:flex-row flex-col items-center justify-between gap-5">
+                <h1 className="text-3xl font-bold text-left w-full">
+                  {data.name}
+                </h1>
+                <div className="flex items-end md:items-start md:justify-end w-full">
+                  <Button
+                    onClick={handleJoinCommunity}
+                    className="bg-blue-600 hover:bg-blue-500 text-white"
+                  >
+                    Join Community
+                  </Button>
+                </div>
+              </div>
+              <div className="grid gap-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Community Overview</h2>
+                  <p className=" mt-2">{data.description}</p>
+                </div>
+                <div>
+                  <h2 className="text-md font-semibold">Owner Name</h2>
+                  <p className="text-gray-800 dark:text-gray-400 mt-2">
+                    {data.owner?.name || "N/A"}
+                  </p>
+                </div>
+                <div>
+                  <h2 className="text-md font-semibold">Owner Address</h2>
+                  <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
+                    {clipAddress(data.owner_address || "N/A")}
+                  </p>
+                </div>
+                <div>
+                  <h2 className="text-md font-semibold">Component Address</h2>
+                  <p className="text-gray-900 dark:text-gray-400 mt-2">
+                    {data.component_address || "N/A"}
+                  </p>
+                </div>
+              </div>
+            </Card>
+            <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
+              <Card className="bg-white md:w-[60%] mx-auto md:p-10 p-4 shadow-lg h-fit">
+                fdasfgfdg sadf
+              </Card>
+              <div className="md:w-[40%] space-y-6  ">
+                <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4 shadow-lg space-y-10">
+                  <div className="flex items-center justify-between">
+                    <div className="bg-slate-200 w-fit p-2 rounded-full">
+                      <Users className=" text-blue-700" />
+                    </div>
+                    <div>
+                      <Button className="bg-blue-600 rounded-xl">
+                        Manage members
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="text-3xl font-semibold">
+                    {participants.length} Members
+                  </div>
+                </Card>
+                <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg space-y-2 ">
+                  {participants.length > 0 &&
+                    participants.slice(0,4).map((participant, index) => (
+                      <Card
+                        key={index}
+                        onClick={() =>
+                          navigate(`/userProfile/${participant.participant}`)
+                        }
+                        className="bg-white flex items-center gap-2 md:w-[100%] mx-auto  p-2 border-none shadow-none"
+                      >
+                        <Avatar>
+                          <AvatarImage
+                            alt="Avatar"
+                            src={participant.image_url}
+                          />
+                          <AvatarFallback>JD</AvatarFallback>
+                        </Avatar>
+                        <div className="text-left hover:text-blue-600 cursor-pointer text-ellipsis overflow-hidden">
+                          <p className="font-medium">
+                            {participant.name || "Unnamed Participant"}
+                          </p>
+                          <div className="text-gray-black dark:text-gray-400 text-sm truncate">
+                            {participant.participant || ""}
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                </Card>
+                <div className="bg-transparent w-full mx-auto  flex items-center   ">
+             <Card className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+              <p>
+              See all
+              </p>
+ <ChevronRight className="h-5 w-5"/>
+             </Card>
+                </div>
+              </div>
             </div>
-            <div className="grid gap-4">
-              <div>
-                <h2 className="text-xl font-semibold">Community Overview</h2>
-                <p className="text-gray-100 dark:text-gray-400 mt-2">
-                  {data.description}
-                </p>
-              </div>
-              <div>
-                <h2 className="text-md font-semibold">Owner Name</h2>
-                <p className="text-gray-100 dark:text-gray-400 mt-2">
-                  {data.owner?.name || "N/A"}
-                </p>
-              </div>
-              <div>
-                <h2 className="text-md font-semibold">Owner Address</h2>
-                <p className="text-gray-100 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
-                  {data.owner_address || "N/A"}
-                </p>
-              </div>
-              <div>
-                <h2 className="text-md font-semibold">Component Address</h2>
-                <p className="text-gray-100 dark:text-gray-400 mt-2">
-                  {data.component_address || "N/A"}
-                </p>
-              </div>
-            </div>
+
             <div className="mt-10 border-t-2">
               <section className="space-y-6 mt-5">
                 <div className="flex items-center justify-between">
@@ -194,7 +257,7 @@ const CommunityDetails = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col gap-3 md:w-[30%]">
+        {/* <div className="flex flex-col gap-3 md:w-[30%]">
           <h2 className="text-xl font-semibold">DAO Participants</h2>
           <div className="grid grid-cols-1 items-start justify-start gap-2">
             {participants.length > 0 &&
@@ -221,7 +284,7 @@ const CommunityDetails = () => {
                 </Card>
               ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,10 +1,12 @@
+import Navbar from "@/Pages/components/CommunityComponents/Navbar";
 import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 
 const CommunityDetailsLayout = ({ children }) => {
   return (
-    <div className="community-details-content">
-      {children || <Outlet />}
+    <div>
+      <Navbar/>
+      <div className="community-details-content">{children || <Outlet />}</div>
     </div>
   );
 };
