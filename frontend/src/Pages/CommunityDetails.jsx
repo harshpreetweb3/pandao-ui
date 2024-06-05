@@ -249,58 +249,10 @@ const CommunityDetails = () => {
               </div>
             </div>
 
-            <div className="mt-10 border-t-2">
-              <section className="space-y-6 mt-5">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-2xl font-bold">Comments</h2>
-                </div>
-
-                <div className="flex flex-col items-end gap-2">
-                  <Textarea
-                    placeholder="Add a new comment..."
-                    className="flex-1 text-black"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <Button
-                    onClick={handleAddComment}
-                    className="bg-purple-400 hover:bg-purple-300 text-black"
-                  >
-                    Submit
-                  </Button>
-                </div>
-              </section>
-            </div>
+          
           </div>
         )}
-        {/* <div className="flex flex-col gap-3 md:w-[30%]">
-          <h2 className="text-xl font-semibold">DAO Participants</h2>
-          <div className="grid grid-cols-1 items-start justify-start gap-2">
-            {participants.length > 0 &&
-              participants.map((participant, index) => (
-                <Card
-                  key={index}
-                  onClick={() =>
-                    navigate(`/userProfile/${participant.participant}`)
-                  }
-                  className="flex items-center gap-2 p-4 h-fit cursor-pointer hover:bg-slate-100 hover:translate-x-3 duration-300 transition-transform"
-                >
-                  <Avatar>
-                    <AvatarImage alt="Avatar" src={participant.image_url} />
-                    <AvatarFallback>JD</AvatarFallback>
-                  </Avatar>
-                  <div className="text-left text-ellipsis overflow-hidden">
-                    <p className="font-medium">
-                      {participant.name || "Unnamed Participant"}
-                    </p>
-                    <div className="text-gray-black dark:text-gray-400 text-sm truncate">
-                      {participant.participant || ""}
-                    </div>
-                  </div>
-                </Card>
-              ))}
-          </div>
-        </div> */}
+     
       </div>
     </div>
   );
