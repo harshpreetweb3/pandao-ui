@@ -146,7 +146,7 @@ const CommunityDetails = () => {
               </div>
             </Card>
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-              <div className="w-[60%] space-y-3">
+              <div className="md:w-[60%] space-y-3">
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
                   <div className="space-y-4">
                     {comments &&
@@ -187,7 +187,7 @@ const CommunityDetails = () => {
                   </div>
                 </Card>
                 <div className="bg-transparent w-full mx-auto  flex items-center   ">
-                  <Card   className="p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                  <Card onClick={()=>navigate(`/community/detail/${params.id}/comments`)}  className="p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
                     <p>See all Comments </p>
                     <ChevronRight className="h-5 w-5" />
                   </Card>
