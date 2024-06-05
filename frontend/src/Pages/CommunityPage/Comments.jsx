@@ -5,7 +5,14 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { ArrowBigLeft, ArrowRight, ChevronLeft, ChevronRight, MessageCircle, Users } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  MessageCircle,
+  Users,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -36,6 +43,10 @@ const Comments = () => {
     }
   };
   const handleAddComment = async () => {
+    if (comment.trim() === "") {
+      alert("Add Somthign");
+      return;
+    }
     const data = {
       user_addr: accounts[0].address,
 
@@ -101,11 +112,8 @@ const Comments = () => {
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
-        
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-           
               <div className="md:w-[100%] space-y-6  ">
-             
                 <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
                   <div className="flex items-center justify-between">
                     <div className="bg-slate-200 w-fit p-2 rounded-full">
@@ -122,10 +130,8 @@ const Comments = () => {
                   </div>
                 </Card>
                 <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
-                <div className="p-2 border-b-2 -translate-x-2">
-                    Comments
-                </div>
-                <div className="space-y-4">
+                  <div className="p-2 border-b-2 -translate-x-2">Comments</div>
+                  <div className="space-y-4">
                     {comments &&
                       comments.map((comment, index) => (
                         <div
@@ -161,31 +167,27 @@ const Comments = () => {
                           </div>
                         </div>
                       ))}
-                         <div className="flex flex-col items-end gap-2">
-                  <Textarea
-                    placeholder="Add a new comment..."
-                    className="flex-1 text-black"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                  />
-                  <Button
-                    onClick={handleAddComment}
-                    className="bg-blue-600 hover:bg-blue-500 text-white"
-                  >
-                    Submit
-                  </Button>
-                </div>
+                    <div className="flex flex-col items-end gap-2">
+                      <Textarea
+                        placeholder="Add a new comment..."
+                        className="flex-1 text-black"
+                        value={comment}
+                        required
+                        onChange={(e) => setComment(e.target.value)}
+                      />
+                      <Button
+                        onClick={handleAddComment}
+                        className="bg-blue-600 hover:bg-blue-500 text-white"
+                      >
+                        Submit
+                      </Button>
+                    </div>
                   </div>
-                 
                 </Card>
-               
               </div>
             </div>
-
-          
           </div>
         )}
- 
       </div>
     </div>
   );
