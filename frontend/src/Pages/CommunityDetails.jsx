@@ -5,7 +5,13 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { ArrowBigLeft, ArrowRight, ChevronLeft, ChevronRight, Users } from "lucide-react";
+import {
+  ArrowBigLeft,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+  Users,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -95,7 +101,6 @@ const CommunityDetails = () => {
     navigate("/");
     return null;
   }
-  console.log(participants.length);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100  text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
@@ -141,28 +146,75 @@ const CommunityDetails = () => {
               </div>
             </Card>
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-              <Card className="bg-white md:w-[60%] mx-auto md:p-10 p-4 shadow-lg h-fit">
-                fdasfgfdg sadf
-              </Card>
-              <div className="md:w-[40%] space-y-6  ">
-                <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4 shadow-lg space-y-10">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-slate-200 w-fit p-2 rounded-full">
-                      <Users className=" text-blue-700" />
-                    </div>
-                    <div>
-                      <Button className="bg-blue-600 rounded-xl">
-                        Manage members
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="text-3xl font-semibold">
-                    {participants.length} Members
+              <div className="w-[60%] space-y-3">
+                <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
+                  <div className="space-y-4">
+                    {comments &&
+                      comments.slice(0, 4).map((comment, index) => (
+                        <div
+                          key={index}
+                          className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
+                        >
+                          <Avatar className="shrink-0 object-cover">
+                            <img src={comment.user_image} alt="Avatar" />
+                            <AvatarFallback>JD</AvatarFallback>
+                          </Avatar>
+                          <div className="flex-1 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <div
+                                className="group"
+                                onClick={() =>
+                                  navigate(
+                                    `/userProfile/${comment.user_address}`
+                                  )
+                                }
+                              >
+                                <div className="font-medium group-hover:underline cursor-pointer">
+                                  {comment.user_name}
+                                </div>
+                                <div className="font-light group-hover:underline cursor-pointer">
+                                  {clipAddress(comment.user_address)}
+                                </div>
+                              </div>
+                              {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
+                            </div>
+                            <p className="text-gray-800 dark:text-gray-400 font-medium">
+                              {comment.comment}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
                   </div>
                 </Card>
+                <div className="bg-transparent w-full mx-auto  flex items-center   ">
+                  <Card   className="p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                    <p>See all Comments </p>
+                    <ChevronRight className="h-5 w-5" />
+                  </Card>
+                </div>
+              </div>
+              <div className="md:w-[40%] space-y-6  ">
+                <div>
+                  <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4 shadow-lg space-y-10">
+                    <div className="flex items-center justify-between">
+                      <div className="bg-slate-200 w-fit p-2 rounded-full">
+                        <Users className=" text-blue-700" />
+                      </div>
+                      <div>
+                        <Button onClick={()=>navigate(`/community/detail/${params.id}/members`)}  className="bg-blue-600 rounded-xl">
+                          Manage members
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="text-3xl font-semibold">
+                      {participants.length} Members
+                    </div>
+                  </Card>
+                </div>
+
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg space-y-2 ">
                   {participants.length > 0 &&
-                    participants.slice(0,4).map((participant, index) => (
+                    participants.slice(0, 4).map((participant, index) => (
                       <Card
                         key={index}
                         onClick={() =>
@@ -189,12 +241,10 @@ const CommunityDetails = () => {
                     ))}
                 </Card>
                 <div className="bg-transparent w-full mx-auto  flex items-center   ">
-             <Card className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
-              <p>
-              See all
-              </p>
- <ChevronRight className="h-5 w-5"/>
-             </Card>
+                  <Card onClick={()=>navigate(`/community/detail/${params.id}/members`)}  className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                    <p>See all</p>
+                    <ChevronRight className="h-5 w-5" />
+                  </Card>
                 </div>
               </div>
             </div>
@@ -204,41 +254,7 @@ const CommunityDetails = () => {
                 <div className="flex items-center justify-between">
                   <h2 className="text-2xl font-bold">Comments</h2>
                 </div>
-                <div className="space-y-4">
-                  {comments &&
-                    comments.map((comment, index) => (
-                      <div
-                        key={index}
-                        className="flex items-start gap-4 bg-purple-300 p-3 rounded-lg text-black"
-                      >
-                        <Avatar className="shrink-0 object-cover">
-                          <img src={comment.user_image} alt="Avatar" />
-                          <AvatarFallback>JD</AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div
-                              className="group"
-                              onClick={() =>
-                                navigate(`/userProfile/${comment.user_address}`)
-                              }
-                            >
-                              <div className="font-medium group-hover:underline cursor-pointer">
-                                {comment.user_name}
-                              </div>
-                              <div className="font-light group-hover:underline cursor-pointer">
-                                {comment.user_address}
-                              </div>
-                            </div>
-                            {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
-                          </div>
-                          <p className="text-gray-800 dark:text-gray-400 font-medium">
-                            {comment.comment}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
+
                 <div className="flex flex-col items-end gap-2">
                   <Textarea
                     placeholder="Add a new comment..."

@@ -64,11 +64,7 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">
-          <Button className="bg-purple-600 ">What is Dao?</Button>
-
-          <Button className="bg-purple-600 flex items-center gap-2">
-            <Rocket /> <span>Launch Dao </span>{" "}
-          </Button>
+         
           <radix-connect-button  />
         </div>
         <div className="md:hidden block">

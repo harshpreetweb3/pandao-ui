@@ -17,6 +17,7 @@ import UserPublicProfile from "./Pages/UsersPublicProfile";
 import CommunityDetailsLayout from "./Layout/CommunityDetailsLayout";
 import HomePageLayout from "./Layout/HomePageLayout";
 import Members from "./Pages/CommunityPage/Members";
+import Comments from "./Pages/CommunityPage/Comments";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
         <Route path="/community/detail/:id" element={<CommunityDetailsLayout />}>
           <Route index element={<CommunityDetails />} />
           <Route path="members" element={<Members />} />
+          <Route path="comments" element={<Comments />} />
         </Route>
         <Route path="/userProfile/:id" element={<UserPublicProfile />} />
       </Routes>
