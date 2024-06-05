@@ -94,7 +94,14 @@ const Navbar = () => {
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">
           <radix-connect-button />
         </div>
-        <div className="md:hidden block">
+        <div className="md:hidden gap-3 flex items-center justify-between w-full">
+        <NavLink
+            to="/"
+         className="bg-white p-2 rounded-xl hover:text-sky-600"
+            end
+          >
+           <ChevronLeft/>
+          </NavLink>  
           <MobileNav />
         </div>
       </div>

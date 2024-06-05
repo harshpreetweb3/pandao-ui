@@ -10,7 +10,7 @@ const HomeSection = () => {
     <div className="bg-[#3164fa] ">
       <div className="h-[500px] flex items-start  justify-start  text-white max-w-[1000px] mx-auto">
         <div className="flex flex-col  items-start  gap-5 justify-center  p-5 w-full h-full object-cover bg-no-repeat md:bg-none">
-          <div className="text-5xl font-semibold tracking-wider leading-[55px] ">
+          <div className="md:text-5xl text-3xl font-semibold tracking-wider md:leading-[55px] leading-[40px] ">
             Bringing Governance to All: Effortless, Effective, Empowering.
           </div>
           <p className="text-xl">
