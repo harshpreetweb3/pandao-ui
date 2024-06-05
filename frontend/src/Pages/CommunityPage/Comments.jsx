@@ -21,28 +21,10 @@ const Comments = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
-  const [data, setData] = useState([]);
-  const [participants, setParticipants] = useState([]);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleJoinCommunity = async () => {
-    const data = {
-      community_id: params.id,
-      participant_address: accounts[0].address,
-    };
-
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/community/participant`,
-        data
-      );
-      console.log("Response:", response.data);
-      fetchParticipant();
-    } catch (error) {
-      console.error("Error joining community:", error);
-    }
-  };
   const handleAddComment = async () => {
     if (comment.trim() === "") {
       alert("Add Somthign");
@@ -61,46 +43,26 @@ const Comments = () => {
         data
       );
       console.log("Comment Response:", response.data);
-      toast.success("Comment Added")
+      toast.success("Comment Added");
       setComment("");
       fetchComments();
     } catch (error) {
       console.error("Error adding comment:", error);
     }
   };
-  const fetchDetails = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/detail/${params.id}`
-      );
-      setData(res.data);
-    } catch (error) {
-      console.error("Error fetching blueprint data:", error);
-    }
-  };
-  const fetchParticipant = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/participant/${params.id}`
-      );
-      setParticipants(res.data);
-    } catch (error) {
-      console.error("Error fetching blueprint data:", error);
-    }
-  };
+
   const fetchComments = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/comments/${params.id}`
       );
       setComments(res.data);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
     }
   };
   useEffect(() => {
-    fetchDetails();
-    fetchParticipant();
     fetchComments();
   }, [params.id]);
 
@@ -108,31 +70,30 @@ const Comments = () => {
     navigate("/");
     return null;
   }
-  console.log(participants.length);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100  text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
-        {data && (
-          <div className="space-y-6 md:w-[100%] ">
-            <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-              <div className="md:w-[100%] space-y-6  ">
-                <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-slate-200 w-fit p-2 rounded-full">
-                      <MessageCircle className=" text-blue-700" />
-                    </div>
-                    <div>
-                      <Button className="bg-blue-600 rounded-xl">
-                        Manage Comments
-                      </Button>
-                    </div>
+        <div className="space-y-6 md:w-[100%] ">
+          <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
+            <div className="md:w-[100%] space-y-6  ">
+              <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
+                <div className="flex items-center justify-between">
+                  <div className="bg-slate-200 w-fit p-2 rounded-full">
+                    <MessageCircle className=" text-blue-700" />
                   </div>
-                  <div className="text-3xl font-semibold">
-                    {comments.length} Comments so far.
+                  <div>
+                    <Button className="bg-blue-600 rounded-xl">
+                      Manage Comments
+                    </Button>
                   </div>
-                </Card>
-                <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
-                  <div className="p-2 border-b-2 -translate-x-2">Comments</div>
+                </div>
+                <div className="text-3xl font-semibold">
+                  {comments.length} Comments so far.
+                </div>
+              </Card>
+              <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
+                <div className="p-2 border-b-2 -translate-x-2">Comments</div>
+                {!loading && (
                   <div className="space-y-4">
                     {comments &&
                       comments.map((comment, index) => (
@@ -185,11 +146,16 @@ const Comments = () => {
                       </Button>
                     </div>
                   </div>
-                </Card>
-              </div>
+                )}
+                {loading && (
+                   <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                </div>
+                )}
+              </Card>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
