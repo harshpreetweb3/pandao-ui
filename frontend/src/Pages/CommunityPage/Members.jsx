@@ -13,82 +13,31 @@ const Members = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
-  const [data, setData] = useState([]);
+
   const [participants, setParticipants] = useState([]);
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleJoinCommunity = async () => {
-    const data = {
-      community_id: params.id,
-      participant_address: accounts[0].address,
-    };
+ 
 
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/community/participant`,
-        data
-      );
-      console.log("Response:", response.data);
-      fetchParticipant();
-    } catch (error) {
-      console.error("Error joining community:", error);
-    }
-  };
-  const handleAddComment = async () => {
-    const data = {
-      user_addr: accounts[0].address,
 
-      comment: comment,
-      community_id: params.id,
-    };
 
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comment`,
-        data
-      );
-      console.log("Comment Response:", response.data);
-      setComment("");
-      fetchComments();
-    } catch (error) {
-      console.error("Error adding comment:", error);
-    }
-  };
-  const fetchDetails = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/detail/${params.id}`
-      );
-      setData(res.data);
-    } catch (error) {
-      console.error("Error fetching blueprint data:", error);
-    }
-  };
+
   const fetchParticipant = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/participant/${params.id}`
       );
       setParticipants(res.data);
+      setLoading(false)
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
     }
   };
-  const fetchComments = async () => {
-    try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comments/${params.id}`
-      );
-      setComments(res.data);
-    } catch (error) {
-      console.error("Error fetching blueprint data:", error);
-    }
-  };
+
   useEffect(() => {
-    fetchDetails();
+  
     fetchParticipant();
-    fetchComments();
+  
   }, [params.id]);
 
   if (!accounts || accounts.length === 0) {
@@ -99,7 +48,7 @@ const Members = () => {
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100  text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
-        {data && (
+     
           <div className="space-y-6 md:w-[100%] ">
         
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
@@ -121,7 +70,7 @@ const Members = () => {
                     {participants.length} Members
                   </div>
                 </Card>
-                <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
+                {!loading && <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
                 <div className="p-2 border-b-2 -translate-x-2">
                     Members
                 </div>
@@ -158,14 +107,19 @@ const Members = () => {
                         </div>
                       </Card>
                     ))}
-                </Card>
+                </Card> }
+                {loading && (
+                   <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                </div>
+                )}
                
               </div>
             </div>
 
           
           </div>
-        )}
+      
  
       </div>
     </div>

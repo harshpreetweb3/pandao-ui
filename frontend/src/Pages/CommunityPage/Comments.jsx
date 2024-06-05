@@ -1,17 +1,14 @@
 import { useAccount } from "@/AccountContext";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
 import {
-  ArrowBigLeft,
-  ArrowRight,
-  ChevronLeft,
-  ChevronRight,
+
   MessageCircle,
-  Users,
+
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
