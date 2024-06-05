@@ -4,6 +4,9 @@
   html {
     scroll-behavior: smooth;
   }
+  body {
+    font-family: 'Manrope', sans-serif;
+}
   @layer base {
     :root {
       --background: 0 0% 100%;
