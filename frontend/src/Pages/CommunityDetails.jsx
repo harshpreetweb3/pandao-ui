@@ -110,7 +110,7 @@ const CommunityDetails = () => {
     return null;
   }
   return (
-    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-slate-100 text-black px-2">
+    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50 text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
@@ -205,10 +205,10 @@ const CommunityDetails = () => {
                       ))}
                   </div>
                 </Card>
-                <div className="bg-transparent w-full mx-auto  flex items-center   ">
-                  <Card onClick={()=>navigate(`/community/detail/${params.id}/comments`)}  className="p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                <div className="bg-transparent w-full mx-auto  flex items-center  ">
+                  <Card onClick={()=>navigate(`/community/detail/${params.id}/comments`)}  className=" group  p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
                     <p>See all Comments </p>
-                    <ChevronRight className="h-5 w-5" />
+                    <ChevronRight className="h-5 w-5 group-hover:translate-x-1 duration-300 transition-transform" />
                   </Card>
                 </div>
               </div>
