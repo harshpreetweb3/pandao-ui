@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="flex items-center justify-center mx-auto border-t-2  bg-gradient-to-r from-[#375e91] from-0%  to-[#68237b] text-white">
       <div className="w-full flex md:flex-row flex-col max-w-[1440px] p-5">
         <div className="flex flex-col gap-2 items- w-1/2">
-          <img src="/logo.png"alt="Logo" className='h-20 w-64'/>
+          <img src="/logo.png"alt="Logo" className='h-16 w-44 aspect-square'/>
           <div className="px-3">
             © 2024 
           </div>
