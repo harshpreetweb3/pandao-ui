@@ -129,7 +129,7 @@ if (!accounts || accounts.length === 0) {
               <CardHeader className="p-0 ">
                 <Avatar className="h-72 w-72 border-[5px] border-purple-400">
                   <AvatarImage
-                    src={userData.image_url}
+                     src={fileUrl || userData.image_url}
                     className="h-72 w-72 object-cover"
                   />
                   <AvatarFallback>CN</AvatarFallback>
@@ -146,9 +146,9 @@ if (!accounts || accounts.length === 0) {
                   className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
                  
                 >
-              {clipAddress(accounts[0].address)}
+              {clipAddress(userData.public_address)}
                   <button
-                    onClick={() => handleCopy(accounts[0].address)}
+                    onClick={() => handleCopy(userData.public_address)}
                     disabled={copied}
                     className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
                   >
