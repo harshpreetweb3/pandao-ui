@@ -106,8 +106,8 @@ const Members = () => {
                       
                         <div    onClick={() =>
                           navigate(`/userDashboard/userProfile/${participant.participant}`)
-                        } className="text-left border-2 px-2 py-2 rounded-md hover:text-blue-600 cursor-pointer hover:shadow-sm text-ellipsis overflow-hidden">
-                        <ChevronRight className="h-5 w-5"/>
+                        } className="text-left group border-2 px-2 py-2 rounded-md hover:text-blue-600 cursor-pointer hover:shadow-sm text-ellipsis overflow-hidden">
+                        <ChevronRight className="h-5 w-5 group-hover:translate-x-1 duration-300 transition-transform"/>
                         </div>
                       </Card>
                     ))}
