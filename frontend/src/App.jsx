@@ -17,6 +17,7 @@ import HomePageLayout from "./Layout/HomePageLayout";
 import Members from "./Pages/CommunityPage/Members";
 import Comments from "./Pages/CommunityPage/Comments";
 import UserDashboardLayout from "./Layout/UserDashboardLayout";
+import EditPage from "./Pages/UserDasboard/EditPage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         </Route>
         <Route path="/userDashboard" element={<UserDashboardLayout />}>
           <Route index element={<UserDashboard />} />
+          <Route path="edit" element={<EditPage />} />
          
         </Route>
 

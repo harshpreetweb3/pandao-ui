@@ -122,7 +122,7 @@ const UserDashboard = () => {
       {userData && (
         <>
           <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1000px] mx-auto rounded-sm p-5 text-black ">
-              <CardHeader className="p-0 mt-4">
+              <CardHeader className="p-0 ">
                 <Avatar className="h-72 w-72 border-[5px] border-purple-400">
                   <AvatarImage
                     src={userData.image_url}
@@ -188,7 +188,7 @@ const UserDashboard = () => {
                   </div>
                 )}
                 <Button
-                  onClick={() => setEdit(true)}
+                  onClick={() => navigate("/userDashboard/edit")}
                   className="bg-slate-700 border-2"
                 >
                   Edit Profile
