@@ -56,7 +56,7 @@ const ExploreSection = () => {
               Learn about DAOs.How to create them using Radix
             </p>
             <div className="w-full">
-              <Button   variant="radix">
+              <Button onClick={()=>navigate("/resources")}   variant="radix">
                 Learn about DAOs
               </Button>
             </div>

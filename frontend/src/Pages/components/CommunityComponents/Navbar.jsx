@@ -47,7 +47,7 @@ const Navbar = () => {
   });
 
   return (
-    <div className="z-10 p-4  w-full  rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80  bg-blue-50  text-black fixed ">
+    <div className="z-10 p-4  w-full  rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-80  bg-purple-50  text-black fixed ">
       <div className="max-w-[1440px] mx-auto flex  items-center justify-between h-10 md:px-10  ">
         <ul className="md:flex hidden items-center justify-start gap-5 w-full font-semibold text-lg">
         <NavLink
