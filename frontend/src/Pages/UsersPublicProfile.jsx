@@ -3,32 +3,25 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
+
   CardHeader,
-  CardTitle,
+
 } from "@/components/ui/card";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
+
 import { Check, Copy, Globe } from "lucide-react";
-import ImageUpdater from "./components/ImageUpdater";
-import { Textarea } from "@/components/ui/textarea";
+
 import { FaLinkedinIn, FaTiktok, FaXTwitter } from "react-icons/fa6";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 
 const UserPublicProfile = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
-  const params=useParams()
+  const params = useParams();
 
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
@@ -51,11 +44,11 @@ const UserPublicProfile = () => {
     }, 1000);
   };
 
-//   const handleFileId = (id) => {
-//     const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
-//     setFileUrl(url);
-//     console.log("Received file URL:", url);
-//   };
+  //   const handleFileId = (id) => {
+  //     const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
+  //     setFileUrl(url);
+  //     console.log("Received file URL:", url);
+  //   };
 
   useEffect(() => {
     const fetchBluePrint = async () => {
@@ -74,7 +67,6 @@ const UserPublicProfile = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/user/details/${params.id}`
         );
-        console.log(res.data);
         setUserData(res.data);
         setAbout(res.data.about);
         setSocialLinks({
@@ -90,34 +82,34 @@ const UserPublicProfile = () => {
 
     fetchBluePrint();
     fetchUserData();
-  }, [accounts,params.id]);
+  }, [accounts, params.id]);
 
-//   const handleUpdateUser = async () => {
-//     try {
-//       const updatedData = {
-//         ...userData,
-//         about,
-//         image_url: fileUrl || userData.image_url,
-//         ...socialLinks,
-//       };
-//       await axios.patch(
-//         `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
-//         updatedData
-//       );
-//       setUserData(updatedData);
-//       setEdit(false);
-//     } catch (error) {
-//       console.error("Error updating user data:", error);
-//     }
-//   };
+  //   const handleUpdateUser = async () => {
+  //     try {
+  //       const updatedData = {
+  //         ...userData,
+  //         about,
+  //         image_url: fileUrl || userData.image_url,
+  //         ...socialLinks,
+  //       };
+  //       await axios.patch(
+  //         `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
+  //         updatedData
+  //       );
+  //       setUserData(updatedData);
+  //       setEdit(false);
+  //     } catch (error) {
+  //       console.error("Error updating user data:", error);
+  //     }
+  //   };
 
-if (!accounts || accounts.length === 0) {
+  if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
   }
-  
+
   if (params.id === accounts[0].address) {
-    navigate('/userDashboard');
+    navigate("/userDashboard");
     return null;
   }
 
@@ -126,73 +118,69 @@ if (!accounts || accounts.length === 0) {
       {userData && (
         <>
           <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1000px] mx-auto rounded-sm p-5 text-black ">
-              <CardHeader className="p-0 ">
-                <Avatar className="h-72 w-72 border-[5px] border-purple-400">
-                  <AvatarImage
-                     src={fileUrl || userData.image_url}
-                    className="h-72 w-72 object-cover"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </CardHeader>
-              <CardContent className="text-xl font-bold flex flex-col gap-2 w-full p-5">
-                <div className="text-black font-semibold text-3xl">
-                  {userData.name}
-                </div>
-                <div className="text-black font-light text-sm text-left px-0">
-                  {userData.about}
-                </div>
-                <div
-                  className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
-                 
+            <CardHeader className="p-0 ">
+              <Avatar className="h-72 w-72 border-[5px] border-purple-400">
+                <AvatarImage
+                  src={fileUrl || userData.image_url}
+                  className="h-72 w-72 object-cover"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </CardHeader>
+            <CardContent className="text-xl font-bold flex flex-col gap-2 w-full p-5">
+              <div className="text-black font-semibold text-3xl">
+                {userData.name}
+              </div>
+              <div className="text-black font-light text-sm text-left px-0">
+                {userData.about}
+              </div>
+              <div className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group">
+                {clipAddress(userData.public_address)}
+                <button
+                  onClick={() => handleCopy(userData.public_address)}
+                  disabled={copied}
+                  className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
                 >
-              {clipAddress(userData.public_address)}
-                  <button
-                    onClick={() => handleCopy(userData.public_address)}
-                    disabled={copied}
-                    className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
-                  >
-                    {copied ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
+                  {copied ? (
+                    <Check className="h-4 w-4" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+              {socialLinks.x_url && (
+                <div className="flex items-center w-full gap-2">
+                  <FaXTwitter className="text-black" />
+                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
+                    {socialLinks.x_url}
+                  </div>
                 </div>
-                {socialLinks.x_url && (
-                  <div className="flex items-center w-full gap-2">
-                    <FaXTwitter className="text-black" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                      {socialLinks.x_url}
-                    </div>
+              )}
+              {socialLinks.website_url && (
+                <div className="flex items-center w-full gap-2">
+                  <Globe className="text-black" />
+                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
+                    {socialLinks.website_url}
                   </div>
-                )}
-                {socialLinks.website_url && (
-                  <div className="flex items-center w-full gap-2">
-                    <Globe className="text-black" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                      {socialLinks.website_url}
-                    </div>
+                </div>
+              )}
+              {socialLinks.linkedin && (
+                <div className="flex items-center w-full gap-2">
+                  <FaLinkedinIn className="text-black" />
+                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
+                    {socialLinks.linkedin}
                   </div>
-                )}
-                {socialLinks.linkedin && (
-                  <div className="flex items-center w-full gap-2">
-                    <FaLinkedinIn className="text-black" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                      {socialLinks.linkedin}
-                    </div>
+                </div>
+              )}{" "}
+              {socialLinks.tiktok && (
+                <div className="flex items-center w-full gap-2">
+                  <FaTiktok className="text-black" />
+                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
+                    {socialLinks.tiktok}
                   </div>
-                )}{" "}
-                {socialLinks.tiktok && (
-                  <div className="flex items-center w-full gap-2">
-                    <FaTiktok className="text-black" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                      {socialLinks.tiktok}
-                    </div>
-                  </div>
-                )}
-           
-              </CardContent>
+                </div>
+              )}
+            </CardContent>
           </Card>
           {/* <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
        
@@ -451,7 +439,6 @@ if (!accounts || accounts.length === 0) {
           </div>
         </div> */}
         </>
-     
       )}
     </div>
   );
