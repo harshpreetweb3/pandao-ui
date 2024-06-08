@@ -105,7 +105,7 @@ const Members = () => {
                         </div>
                       
                         <div    onClick={() =>
-                          navigate(`/userProfile/${participant.participant}`)
+                          navigate(`/userDashboard/userProfile/${participant.participant}`)
                         } className="text-left border-2 px-2 py-2 rounded-md hover:text-blue-600 cursor-pointer hover:shadow-sm text-ellipsis overflow-hidden">
                         <ChevronRight className="h-5 w-5"/>
                         </div>

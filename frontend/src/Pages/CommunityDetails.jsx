@@ -177,7 +177,7 @@ const CommunityDetails = () => {
                                 className="group"
                                 onClick={() =>
                                   navigate(
-                                    `/userProfile/${comment.user_address}`
+                                    `/userDashboard/userProfile/${comment.user_address}`
                                   )
                                 }
                               >
@@ -247,7 +247,7 @@ const CommunityDetails = () => {
                       <Card
                         key={index}
                         onClick={() =>
-                          navigate(`/userProfile/${participant.participant}`)
+                          navigate(`/userDashboard/userProfile/${participant.participant}`)
                         }
                         className="bg-white flex items-center gap-2 md:w-[100%] mx-auto  p-2 border-none shadow-none"
                       >

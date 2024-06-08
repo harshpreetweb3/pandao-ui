@@ -31,6 +31,7 @@ function App() {
         <Route path="/userDashboard" element={<UserDashboardLayout />}>
           <Route index element={<UserDashboard />} />
           <Route path="edit" element={<EditPage />} />
+          <Route path="userProfile/:id" element={<UserPublicProfile />} />
          
         </Route>
 
@@ -48,8 +49,9 @@ function App() {
           <Route index element={<CommunityDetails />} />
           <Route path="members" element={<Members />} />
           <Route path="comments" element={<Comments />} />
+          
         </Route>
-        <Route path="/userProfile/:id" element={<UserPublicProfile />} />
+   
       </Routes>
     </Router>
   );
