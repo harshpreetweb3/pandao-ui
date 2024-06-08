@@ -52,10 +52,10 @@ const Navbar = () => {
         <ul className="md:flex hidden items-center justify-start gap-5 w-full font-semibold text-lg">
         <NavLink
             to="/"
-         className="bg-white p-2 rounded-xl hover:text-sky-600"
+         className="bg-white p-2 rounded-xl hover:text-sky-600 group"
             end
           >
-           <ChevronLeft/>
+           <ChevronLeft className="group-hover:-translate-x-[2px] duration-300 transition-transform" />
           </NavLink>
           <NavLink
             to={`/community/detail/${params.id}`}

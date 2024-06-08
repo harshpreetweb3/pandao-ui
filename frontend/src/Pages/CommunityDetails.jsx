@@ -274,10 +274,10 @@ const CommunityDetails = () => {
                     onClick={() =>
                       navigate(`/community/detail/${params.id}/members`)
                     }
-                    className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer "
+                    className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer group"
                   >
                     <p>See all</p>
-                    <ChevronRight className="h-5 w-5" />
+                    <ChevronRight className="h-5 w-5 group-hover:translate-x-1 duration-300 transition-transform" />
                   </Card>
                 </div>
               </div>
