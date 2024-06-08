@@ -40,7 +40,7 @@ const ExploreSection = () => {
               Create your own DAO on Radix Blockchain
             </p>
             <div className="w-full">
-              <Button className="bg-[#6b4cce] hover:bg-[#5e3ec5]">
+              <Button   variant="radix">
                 Create a DAO
               </Button>
             </div>
@@ -56,7 +56,7 @@ const ExploreSection = () => {
               Learn about DAOs.How to create them using Radix
             </p>
             <div className="w-full">
-              <Button className="bg-[#6b4cce] hover:bg-[#5e3ec5]">
+              <Button   variant="radix">
                 Learn about DAOs
               </Button>
             </div>

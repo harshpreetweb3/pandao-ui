@@ -2,15 +2,10 @@ import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import AvatarCircles from "@/components/ui/myComponents/avatarCircle";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import {
-
-  Check,
-  ChevronRight,
-  Copy,
-  Users,
-} from "lucide-react";
+import { Check, ChevronRight, Copy, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -43,7 +38,7 @@ const CommunityDetails = () => {
         data
       );
       console.log("Response:", response.data);
-      toast.success("Welcome to the Community")
+      toast.success("Welcome to the Community");
       fetchParticipant();
     } catch (error) {
       console.error("Error joining community:", error);
@@ -110,7 +105,7 @@ const CommunityDetails = () => {
     return null;
   }
   return (
-    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50 text-black px-2">
+    <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 to-purple-50 text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
@@ -120,10 +115,7 @@ const CommunityDetails = () => {
                   {data.name}
                 </h1>
                 <div className="flex items-end md:items-start md:justify-end w-full">
-                  <Button
-                    onClick={handleJoinCommunity}
-                    className="bg-purple-600 hover:bg-purple-500 text-white"
-                  >
+                  <Button variant="radix" onClick={handleJoinCommunity}>
                     Join Community
                   </Button>
                 </div>
@@ -142,19 +134,20 @@ const CommunityDetails = () => {
                 <div>
                   <h2 className="text-md font-semibold">Owner Address</h2>
                   <div className="flex items-center  gap-2">
-                  <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
-                    {clipAddress(data.owner_address || "N/A")}
-                  </p>
-                  <p  className="cursor-pointer"  onClick={() => handleCopy(data.owner_address)}>
-                  {copied ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-
-                  </p>
+                    <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
+                      {clipAddress(data.owner_address || "N/A")}
+                    </p>
+                    <p
+                      className="cursor-pointer"
+                      onClick={() => handleCopy(data.owner_address)}
+                    >
+                      {copied ? (
+                        <Check className="h-4 w-4" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </p>
                   </div>
-                 
                 </div>
                 <div>
                   <h2 className="text-md font-semibold">Component Address</h2>
@@ -206,7 +199,12 @@ const CommunityDetails = () => {
                   </div>
                 </Card>
                 <div className="bg-transparent w-full mx-auto  flex items-center  ">
-                  <Card onClick={()=>navigate(`/community/detail/${params.id}/comments`)}  className=" group  p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                  <Card
+                    onClick={() =>
+                      navigate(`/community/detail/${params.id}/comments`)
+                    }
+                    className=" group  p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer "
+                  >
                     <p>See all Comments </p>
                     <ChevronRight className="h-5 w-5 group-hover:translate-x-1 duration-300 transition-transform" />
                   </Card>
@@ -220,13 +218,25 @@ const CommunityDetails = () => {
                         <Users className=" text-blue-700" />
                       </div>
                       <div>
-                        <Button onClick={()=>navigate(`/community/detail/${params.id}/members`)}  className="bg-blue-600 rounded-xl">
+                        <Button
+                          onClick={() =>
+                            navigate(`/community/detail/${params.id}/members`)
+                          }
+                          variant="radix"
+                        >
                           Manage members
                         </Button>
                       </div>
                     </div>
-                    <div className="text-3xl font-semibold">
-                      {participants.length} Members
+                    <div className="flex items-center justify-between">
+                      <div className="text-3xl font-semibold">
+                        {participants.length} Members
+                      </div>
+                      {
+                        participants.length > 4 &&
+                        <AvatarCircles numPeople={participants.length - 3} src1={participants[0].image_url} />
+
+                      }
                     </div>
                   </Card>
                 </div>
@@ -260,18 +270,20 @@ const CommunityDetails = () => {
                     ))}
                 </Card>
                 <div className="bg-transparent w-full mx-auto  flex items-center   ">
-                  <Card onClick={()=>navigate(`/community/detail/${params.id}/members`)}  className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer ">
+                  <Card
+                    onClick={() =>
+                      navigate(`/community/detail/${params.id}/members`)
+                    }
+                    className="p-3 w-32 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer "
+                  >
                     <p>See all</p>
                     <ChevronRight className="h-5 w-5" />
                   </Card>
                 </div>
               </div>
             </div>
-
-          
           </div>
         )}
-     
       </div>
     </div>
   );

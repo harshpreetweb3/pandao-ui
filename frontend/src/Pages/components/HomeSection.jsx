@@ -18,11 +18,11 @@ const HomeSection = () => {
             Making Blockchain Accessible and DAO Governance Effortless.
           </p>
           {!accounts || accounts.length === 0 ? (
-            <Button className="bg-green-700">Get Started</Button>
+            <Button   variant="radix">Get Started</Button>
           ) : (
             <Button
               onClick={() => navigate("/userDashboard")}
-              className="bg-green-700"
+             variant="radix"
             >
               My Dashboard
             </Button>
