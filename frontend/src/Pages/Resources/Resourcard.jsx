@@ -12,7 +12,7 @@ const ResourceCard = () => {
         </p>
         </div>
       
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-500 h-[150px] flex items-center justify-center rounded-b-3xl">
+        <div className="bg-gradient-to-r from-indigo-500 hover:from-indigo-400 to-purple-500 hover:to-purple-600 duration-300 transition-transform h-[150px] flex items-center justify-center rounded-b-3xl">
 
             <Lock className="text-white h-16 w-16"/>
 
