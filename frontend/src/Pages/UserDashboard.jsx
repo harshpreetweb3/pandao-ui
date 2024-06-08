@@ -23,6 +23,7 @@ import { Check, Copy, Globe } from "lucide-react";
 import ImageUpdater from "./components/ImageUpdater";
 import { Textarea } from "@/components/ui/textarea";
 import { FaLinkedinIn, FaTiktok, FaXTwitter } from "react-icons/fa6";
+import { clipAddress } from "@/utils/functions/ClipAddress";
 
 const UserDashboard = () => {
   const { accounts } = useAccount();
@@ -120,37 +121,32 @@ const UserDashboard = () => {
     <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black p-7">
       {userData && (
         <>
-          <Card className="w-full flex md:flex-row flex-col  items-center max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
+          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1000px] mx-auto rounded-sm p-5 text-black ">
               <CardHeader className="p-0 mt-4">
-                <Avatar className="h-40 w-40 border-[5px] border-pink-500">
+                <Avatar className="h-72 w-72 border-[5px] border-purple-400">
                   <AvatarImage
                     src={userData.image_url}
-                    className="h-40 w-40 object-cover"
+                    className="h-72 w-72 object-cover"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </CardHeader>
               <CardContent className="text-xl font-bold flex flex-col gap-2 w-full p-5">
-                <div className="text-black font-semibold text-4xl">
+                <div className="text-black font-semibold text-3xl">
                   {userData.name}
                 </div>
-                <div className="text-black font-light text-lg text-left px-0">
+                <div className="text-black font-light text-sm text-left px-0">
                   {userData.about}
                 </div>
                 <div
-                  className="bg-purple-400 py-1 px-2 rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
-                  style={{ maxWidth: "100%" }}
+                  className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
+                 
                 >
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger> {accounts[0].address}</TooltipTrigger>
-                      <TooltipContent>{accounts[0].address}</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+              {clipAddress(accounts[0].address)}
                   <button
                     onClick={() => handleCopy(accounts[0].address)}
                     disabled={copied}
-                    className="py-0 bg-purple-500 text-black rounded-md px-2 h-6 text-xs absolute top-2 right-2 group-hover:block hidden"
+                    className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
                   >
                     {copied ? (
                       <Check className="h-4 w-4" />
