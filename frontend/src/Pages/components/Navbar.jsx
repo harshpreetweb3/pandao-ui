@@ -44,7 +44,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="z-10 p-4  w-full bg-white bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0   text-white fixed ">
+    <div className="z-10 p-4  w-full bg-gradient-to-r from-[#375e91] from-0%  to-[#68237b] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0   text-white fixed ">
       <div className="max-w-[1440px] mx-auto flex  items-center justify-between h-10   ">
         <div className="w-full ">
           <Link to="/">

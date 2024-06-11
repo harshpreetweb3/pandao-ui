@@ -1,14 +1,16 @@
 import { Card } from "@/components/ui/card";
-import { BookKey, Lock } from "lucide-react";
+import {  Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const ResourceCard = () => {
-    return ( <Card className="rounded-3xl shadow-xl " >
+const ResourceCard = ({title,link}) => {
+    const navigate=useNavigate()
+    return ( <Card className="rounded-3xl shadow-sm hover:shadow-2xl" onClick={()=>navigate(link)} >
         <div className="p-6 h-[120px] ">
         <div className="font-light">
             Guide
         </div>
         <p className="">
-            Optimistic Dual Governance Plugin
+           {title}
         </p>
         </div>
       

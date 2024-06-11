@@ -18,6 +18,7 @@ import Members from "./Pages/CommunityPage/Members";
 import Comments from "./Pages/CommunityPage/Comments";
 import UserDashboardLayout from "./Layout/UserDashboardLayout";
 import EditPage from "./Pages/UserDasboard/EditPage";
+import One from './Pages/Resources/Blogs/One'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="resources" element={<Resource />} />
+          <Route path="resources/1" element={<One />} />
         </Route>
         <Route path="/userDashboard" element={<UserDashboardLayout />}>
           <Route index element={<UserDashboard />} />
