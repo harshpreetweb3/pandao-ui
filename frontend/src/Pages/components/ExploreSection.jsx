@@ -98,6 +98,42 @@ const ExploreSection = () => {
             </div>
           )}
         </div>
+        <div className=" mt-14 w-full">
+          <div className="text-3xl  font-semibold">Explore Templates</div>
+
+          {loading ? (
+            <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+               <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+            </div>
+          ) : (
+            <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-4 ">
+              {data.map((dao, index) => (
+                <Card
+                  key={index}
+                  onClick={() => {
+                    navigate(`/community/detail/${dao.id}`)
+                  }}
+                  className="flex overflow-hidden flex-col items-start justify-between p-5 h-[160px] cursor-pointer hover:shadow-md "
+                >
+                  <div className="flex items-start gap-2">
+                    <div className="h-16 w-16">
+                      <div className="h-14 w-14 bg-blue-900 rounded-full flex items-center justify-center text-center text-white">
+                        RD
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-xl font-semibold">{dao.name}</div>
+                      <div className="text-sm font-semibold">{dao.owner.name}</div>
+                    </div>
+                  </div>
+                  <div className="line-clamp-2">{dao.description}</div>
+               
+
+                </Card>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
