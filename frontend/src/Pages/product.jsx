@@ -1,7 +1,7 @@
 const Product = () => {
   return (
-    <div className="bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100%  border-b-2 border-purple-800 ">
-      <div className="min-h-screen flex flex-col items-start pt-28  justify-start gap-7  text-white max-w-[1440px] mx-auto p-5">
+    <div className="bg-blue-50 ">
+      <div className="min-h-screen flex flex-col items-start pt-28  justify-start gap-7  text-black max-w-[1440px] mx-auto p-5">
         <div className="text-4xl font-bold">
           Welcome to the Future of Decentralized Governance
         </div>

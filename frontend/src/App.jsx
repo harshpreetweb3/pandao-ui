@@ -19,6 +19,7 @@ import Comments from "./Pages/CommunityPage/Comments";
 import UserDashboardLayout from "./Layout/UserDashboardLayout";
 import EditPage from "./Pages/UserDasboard/EditPage";
 import One from './Pages/Resources/Blogs/One'
+import Explore from "./Pages/Explore";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
         <Route path="/" element={<HomePageLayout />}>
           <Route index element={<HomePage />} />
           <Route path="aboutus" element={<Aboutus />} />
+          <Route path="explore" element={<Explore/>} />
+          <Route path="products" element={<Product />} />
+
           <Route path="resources" element={<Resource />} />
           <Route path="resources/1" element={<One />} />
         </Route>
@@ -37,7 +41,6 @@ function App() {
          
         </Route>
 
-        <Route path="/products" element={<Product />} />
         <Route path="/userDashboard" element={<UserDashboard />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/myCommunities" element={<MyCommunity />} />
