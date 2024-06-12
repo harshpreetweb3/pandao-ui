@@ -40,7 +40,7 @@ const ExploreSection = () => {
               Create your own DAO on Radix Blockchain
             </p>
             <div className="w-full">
-              <Button   variant="radix">
+              <Button onClick={()=>{navigate("/explore")}}   variant="radix">
                 Create a DAO
               </Button>
             </div>
