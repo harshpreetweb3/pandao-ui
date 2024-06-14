@@ -14,7 +14,8 @@ const DaoDetailsPage = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/blueprint/detail/${param.slug}`
         );
-        console.log(res.data);
+        console.log(res.data.deploy_mainfest);
+        localStorage.setItem(`blueprint-${param.slug}`, JSON.stringify(res.data.deploy_mainfest.manifest));
         setData(res.data);
       } catch (error) {
         console.error("Error fetching blueprint data:", error);
@@ -22,7 +23,6 @@ const DaoDetailsPage = () => {
     };
     fetchBluePrint();
   }, [param.slug]);
-  console.log(data);
   const scrollToElement = (id) => {
     const element = document.getElementById(id);
     const headerOffset = 80; // Adjust this value as needed

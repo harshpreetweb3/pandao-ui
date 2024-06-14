@@ -3,14 +3,22 @@ import { Button } from "@/components/ui/button";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AgreementModal from "./components/AgreementModal";
 import useModalStore from "@/store/modal";
-import axios from 'axios';
+import axios from "axios";
 
 import extractTransactionsData from "@/utils/TranscationsRecipt";
 import ReceiptModal from "./components/ReceiptModal";
-
+function extractPlaceholders(input) {
+  const regex = /\$\{([^}]+)\}/g;
+  const placeholders = [];
+  let match;
+  while ((match = regex.exec(input)) !== null) {
+    placeholders.push(match[1]);
+  }
+  return placeholders;
+}
 const InputField = ({ label, type, value, onChange }) => (
   <div className="flex flex-col items-start gap-2 justify-between w-full">
     <label className="font-semibold text-xl">{label}</label>
@@ -23,10 +31,33 @@ const InputField = ({ label, type, value, onChange }) => (
     />
   </div>
 );
+const DynamicInputFields = ({ placeholders, setFieldState }) => {
+  return (
+    <>
+      {placeholders.map((placeholder, index) => (
+        <div key={index} className="md:col-span-2">
+          <InputField
+            label={`${placeholder}:`}
+            type="text" // You can adjust type based on your actual data type needs
+            value={setFieldState[placeholder]}
+            onChange={(e) => {
+              // Update the state based on the placeholder
+              setFieldState(prevState => ({
+                ...prevState,
+                [placeholder]: e.target.value,
+              }));
+            }}
+          />
+        </div>
+      ))}
+    </>
+  );
+};
 
 function Deploy() {
   const { accounts } = useAccount();
   const navigate = useNavigate();
+  const param = useParams();
 
   const [loading, setLoading] = useState(false);
   const [Recipt, setRecipt] = useState(null);
@@ -41,33 +72,11 @@ function Deploy() {
   const [buyBackPrice, setBuyBackPrice] = useState("");
   const [orgIconUrl, setOrgIconUrl] = useState("");
   const [tokenIconUrl, setTokenIconUrl] = useState("");
-  const areFieldsFilled =
-    organizationName &&
-    numberOfTokens &&
-    divisibility &&
-    tokenPrice &&
-    buyBackPrice &&
-    orgIconUrl &&
-    tokenIconUrl;
-  //   const generateString = () => {
-  //     return `CALL_FUNCTION
-  // Address("package_tdx_2_1phqlaxx0lkkujrtsjk4ulpmd86rc8e929l90ytu7sgzyqlhl6w2zvg")
-  // "TokenWeigtedDao"
-  // "initiate"
-  // "${organizationName}"
-  // ${numberOfTokens}i32
-  // ${divisibility}u8
-  // Decimal("${tokenPrice}")
-  // Decimal("${buyBackPrice}")
-  // "${orgIconUrl}"
-  // "${tokenIconUrl}"
-  // ;
-  // CALL_METHOD
-  //     Address("${accounts[0].address}")
-  //     "deposit_batch"
-  //     Expression("ENTIRE_WORKTOP")
-  // ;`;
-  //   };
+  const [placeholders, setPlaceholders] = useState([]);
+
+  // State to hold dynamic field states
+  const [dynamicFields, setDynamicFields] = useState({});
+ 
 
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
@@ -102,33 +111,48 @@ function Deploy() {
     let txId = receipt.transaction.intent_hash;
     // create a transaction recipt
     const recipt = await extractTransactionsData(txId);
-    console.log(receipt)
+    console.log(receipt);
     if (receipt) {
-      setSuccessOpen(true)
+      setSuccessOpen(true);
 
       // also send community registrartion data
       let communityPostBody = {
         name: organizationName,
         component_address: "not defined",
         description: organizationDescription,
-        owner_address: accounts[0].address
-      }
+        owner_address: accounts[0].address,
+      };
       try {
-          const response = await axios.post('https://pandao-backend.onrender.com/community', communityPostBody, {
-          headers: {
-            'Content-Type': 'application/json'
+        const response = await axios.post(
+          "https://pandao-backend.onrender.com/community",
+          communityPostBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
       } catch (error) {
-        window.alert(error)
+        window.alert(error);
       }
     }
     setRecipt(() => recipt);
   };
 
-  // useEffect(() => {
-  //   setOpen(true);
-  //   }, [setOpen]);
+  useEffect(() => {
+    const blurPrintData = JSON.parse(
+      localStorage.getItem(`blueprint-${param.slug}`)
+    );
+    const extractedPlaceholders = extractPlaceholders(blurPrintData);
+    setPlaceholders(extractedPlaceholders);
+    const initialFields = {};
+    extractedPlaceholders.forEach(placeholder => {
+      initialFields[placeholder] = "";
+    });
+    setDynamicFields(initialFields);
+
+    console.log(extractedPlaceholders);
+  }, [param.slug]);
   if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
@@ -138,7 +162,6 @@ function Deploy() {
     <>
       <AgreementModal />
       <ReceiptModal>
-
         {Recipt ? (
           <div className="w-full ">
             <Recipt className="w-full relative bg-red-500" />
@@ -154,65 +177,18 @@ function Deploy() {
         </h1>
 
         <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white  grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full ">
-          <div className="md:col-span-2">
-            <InputField
-              label="Organization Name:"
-              type="text"
-              value={organizationName}
-              onChange={(e) => setOrganizationName(e.target.value)}
+        {placeholders.length > 0 && (
+            <DynamicInputFields
+              placeholders={placeholders}
+              setFieldState={setDynamicFields}
             />
-          </div>
-          <div className="md:col-span-2">
-            <InputField
-              label="Organization Description:"
-              type="text"
-              value={organizationDescription}
-              onChange={(e) => setOrganizationDescription(e.target.value)}
-            />
-          </div>
+          )}
 
-          <InputField
-            label="Number of Tokens:"
-            type="number"
-            value={numberOfTokens}
-            onChange={(e) => setNumberOfTokens(e.target.value)}
-          />
-          <InputField
-            label="Divisibility:"
-            type="number"
-            value={divisibility}
-            onChange={(e) => setDivisibility(e.target.value)}
-          />
-          <InputField
-            label="Token Price:"
-            type="text"
-            value={tokenPrice}
-            onChange={(e) => setTokenPrice(e.target.value)}
-          />
-
-          <InputField
-            label="Buy Back Price:"
-            type="text"
-            value={buyBackPrice}
-            onChange={(e) => setBuyBackPrice(e.target.value)}
-          />
-
-          <InputField
-            label="Organization Icon URL:"
-            type="text"
-            value={orgIconUrl}
-            onChange={(e) => setOrgIconUrl(e.target.value)}
-          />
-          <InputField
-            label="Token Icon URL:"
-            type="text"
-            value={tokenIconUrl}
-            onChange={(e) => setTokenIconUrl(e.target.value)}
-          />
+        
 
           <div className="w-full">
             <Button
-              disabled={!areFieldsFilled || loading}
+              disabled={ loading}
               className="w-1/2"
               onClick={() => handleClaimToken()}
             >
@@ -220,7 +196,6 @@ function Deploy() {
             </Button>
           </div>
         </form>
-
       </div>
     </>
   );
