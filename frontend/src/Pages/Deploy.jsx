@@ -19,7 +19,7 @@ function extractPlaceholders(input) {
   }
   return placeholders;
 }
-const InputField = ({ label, type, value, onChange }) => (
+const InputField = ({ label, type, value, onChange,disabled }) => (
   <div className="flex flex-col items-start gap-2 justify-between w-full">
     <label className="font-semibold text-xl">{label}</label>
     <Input
@@ -28,6 +28,7 @@ const InputField = ({ label, type, value, onChange }) => (
       onChange={onChange}
       className="border-2 border-black  text-black w-full"
       required
+      disabled={disabled}
     />
   </div>
 );
@@ -73,6 +74,17 @@ function Deploy() {
   const [orgIconUrl, setOrgIconUrl] = useState("");
   const [tokenIconUrl, setTokenIconUrl] = useState("");
   const [placeholders, setPlaceholders] = useState([]);
+
+  const [formFields, setFormFields] = useState({
+    userAddress: "",
+    communityName: "",
+    tokenSupply: 0,
+    tokenPrice: 0,
+    tokenWithDrawPrice: 0,
+    communityImage: "",
+    tokenImage: "",
+  });
+
 
   // State to hold dynamic field states
   const [dynamicFields, setDynamicFields] = useState({});
@@ -176,19 +188,54 @@ function Deploy() {
           Radix Transaction Form
         </h1>
 
-        <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white  grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full ">
-        {placeholders.length > 0 && (
-            <DynamicInputFields
-              placeholders={placeholders}
-              setFieldState={setDynamicFields}
-            />
-          )}
-
+        <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full">
+          <InputField
+            label="User Address"
+            type="text"
+            disabled="true"
+            value={accounts[0].address}
+            onChange={(e) => setFormFields({ ...formFields, userAddress: e.target.value })}
+          />
+          <InputField
+            label="Community Name"
+            type="text"
+            value={formFields.communityName}
+            onChange={(e) => setFormFields({ ...formFields, communityName: e.target.value })}
+          />
+          <InputField
+            label="Token Supply"
+            type="number"
+            value={formFields.tokenSupply}
+            onChange={(e) => setFormFields({ ...formFields, tokenSupply: parseInt(e.target.value) })}
+          />
+          <InputField
+            label="Token Price"
+            type="number"
+            value={formFields.tokenPrice}
+            onChange={(e) => setFormFields({ ...formFields, tokenPrice: parseFloat(e.target.value) })}
+          />
+          <InputField
+            label="Token Withdraw Price"
+            type="number"
+            value={formFields.tokenWithDrawPrice}
+            onChange={(e) => setFormFields({ ...formFields, tokenWithDrawPrice: parseFloat(e.target.value) })}
+          />
+          <InputField
+            label="Community Image URL"
+            type="text"
+            value={formFields.communityImage}
+            onChange={(e) => setFormFields({ ...formFields, communityImage: e.target.value })}
+          />
+          <InputField
+            label="Token Image URL"
+            type="text"
+            value={formFields.tokenImage}
+            onChange={(e) => setFormFields({ ...formFields, tokenImage: e.target.value })}
+          />
         
-
           <div className="w-full">
             <Button
-              disabled={ loading}
+              disabled={loading}
               className="w-1/2"
               onClick={() => handleClaimToken()}
             >
