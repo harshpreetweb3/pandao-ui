@@ -89,7 +89,7 @@ const ExploreSection = () => {
                     </div>
                     <div>
                       <div className="text-xl font-semibold">{dao.name}</div>
-                      <div className="text-sm font-semibold">{dao.owner.name}</div>
+                      {/* <div className="text-sm font-semibold">{dao.owner.name}</div> */}
                     </div>
                   </div>
                   <div className="line-clamp-2">{dao.description}</div>
