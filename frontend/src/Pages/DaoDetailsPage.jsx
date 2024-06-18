@@ -12,10 +12,10 @@ const DaoDetailsPage = () => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/blueprint/detail/${param.slug}`
+          `${import.meta.env.VITE_BACKEND_URL}/blueprint/${param.slug}`
         );
-        console.log(res.data.deploy_mainfest);
-        localStorage.setItem(`blueprint-${param.slug}`, JSON.stringify(res.data.deploy_mainfest.manifest));
+        console.log(res.data);
+        // localStorage.setItem(`blueprint-${param.slug}`, JSON.stringify(res.data.deploy_mainfest.manifest));
         setData(res.data);
       } catch (error) {
         console.error("Error fetching blueprint data:", error);
