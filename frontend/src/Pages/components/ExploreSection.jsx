@@ -64,14 +64,16 @@ const ExploreSection = () => {
         </div>
         <div className=" mt-14 w-full">
           <div className="text-3xl  font-semibold">Explore DAOs</div>
-
+{data.length===0 && <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
+  No Deployed DAOs
+</div>}
           {loading ? (
             <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
                <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
             </div>
           ) : (
             <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-4 ">
-              {data.map((dao, index) => (
+              {data.length>0 && data.map((dao, index) => (
                 <Card
                   key={index}
                   onClick={() => {
