@@ -121,6 +121,27 @@ function Deploy() {
     );
 
     let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        window.alert(error);
+      }
+    }
+      
+    
     // create a transaction recipt
     const recipt = await extractTransactionsData(txId);
     console.log(receipt);
