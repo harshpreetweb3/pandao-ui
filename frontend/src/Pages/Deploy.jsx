@@ -74,9 +74,10 @@ function Deploy() {
   const [orgIconUrl, setOrgIconUrl] = useState("");
   const [tokenIconUrl, setTokenIconUrl] = useState("");
   const [placeholders, setPlaceholders] = useState([]);
+  const [manifest,setManifest]=useState("")
 
   const [formFields, setFormFields] = useState({
-    userAddress: "",
+    userAddress: accounts[0].address,
     communityName: "",
     tokenSupply: 0,
     tokenPrice: 0,
@@ -98,23 +99,22 @@ function Deploy() {
     }
     setLoading(true);
 
-    let manifest = `CALL_FUNCTION
-    Address("package_tdx_2_1pk55nren5qpvr5xsrn48lnkuym83lf6wjjeq3z2mqhpydvme6kh5ml")
-    "TokenWeigtedDao"
-    "initiate"
-    "${organizationName}"
-    ${numberOfTokens}i32
-    ${divisibility}u8
-    Decimal("${tokenPrice}")
-    Decimal("${buyBackPrice}")
-    "${orgIconUrl}"
-    "${tokenIconUrl}"
-    ;
-    CALL_METHOD
-        Address("${accounts[0].address}")
-        "deposit_batch"
-        Expression("ENTIRE_WORKTOP")
-    ;`;
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/build/deploy_token_weighted_dao`,
+        formFields,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(response.data);
+      setManifest(response.data)
+    } catch (error) {
+      window.alert(error);
+    }
+    
 
     const { receipt } = await sendTransaction(manifest).finally(() =>
       setLoading(false)
@@ -128,25 +128,25 @@ function Deploy() {
       setSuccessOpen(true);
 
       // also send community registrartion data
-      let communityPostBody = {
-        name: organizationName,
-        component_address: "not defined",
-        description: organizationDescription,
-        owner_address: accounts[0].address,
-      };
-      try {
-        const response = await axios.post(
-          "https://pandao-backend.onrender.com/community",
-          communityPostBody,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-      } catch (error) {
-        window.alert(error);
-      }
+      // let communityPostBody = {
+      //   name: organizationName,
+      //   component_address: "not defined",
+      //   description: organizationDescription,
+      //   owner_address: accounts[0].address,
+      // };
+      // try {
+      //   const response = await axios.post(
+      //     `${import.meta.env.VITE_BACKEND_URL}/community`,
+      //     communityPostBody,
+      //     {
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //       },
+      //     }
+      //   );
+      // } catch (error) {
+      //   window.alert(error);
+      // }
     }
     setRecipt(() => recipt);
   };
@@ -163,7 +163,6 @@ function Deploy() {
     });
     setDynamicFields(initialFields);
 
-    console.log(extractedPlaceholders);
   }, [param.slug]);
   if (!accounts || accounts.length === 0) {
     navigate("/");
