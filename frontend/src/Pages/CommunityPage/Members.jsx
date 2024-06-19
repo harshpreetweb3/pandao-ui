@@ -71,7 +71,11 @@ const Members = () => {
                       <div className="text-3xl font-semibold">
                         {participants.length} Members
                       </div>
-                      <AvatarCircles numPeople={participants.length - 3} />
+                      {
+                        participants.length > 4 &&
+                        <AvatarCircles numPeople={participants.length - 3} src1={participants[0].image_url} />
+
+                      }
                     </div>
                 </Card>
                 {!loading && <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">

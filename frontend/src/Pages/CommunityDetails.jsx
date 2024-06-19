@@ -41,7 +41,9 @@ const CommunityDetails = () => {
       toast.success("Welcome to the Community");
       fetchParticipant();
     } catch (error) {
-      console.error("Error joining community:", error);
+      console.log("Error joining community:", error);
+      toast.error("Something went wrong");
+
     }
   };
   // const handleAddComment = async () => {
@@ -160,6 +162,7 @@ const CommunityDetails = () => {
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
               <div className="md:w-[60%] space-y-3">
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
+                {comments.length===0 &&   <div>No Comment</div> }
                   <div className="space-y-4">
                     {comments &&
                       comments.slice(0, 4).map((comment, index) => (
@@ -242,6 +245,7 @@ const CommunityDetails = () => {
                 </div>
 
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg space-y-2 ">
+                  {participants.length===0 &&   <div>No Participants</div> }
                   {participants.length > 0 &&
                     participants.slice(0, 4).map((participant, index) => (
                       <Card
