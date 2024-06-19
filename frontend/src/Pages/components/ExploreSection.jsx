@@ -64,7 +64,7 @@ const ExploreSection = () => {
         </div>
         <div className=" mt-14 w-full">
           <div className="text-3xl  font-semibold">Explore DAOs</div>
-{data.length===0 && <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
+{!loading && data.length===0 && <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
   No Deployed DAOs
 </div>}
           {loading ? (
