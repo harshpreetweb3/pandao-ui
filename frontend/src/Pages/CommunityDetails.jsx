@@ -5,10 +5,16 @@ import { Card } from "@/components/ui/card";
 import AvatarCircles from "@/components/ui/myComponents/avatarCircle";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { Check, ChevronRight, Copy, Users } from "lucide-react";
+import { Check, ChevronRight, Contact, Copy, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useSendTransaction } from "@/hooks/useSendTransaction";
+import extractTransactionsData from "@/utils/GetTransactionRecipt";
+
+function removeNewLines(input) {
+  return input.replace(/\n\s*/g, ' ');
+}
 
 const CommunityDetails = () => {
   const { accounts } = useAccount();
@@ -18,6 +24,9 @@ const CommunityDetails = () => {
   const [participants, setParticipants] = useState([]);
   const [comments, setComments] = useState([]);
   const [copied, setCopied] = useState(false);
+  const sendTransaction = useSendTransaction();
+const [loading,setLoading]=useState(false)
+const [manifest,setManifest]=useState("")
 
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
@@ -46,26 +55,109 @@ const CommunityDetails = () => {
 
     }
   };
-  // const handleAddComment = async () => {
-  //   const data = {
-  //     user_addr: accounts[0].address,
+  // const handleClaimToken = async () => {
+  //   console.log("selectedAccount:", accounts[0].address);
+  //   if (!accounts[0].address) {
+  //     alert("Please select an account first.");
+  //     return;
+  //   }
 
-  //     comment: comment,
-  //     community_id: params.id,
-  //   };
 
   //   try {
   //     const response = await axios.post(
-  //       `${import.meta.env.VITE_BACKEND_URL}/community/comment`,
-  //       data
+  //       `${import.meta.env.VITE_BACKEND_URL}/manifest/build/deploy_token_weighted_dao`,
+  //       formFields,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       }
   //     );
-  //     console.log("Comment Response:", response.data);
-  //     setComment("");
-  //     fetchComments();
+  //     console.log(response.data);
+  //     setManifest(response.data)
   //   } catch (error) {
-  //     console.error("Error adding comment:", error);
+  //     window.alert(error);
   //   }
+    
+
+  //   const { receipt } = await sendTransaction(manifest).finally(() =>
+  //     setLoading(false)
+  //   );
+
+  //   let txId = receipt.transaction.intent_hash;
+  //   if (txId) {
+  //     try {
+  //       const response = await axios.post(
+  //         `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+  //         {
+  //           tx_id: txId,
+  //           user_address: accounts[0].address,
+  //         },
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //         }
+  //       );
+  //       console.log(response.data);
+  //     } catch (error) {
+  //       window.alert(error);
+  //     }
+  //   }
+      
+    
+  //   // create a transaction recipt
+  //   const recipt = await extractTransactionsData(txId);
+  //   console.log(recipt);
+  
+
   // };
+
+  const handleBuyToken = async () => {
+    const data = {
+      community_id: params.id,
+      userAddress: accounts[0].address,
+      tokenSupply: 0,
+    
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/build/buy_token/token_weighted_dao`,
+        data
+      );
+      console.log("Response:", removeNewLines(response.data.trim("")));
+      setManifest(response.data)
+    } catch (error) {
+      console.log("Error joining community:", error);
+      toast.error("Something went wrong");
+
+    }
+    const { receipt } = await sendTransaction(manifest).finally(() =>
+          setLoading(false)
+       );
+       let txId = receipt.transaction.intent_hash;
+         if (txId) {
+           try {
+             const response = await axios.post(
+               `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+               {
+                 tx_id: txId,
+                 user_address: accounts[0].address,
+               },
+               {
+                 headers: {
+                   "Content-Type": "application/json",
+                 },
+               }
+             );
+             console.log(response.data);
+           } catch (error) {
+             window.alert(error);
+           }
+         }
+  };
+
   const fetchDetails = async () => {
     try {
       const res = await axios.get(
@@ -106,6 +198,9 @@ const CommunityDetails = () => {
     navigate("/");
     return null;
   }
+  const isUserParticipant = participants.some(
+    (participant) => participant.participant === accounts[0].address
+  );
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 to-purple-50 text-black px-2">
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
@@ -117,9 +212,14 @@ const CommunityDetails = () => {
                   {data.name}
                 </h1>
                 <div className="flex items-end md:items-start md:justify-end w-full">
-                  <Button variant="radix" onClick={handleJoinCommunity}>
-                    Join Community
-                  </Button>
+                {!isUserParticipant && (
+                    <Button variant="radix" onClick={handleJoinCommunity}>
+                      Join Community
+                    </Button>
+                  )}
+                       <Button variant="radix" onClick={handleBuyToken}>
+                      Buy Token
+                    </Button>
                 </div>
               </div>
               <div className="grid gap-4">
