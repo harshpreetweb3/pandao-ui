@@ -33,19 +33,21 @@ function App() {
 
           <Route path="resources" element={<Resource />} />
           <Route path="resources/1" element={<One />} />
+          <Route path="exploreDao/:slug" element={<DaoDetailsPage />} />
+
         </Route>
         <Route path="/userDashboard" element={<UserDashboardLayout />}>
           <Route index element={<UserDashboard />} />
           <Route path="edit" element={<EditPage />} />
           <Route path="userProfile/:id" element={<UserPublicProfile />} />
-         
+
         </Route>
 
-        <Route path="/userDashboard" element={<UserDashboard />} />
+        {/* <Route path="/userDashboard" element={<UserDashboard />} /> */}
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/myCommunities" element={<MyCommunity />} />
-        <Route path="/exploreDao" element={<ExploreDao />} />
-        <Route path="/exploreDao/:slug" element={<DaoDetailsPage />} />
+        {/* <Route path="/exploreDao" element={<ExploreDao />} />
+        <Route path="/exploreDao/:slug" element={<DaoDetailsPage />} /> */}
         <Route path="/exploreDao/:slug/deploy" element={<Deploy />} />
         <Route
           path="/community/detail/:id"

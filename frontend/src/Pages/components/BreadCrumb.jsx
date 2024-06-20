@@ -11,14 +11,14 @@ import {
   
   export function BreadCrumb({name}) {
     return (
-      <Breadcrumb className="text-white">
+      <Breadcrumb className="text-black cursor-pointer">
         <BreadcrumbList>
-        <BreadcrumbItem className="text-white hover:text-white/80">
-            <BreadcrumbLink href="/exploreDao">Explore</BreadcrumbLink>
+        <BreadcrumbItem className="text-black hover:text-slate-400">
+            <BreadcrumbLink href="/explore">Explore</BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator className="text-white" />
+          <BreadcrumbSeparator className="text-black" />
        
-          <BreadcrumbItem className="text-white hover:text-white/80">
+          <BreadcrumbItem className="text-black hover:text-slate-400">
             <BreadcrumbLink>{name}</BreadcrumbLink>
           </BreadcrumbItem>
          

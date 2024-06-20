@@ -35,10 +35,10 @@ const DaoDetailsPage = () => {
     });
   };
   return (
-    <div className="pt-20 pb-10  items-start gap-3 justify-start min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
+    <div className="pt-20 pb-10  items-start gap-3 justify-start min-h-screen text-black px-2">
       {data && (
         <div className="flex max-w-[1440px] mx-auto">
-          <div className=" md:w-[70%] flex flex-col  mx-auto p-3 text-white gap-2">
+          <div className=" md:w-[70%] flex flex-col  mx-auto p-3  gap-2">
             <div className=" ">
               <BreadCrumb name={param.slug} />
             </div>
@@ -64,7 +64,7 @@ const DaoDetailsPage = () => {
                   <div
                     key={index}
                     id={`term-${index}`}
-                    className="text-white flex flex-col gap-5"
+                    className="text-slate-800 flex flex-col gap-5"
                   >
                     <div className="text-4xl font-semibold text-left mt-5">
                       {term.term}
@@ -77,20 +77,20 @@ const DaoDetailsPage = () => {
               onClick={() => {
                 navigate(`/exploreDao/${param.slug}/deploy`);
               }}
-              variant="outline"
-              className="text-white bg-purple-600 hover:bg-purple-400 mt-5"
+              variant="radix"
+      
             >
               Deploy{" "}
             </Button>
           </div>
           {data && (
-            <div className="text-white w-[30%] mt-20 md:block hidden mx-2  top-20">
+            <div className="text-black w-[30%] mt-20 md:block hidden mx-2  top-20">
               <div className="font-semibold text-xl">Table of content</div>
               <div className="text-lg font-semibold">
                 {data.terms &&
                   data.terms.length > 0 &&
                   data.terms.map((term, index) => (
-                    <div key={index} className="text-white flex flex-col gap-2">
+                    <div key={index} className="text-black flex flex-col gap-2">
                       <button
                         onClick={() => scrollToElement(`term-${index}`)}
                         className="text-lg font-semibold text-left mt-2 ml-5"
