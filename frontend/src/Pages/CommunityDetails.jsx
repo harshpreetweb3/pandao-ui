@@ -11,9 +11,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import extractTransactionsData from "@/utils/GetTransactionRecipt";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/components/ui/input";
 
 function removeNewLines(input) {
-  return input.replace(/\n\s*/g, ' ');
+  return input.replace(/\n\s*/g, " ");
 }
 
 const CommunityDetails = () => {
@@ -25,9 +35,9 @@ const CommunityDetails = () => {
   const [comments, setComments] = useState([]);
   const [copied, setCopied] = useState(false);
   const sendTransaction = useSendTransaction();
-const [loading,setLoading]=useState(false)
-const [manifest,setManifest]=useState("")
-
+  const [loading, setLoading] = useState(false);
+  const [manifest, setManifest] = useState("");
+const [token,setToken]=useState(0)
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
     setCopied(true);
@@ -52,7 +62,6 @@ const [manifest,setManifest]=useState("")
     } catch (error) {
       console.log("Error joining community:", error);
       toast.error("Something went wrong");
-
     }
   };
   // const handleClaimToken = async () => {
@@ -61,7 +70,6 @@ const [manifest,setManifest]=useState("")
   //     alert("Please select an account first.");
   //     return;
   //   }
-
 
   //   try {
   //     const response = await axios.post(
@@ -78,7 +86,6 @@ const [manifest,setManifest]=useState("")
   //   } catch (error) {
   //     window.alert(error);
   //   }
-    
 
   //   const { receipt } = await sendTransaction(manifest).finally(() =>
   //     setLoading(false)
@@ -104,12 +111,10 @@ const [manifest,setManifest]=useState("")
   //       window.alert(error);
   //     }
   //   }
-      
-    
+
   //   // create a transaction recipt
   //   const recipt = await extractTransactionsData(txId);
   //   console.log(recipt);
-  
 
   // };
 
@@ -117,45 +122,45 @@ const [manifest,setManifest]=useState("")
     const data = {
       community_id: params.id,
       userAddress: accounts[0].address,
-      tokenSupply: 0,
-    
+      tokenSupply: token,
     };
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/manifest/build/buy_token/token_weighted_dao`,
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/manifest/build/buy_token/token_weighted_dao`,
         data
       );
       console.log("Response:", removeNewLines(response.data.trim("")));
-      setManifest(response.data)
+      setManifest(response.data);
     } catch (error) {
       console.log("Error joining community:", error);
       toast.error("Something went wrong");
-
     }
     const { receipt } = await sendTransaction(manifest).finally(() =>
-          setLoading(false)
-       );
-       let txId = receipt.transaction.intent_hash;
-         if (txId) {
-           try {
-             const response = await axios.post(
-               `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
-               {
-                 tx_id: txId,
-                 user_address: accounts[0].address,
-               },
-               {
-                 headers: {
-                   "Content-Type": "application/json",
-                 },
-               }
-             );
-             console.log(response.data);
-           } catch (error) {
-             window.alert(error);
-           }
-         }
+      setLoading(false)
+    );
+    let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        window.alert(error);
+      }
+    }
   };
 
   const fetchDetails = async () => {
@@ -212,14 +217,40 @@ const [manifest,setManifest]=useState("")
                   {data.name}
                 </h1>
                 <div className="flex items-end md:items-start md:justify-end w-full">
-                {!isUserParticipant && (
+                  {!isUserParticipant && (
                     <Button variant="radix" onClick={handleJoinCommunity}>
                       Join Community
                     </Button>
                   )}
-                       <Button variant="radix" onClick={handleBuyToken}>
-                      Buy Token
-                    </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="radix">Buy Token</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Buy Token</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Token
+                          </Label>
+                          <Input
+                            id="name"
+                            className="col-span-3"
+                            placeholder="How many Token you want to buy"
+                            type="number"
+                            onChange={(e)=>setToken(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="radix" onClick={handleBuyToken}>
+                          Buy Token
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
               <div className="grid gap-4">
@@ -262,7 +293,7 @@ const [manifest,setManifest]=useState("")
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
               <div className="md:w-[60%] space-y-3">
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
-                {comments.length===0 &&   <div>No Comment</div> }
+                  {comments.length === 0 && <div>No Comment</div>}
                   <div className="space-y-4">
                     {comments &&
                       comments.slice(0, 4).map((comment, index) => (
@@ -335,23 +366,26 @@ const [manifest,setManifest]=useState("")
                       <div className="text-3xl font-semibold">
                         {participants.length} Members
                       </div>
-                      {
-                        participants.length > 4 &&
-                        <AvatarCircles numPeople={participants.length - 3} src1={participants[0].image_url} />
-
-                      }
+                      {participants.length > 4 && (
+                        <AvatarCircles
+                          numPeople={participants.length - 3}
+                          src1={participants[0].image_url}
+                        />
+                      )}
                     </div>
                   </Card>
                 </div>
 
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg space-y-2 ">
-                  {participants.length===0 &&   <div>No Participants</div> }
+                  {participants.length === 0 && <div>No Participants</div>}
                   {participants.length > 0 &&
                     participants.slice(0, 4).map((participant, index) => (
                       <Card
                         key={index}
                         onClick={() =>
-                          navigate(`/userDashboard/userProfile/${participant.participant}`)
+                          navigate(
+                            `/userDashboard/userProfile/${participant.participant}`
+                          )
                         }
                         className="bg-white flex items-center gap-2 md:w-[100%] mx-auto  p-2 border-none shadow-none"
                       >
