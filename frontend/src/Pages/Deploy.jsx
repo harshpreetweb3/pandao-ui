@@ -203,12 +203,12 @@ function Deploy() {
         )}
       </ReceiptModal>
 
-      <div className="pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50%  to-[#0D1E3B] to-100% text-black px-2">
-        <h1 className="text-2xl font-semibold text-white pt-14">
+      <div className="pt-10 pb-10 flex flex-col items-center gap-10 justify-center min-h-screen bg-purple-50 text-black px-2">
+        <h1 className="text-2xl font-semibold text-black pt-14">
           Radix Transaction Form
         </h1>
 
-        <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-100 p-5 max-w-[1440px] mx-auto rounded-lg bg-white grid md:grid-cols-2 grid-cols-1 gap-4 items-start w-full">
+        <form className="text-black bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-50 border border-gray-600 p-5 max-w-[1000px] mx-auto rounded-lg bg-white grid md:grid-cols-1 grid-cols-1 gap-4 items-start w-full shadow-xl ">
           <InputField
             label="User Address"
             type="text"
@@ -257,6 +257,7 @@ function Deploy() {
             <Button
               disabled={loading}
               className="w-1/2"
+              variant="radix"
               onClick={() => handleClaimToken()}
             >
               Generate String
