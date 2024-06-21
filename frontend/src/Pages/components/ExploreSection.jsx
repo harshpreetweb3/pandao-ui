@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const ExploreSection = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
@@ -40,7 +40,12 @@ const ExploreSection = () => {
               Create your own DAO on Radix Blockchain
             </p>
             <div className="w-full">
-              <Button onClick={()=>{navigate("/explore")}}   variant="radix">
+              <Button
+                onClick={() => {
+                  navigate("/explore");
+                }}
+                variant="radix"
+              >
                 Create a DAO
               </Button>
             </div>
@@ -56,7 +61,7 @@ const ExploreSection = () => {
               Learn about DAOs.How to create them using Radix
             </p>
             <div className="w-full">
-              <Button onClick={()=>navigate("/resources")}   variant="radix">
+              <Button onClick={() => navigate("/resources")} variant="radix">
                 Learn about DAOs
               </Button>
             </div>
@@ -64,43 +69,44 @@ const ExploreSection = () => {
         </div>
         <div className=" mt-14 w-full">
           <div className="text-3xl  font-semibold">Explore DAOs</div>
-{!loading && data.length===0 && <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
-  No Deployed DAOs
-</div>}
+          {!loading && data.length === 0 && (
+            <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
+              No Deployed DAOs
+            </div>
+          )}
           {loading ? (
             <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
-               <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+              <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
             </div>
           ) : (
             <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-4 ">
-              {data.length>0 && data.map((dao, index) => (
-                <Card
-                  key={index}
-                  onClick={() => {
-                    navigate(`/community/detail/${dao.id}`)
-                  }}
-                  className="flex overflow-hidden flex-col items-start justify-between p-5 h-[160px] cursor-pointer hover:shadow-md "
-                >
-                  <div className="flex items-start gap-2">
-                    <div className="h-16 w-16">
-                      <div className="h-14 w-14 bg-blue-900 rounded-full flex items-center justify-center text-center text-white">
-                        RD
+              {data.length > 0 &&
+                data.map((dao, index) => (
+                  <Card
+                    key={index}
+                    onClick={() => {
+                      navigate(`/community/detail/${dao.id}`);
+                    }}
+                    className="flex overflow-hidden flex-col items-start justify-between p-5 h-[160px] cursor-pointer hover:shadow-md "
+                  >
+                    <div className="flex items-start gap-2">
+                      <div className="h-16 w-16">
+                        <Avatar className="h-14 w-14">
+                          <AvatarImage src={dao.image} alt="@shadcn" className="h-14 w-14" />
+                          <AvatarFallback className="h-14 w-14">CN</AvatarFallback>
+                        </Avatar>
+                      </div>
+                      <div>
+                        <div className="text-xl font-semibold">{dao.name}</div>
+                        {/* <div className="text-sm font-semibold">{dao.owner.name}</div> */}
                       </div>
                     </div>
-                    <div>
-                      <div className="text-xl font-semibold">{dao.name}</div>
-                      {/* <div className="text-sm font-semibold">{dao.owner.name}</div> */}
-                    </div>
-                  </div>
-                  <div className="line-clamp-2">{dao.description}</div>
-               
-
-                </Card>
-              ))}
+                    <div className="line-clamp-2">{dao.description}</div>
+                  </Card>
+                ))}
             </div>
           )}
         </div>
-     
       </div>
     </div>
   );
