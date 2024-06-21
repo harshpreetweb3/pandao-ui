@@ -5,7 +5,7 @@ import { Card } from "@/components/ui/card";
 import AvatarCircles from "@/components/ui/myComponents/avatarCircle";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { Check, ChevronRight, Contact, Copy, Users } from "lucide-react";
+import { Bitcoin, Check, ChevronRight, Contact, Copy, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -222,35 +222,7 @@ const [token,setToken]=useState(0)
                       Join Community
                     </Button>
                   )}
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="radix">Buy Token</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Buy Token</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Token
-                          </Label>
-                          <Input
-                            id="name"
-                            className="col-span-3"
-                            placeholder="How many Token you want to buy"
-                            type="number"
-                            onChange={(e)=>setToken(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button variant="radix" onClick={handleBuyToken}>
-                          Buy Token
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+          
                 </div>
               </div>
               <div className="grid gap-4">
@@ -344,9 +316,64 @@ const [token,setToken]=useState(0)
                   </Card>
                 </div>
               </div>
-              <div className="md:w-[40%] space-y-6  ">
-                <div>
-                  <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4 shadow-lg space-y-10">
+              <div className="md:w-[40%] space-y-6 w-[100%]  ">
+                <div className="flex flex-col gap-2 w-full ">
+                <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
+                    <div className="flex items-center justify-between">
+                      <div className="bg-slate-200 w-fit p-2 rounded-full">
+                        <Bitcoin className=" text-blue-700" />
+                      </div>
+                      <div>
+                      <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="radix">Buy Token</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px]">
+                      <DialogHeader>
+                        <DialogTitle>Buy Token</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="name" className="text-right">
+                            Token
+                          </Label>
+                          <Input
+                            id="name"
+                            className="col-span-3"
+                            placeholder="How many Token you want to buy"
+                            type="number"
+                            onChange={(e)=>setToken(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button variant="radix" onClick={handleBuyToken}>
+                          Buy Token
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="text-3xl flex flex-col gap-3 font-semibold">
+                        <span>
+                        {data.total_token} Tokens
+
+                        </span>
+                        <div className="flex flex-col text-base">
+                          <span>
+                        Token Price:  {data.token_price} 
+                          </span>
+                          <span>
+                         Token Buy Back Price : {data.token_buy_back_price}
+                          </span>
+                        </div>
+                      </div>
+               
+                    </div>
+                  </Card>
+                  <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
                     <div className="flex items-center justify-between">
                       <div className="bg-slate-200 w-fit p-2 rounded-full">
                         <Users className=" text-blue-700" />
