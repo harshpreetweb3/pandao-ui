@@ -256,11 +256,11 @@ function Deploy() {
           <div className="w-full">
             <Button
               disabled={loading}
-              className="w-1/2"
+              className="w-full"
               variant="radix"
               onClick={() => handleClaimToken()}
             >
-              Generate String
+              Deploy
             </Button>
           </div>
         </form>

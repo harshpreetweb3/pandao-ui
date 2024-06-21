@@ -137,7 +137,7 @@ async function extractTransactionsData(txId) {
         }));
 
         const TransactionDetailsComponent = () => (
-            <div className='w-1/2'>
+            <div className='w-full'>
                 <span>{committedTime}</span>
                 <FeePaid xrdSpent={xrdSpent} />
                 <ReceiptComponentAccount entityArrayAccount={entityArrayAccount} />
