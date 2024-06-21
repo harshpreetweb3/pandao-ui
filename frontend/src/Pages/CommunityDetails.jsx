@@ -216,7 +216,7 @@ const [token,setToken]=useState(0)
                 <h1 className="text-3xl font-bold text-left w-full">
                   {data.name}
                 </h1>
-                <div className="flex items-end md:items-start md:justify-end w-full">
+                <div className="flex items-end md:items-start md:justify-end w-full gap-2">
                   {!isUserParticipant && (
                     <Button variant="radix" onClick={handleJoinCommunity}>
                       Join Community
