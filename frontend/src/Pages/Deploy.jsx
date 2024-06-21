@@ -79,6 +79,7 @@ function Deploy() {
   const [formFields, setFormFields] = useState({
     userAddress: accounts[0].address,
     communityName: "",
+    description:"",
     tokenSupply: 0,
     tokenPrice: 0,
     tokenWithDrawPrice: 0,
@@ -216,11 +217,18 @@ function Deploy() {
             value={accounts[0].address}
             onChange={(e) => setFormFields({ ...formFields, userAddress: e.target.value })}
           />
+
           <InputField
             label="Community Name"
             type="text"
             value={formFields.communityName}
             onChange={(e) => setFormFields({ ...formFields, communityName: e.target.value })}
+          />
+           <InputField
+            label="Community Description"
+            type="text"
+            value={formFields.description}
+            onChange={(e) => setFormFields({ ...formFields, description: e.target.value })}
           />
           <InputField
             label="Token Supply"
