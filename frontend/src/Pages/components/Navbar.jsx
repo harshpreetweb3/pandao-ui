@@ -62,9 +62,9 @@ const Navbar = () => {
           <Link to="/resources">
             <li>Resources</li>
           </Link>
-          <Link to="/explore">
+          {/* <Link to="/explore">
             <li>Explore</li>
-          </Link>
+          </Link> */}
         </ul>
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">
          

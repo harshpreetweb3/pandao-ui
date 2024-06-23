@@ -4,7 +4,7 @@ import Createyourowndao from "./Explore/CreateYouOwnDoa";
 import Template from "./Explore/Template";
 import Activity from "./Explore/Activity";
 
-const Explore = () => {
+const Create = () => {
     const [activeTab, setActiveTab] = useState(0);
 
     const tabs = [
@@ -38,4 +38,4 @@ const Explore = () => {
   );
 };
 
-export default Explore;
+export default Create;

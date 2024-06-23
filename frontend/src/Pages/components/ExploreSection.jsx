@@ -42,7 +42,7 @@ const ExploreSection = () => {
             <div className="w-full">
               <Button
                 onClick={() => {
-                  navigate("/explore");
+                  navigate("/create");
                 }}
                 variant="radix"
               >

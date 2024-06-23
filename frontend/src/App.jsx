@@ -19,7 +19,7 @@ import Comments from "./Pages/CommunityPage/Comments";
 import UserDashboardLayout from "./Layout/UserDashboardLayout";
 import EditPage from "./Pages/UserDasboard/EditPage";
 import One from './Pages/Resources/Blogs/One'
-import Explore from "./Pages/Explore";
+import Create from "./Pages/Create";
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
         <Route path="/" element={<HomePageLayout />}>
           <Route index element={<HomePage />} />
           <Route path="aboutus" element={<Aboutus />} />
-          <Route path="explore" element={<Explore/>} />
+          <Route path="create" element={<Create/>} />
           <Route path="products" element={<Product />} />
 
           <Route path="resources" element={<Resource />} />
