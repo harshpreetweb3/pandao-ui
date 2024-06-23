@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useTokenWeightStore from "@/store/templateStore/tokenWeightStore";
 
-const DescribeView = () => {
+const DeployView = () => {
   const { setView } = useViewStore();
   const navigate = useNavigate();
   const { accounts } = useAccount();
@@ -22,9 +22,11 @@ const DescribeView = () => {
       setFormFields({ userAddress: accounts[0].address }); // Set the userAddress
     }
   }, [accounts, setFormFields]);
-const handleViewChange=()=>{
-    setView("4")
-}
+
+  const handleDeploy = () => {
+    console.log(formFields)
+  };
+
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
@@ -43,30 +45,36 @@ const handleViewChange=()=>{
     navigate("/");
     return null;
   }
+
   const allFieldsFilled = () => {
     return (
       formFields.communityName.trim() !== "" &&
       formFields.description.trim() !== "" &&
       formFields.communityImage.trim() !== "" &&
-      formFields.tokenImage.trim() !== ""
+      formFields.tokenImage.trim() !== "" &&
+      formFields.tokenSupply > 0 &&
+      formFields.tokenPrice > 0 &&
+      formFields.tokenWithDrawPrice > 0
     );
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ [name]: value });
   };
+
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
       <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
         <div className="mb-6 flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <div>Describe your DAO</div>
-            <div>Step 2 of 3</div>
+            <div>Deploy DAO</div>
+            <div>Step 3 of 3</div>
           </div>
-          <Progress value={66} className="rounded-sm" />
+          <Progress value={100} className="rounded-sm" />
         </div>
 
-        <div className="text-4xl font-semibold">Describe your DAO</div>
+        <div className="text-4xl font-semibold">Deploy your Community</div>
         <div className="flex md:flex-row flex-col items-center justify-between gap-3">
           <span className="w-full">
             Start simple and learn as you go. You can always evolve your DAO in the future.
@@ -74,56 +82,46 @@ const handleViewChange=()=>{
         </div>
       </Card>
       <div className="max-w-[600px] mx-auto mt-5 flex flex-col gap-3">
+     
         <div className="flex flex-col gap-1">
-          <span className="font-medium text-lg px-1">Community Name</span>
-          <span className="text-xs px-1">Keep it short and simple</span>
+          <span className="font-medium text-lg px-1">Token Supply</span>
           <Input
-            name="communityName"
+            type="number"
+            name="tokenSupply"
             className="border-slate-300 focus:ring-1 focus:ring-purple-400"
-            placeholder="Type your Communities name..."
-            value={formFields.communityName}
+            placeholder="Enter Token Supply"
+            value={formFields.tokenSupply}
             onChange={handleInputChange}
             required
           />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-medium text-lg px-1">Community Description</span>
-          <span className="text-xs px-1">Keep it short and simple</span>
-          <Textarea
-            name="description"
+          <span className="font-medium text-lg px-1">Token Price</span>
+          <Input
+            type="number"
+            name="tokenPrice"
             className="border-slate-300 focus:ring-1 focus:ring-purple-400"
-            placeholder="Type your Communities description..."
-            value={formFields.description}
+            placeholder="Enter Token Price"
+            value={formFields.tokenPrice}
             onChange={handleInputChange}
             required
           />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-medium text-lg px-1">Community Image URL</span>
+          <span className="font-medium text-lg px-1">Token Withdraw Price</span>
           <Input
-            name="communityImage"
+            type="number"
+            name="tokenWithDrawPrice"
             className="border-slate-300 focus:ring-1 focus:ring-purple-400"
-            placeholder="Type your Community Image URL..."
-            value={formFields.communityImage}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <span className="font-medium text-lg px-1">Token Image URL</span>
-          <Input
-            name="tokenImage"
-            className="border-slate-300 focus:ring-1 focus:ring-purple-400"
-            placeholder="Type your Token Image URL..."
-            value={formFields.tokenImage}
+            placeholder="Enter Token Withdraw Price"
+            value={formFields.tokenWithDrawPrice}
             onChange={handleInputChange}
             required
           />
         </div>
         <div className="flex items-center justify-between">
-          <Button onClick={() => setView("2")}>Back</Button>
-          <Button disabled={!allFieldsFilled()} onClick={handleViewChange}>
-            Next
+          <Button variant="radix" className="w-full" disabled={!allFieldsFilled()} onClick={handleDeploy}>
+            Deploy
           </Button>
         </div>
       </div>
@@ -131,4 +129,4 @@ const handleViewChange=()=>{
   );
 };
 
-export default DescribeView;
+export default DeployView;

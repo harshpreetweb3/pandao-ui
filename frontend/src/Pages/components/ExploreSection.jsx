@@ -27,7 +27,7 @@ const ExploreSection = () => {
     };
     setView("1")
     fetchBluePrint();
-  }, []);
+  }, [setView]);
   return (
     <div className="bg-slate-100 ">
       <div className=" flex flex-col items-start p-3 md:p-0  justify-start   -translate-y-24 mx-auto max-w-[1000px]">

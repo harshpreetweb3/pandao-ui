@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, CirclePlus, Pen, ShieldCheck } from "lucide-react";
-import StepsCard from "./StepsCard";
+
 import useViewStore from "@/store/view";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";

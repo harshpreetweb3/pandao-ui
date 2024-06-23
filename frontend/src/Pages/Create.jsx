@@ -3,6 +3,7 @@ import InstructionView from "./Create/components/InstructionView";
 import useViewStore from "@/store/view";
 import TemplateView from "./Create/components/TemplateView";
 import DescribeView from "./Create/components/DescribeDao";
+import DeployView from "./Create/components/DeployView";
 
 const Create = () => {
   const {view} = useViewStore();
@@ -16,6 +17,9 @@ const Create = () => {
       )}
             {view === "3" && (
        <DescribeView/>
+      )}
+              {view === "4" && (
+       <DeployView/>
       )}
     </div>
   );
