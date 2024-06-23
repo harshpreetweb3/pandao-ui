@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import useViewStore from "@/store/view";
 import axios from "axios";
 import { Building2, GraduationCap } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const ExploreSection = () => {
   const [data, setData] = useState([]);
+  const {setView}=useViewStore()
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -23,6 +25,7 @@ const ExploreSection = () => {
         setLoading(false);
       }
     };
+    setView("1")
     fetchBluePrint();
   }, []);
   return (

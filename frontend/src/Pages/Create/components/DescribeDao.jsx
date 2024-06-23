@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronRight, CirclePlus, Pen, ShieldCheck } from "lucide-react";
-import StepsCard from "./StepsCard";
+
 import useViewStore from "@/store/view";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
@@ -9,7 +8,7 @@ import { useAccount } from "@/AccountContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const TemplateView = () => {
+const DescribeView = () => {
   const { setView } = useViewStore();
   const navigate = useNavigate();
   const { accounts } = useAccount();
@@ -43,13 +42,13 @@ const TemplateView = () => {
       <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
         <div className="mb-6 flex flex-col gap-2">
           <div className="flex items-center justify-between ">
-            <div>Create your DAO</div>
-            <div>Step 1 of 3</div>
+            <div>Describe your DAO</div>
+            <div>Step 2 of 3</div>
           </div>
-          <Progress value={33} className="rounded-sm" />
+          <Progress value={66} className="rounded-sm" />
         </div>
 
-        <div className="text-4xl font-semibold">Select your template</div>
+        <div className="text-4xl font-semibold">Describe your DAO</div>
         <div className="flex md:flex-row flex-col items-center justify-between gap-3">
           <span className="w-full">
             Start simple and learn as you go. You can always evolve your DAO in
@@ -101,4 +100,4 @@ const TemplateView = () => {
   );
 };
 
-export default TemplateView;
+export default DescribeView;
