@@ -1,39 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import Createyourowndao from "./Explore/CreateYouOwnDoa";
-import Template from "./Explore/Template";
-import Activity from "./Explore/Activity";
+import { Card } from "@/components/ui/card";
+import { ChevronRight, CirclePlus, Pen, ShieldCheck } from "lucide-react";
+
+const StepsCard = ({step,title,icon:Icon}) => {
+  return (
+  <Card className="bg-white w-full text-black mt-10 p-5 flex flex-col gap-3 rounded-xl shadow-sm h-64">
+    <div className="bg-purple-50 rounded-md text-center flex items-center justify-center h-36">
+      <Icon className="h-16 w-16 text-purple-400" />
+    </div>
+    <div>
+      <div className="font-light">{step}</div>
+      <div className="font-semibold">{title}</div>
+    </div>
+  </Card> );
+};
 
 const Create = () => {
-    const [activeTab, setActiveTab] = useState(0);
-
-    const tabs = [
-      { label: 'Create your Own DAO', content: <Createyourowndao/> },
-      { label: 'Template', content: <Template/> },
-      { label: 'Platform Activity', content: <Activity/> },
-    
-    ];
   return (
-    <div className="min-h-screen py-10 px-5 bg-blue-50">
-      <div className="w-full max-w-[1440px] mx-auto mt-10 bg-white pt-5 rounded-xl shadow-md">
-      <div className="flex  gap-4 md:w-full px-2 flex-wrap">
-        {tabs.map((tab, index) => (
-          <Button
-            key={index}
-            variant={activeTab===index?"radix":"link"}
-            className={`flex-1 py-2 px-4 text-center focus:outline-none ${
-              activeTab === index ? '' : 'text-gray-600'
-            }`}
-            onClick={() => setActiveTab(index)}
-          >
-            {tab.label}
-          </Button>
-        ))}
+    <div className="min-h-screen py-10 px-5 bg-purple-50">
+      <div className="max-w-[1000px] mx-auto mt-20">
+        <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
+          <div className="text-4xl font-semibold">Build your DAO</div>
+          <div className="flex md:flex-row flex-col items-center justify-between gap-3">
+            <span className="w-full">
+              Start simple and learn as you go. You can always evolve your DAO
+              in the future.
+            </span>
+            <Button className="w-full md:w-1/3 group" variant="radix">
+              <span>Build you DAO</span>
+              <ChevronRight className="h-4 w-5 group-hover:translate-x-2 duration-200 transition-transform" />
+            </Button>
+          </div>
+        </Card>
+        <div className="grid grid-cols-4 w-full gap-5 ">
+          <StepsCard title="Select Template" step="Step 1" icon={CirclePlus}/>
+          <StepsCard title="Describe your DAO" step="Step 2" icon={Pen}/>
+          <StepsCard title="Deploy" step="Step 3" icon={ShieldCheck}/>
+        </div>
       </div>
-      <div className="p-4">
-        {tabs[activeTab].content}
-      </div>
-    </div>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import Product from "./Pages/product";
 import Aboutus from "./Pages/AboutUs";
 import Resource from "./Pages/resources";
 import UserDashboard from "./Pages/UserDashboard";
-import ExploreDao from "./Pages/exploreDao";
 import Deploy from "./Pages/Deploy";
 import DaoDetailsPage from "./Pages/DaoDetailsPage";
 import MyCommunity from "./Pages/MyCommunites";
