@@ -276,7 +276,7 @@ const CommunityDetails = () => {
                 Total Funds
                 </div>
                 <div className="bg-purple-600 shadow-lg w-28 flex items-center justify-center rounded-lg text-white p-1">
-                {data.funds}
+                {data.funds} XRD
                 </div>
                   
                 </Card>
@@ -381,7 +381,7 @@ const CommunityDetails = () => {
                           </span>
                         </div>
                       </div>
-                      <div className="h-20 w-20 ">
+                      <div className="h-36 w-36 -translate-y-3 ">
                         <PieChart
                           data={[
                             {
@@ -396,14 +396,14 @@ const CommunityDetails = () => {
                             },
                           ]}
                         />
-                        {/* <div className="text-sm w-full">
-                          <div>
-                            Total Token
+                        <div className="text-sm w-full flex flex-col items-center justify-center ">
+                        <div className="flex items-center justify-between w-28">
+                             Total Token: <span className="bg-[#BF40BF] h-4 w-4"></span>
                           </div>
-                          <div>
-                             Bought : <span className="bg-black h-20 w-20">sds</span>
+                          <div className="flex items-center justify-between w-28">
+                             Bought : <span className="bg-[#770737] h-4 w-4"></span>
                           </div>
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </Card>
