@@ -170,7 +170,50 @@ const CommunityDetails = () => {
       }
     }
   };
+  const handleSellToken = async () => {
+    const data = {
+      community_id: params.id,
+      userAddress: accounts[0].address,
+      tokenSupply: token,
+    };
 
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/manifest/build/sell_token/token_weighted_dao`,
+        data
+      );
+      console.log("Response:", removeNewLines(response.data.trim("")));
+      setManifest(response.data);
+    } catch (error) {
+      console.log("Error joining community:", error);
+      toast.error("Something went wrong");
+    }
+    const { receipt } = await sendTransaction(manifest).finally(() =>
+      setLoading(false)
+    );
+    let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        window.alert(error);
+      }
+    }
+  };
   const fetchDetails = async () => {
     try {
       const res = await axios.get(
@@ -339,6 +382,38 @@ const CommunityDetails = () => {
                       <div className="bg-slate-200 w-fit p-2 rounded-full">
                         <Bitcoin className=" text-blue-700" />
                       </div>
+                      <div className="flex items-center gap-1">
+                      <div>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="radix">Sell Token</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Sell Token</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                  Token
+                                </Label>
+                                <Input
+                                  id="name"
+                                  className="col-span-3"
+                                  placeholder="How many Token you want to Sell"
+                                  type="number"
+                                  onChange={(e) => setToken(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button variant="radix" onClick={handleSellToken}>
+                                Sell Token
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
+                      </div>
                       <div>
                         <Dialog>
                           <DialogTrigger asChild>
@@ -370,6 +445,8 @@ const CommunityDetails = () => {
                           </DialogContent>
                         </Dialog>
                       </div>
+                      </div>
+                   
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-3xl flex flex-col gap-3 font-semibold">
