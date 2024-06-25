@@ -90,6 +90,17 @@ const Navbar = () => {
           >
             <li>Comments</li>
           </NavLink>
+          <NavLink
+            to={`/community/detail/${params.id}/tokenDistribution`}
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-blue-800 w-36 text-center py-2 px-4 rounded-lg font-semibold"
+                : "bg-transparent text-black w-36 text-center py-2 px-4 rounded-lg hover:text-[#003bf5] "
+            }
+            end
+          >
+            <li>Vote Power</li>
+          </NavLink>
         </ul>
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">
           <radix-connect-button />

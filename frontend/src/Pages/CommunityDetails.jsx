@@ -275,7 +275,7 @@ const CommunityDetails = () => {
                 <div>
                 Total Funds
                 </div>
-                <div className="bg-purple-600 shadow-lg w-28 flex items-center justify-center rounded-lg text-white p-1">
+                <div className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white p-1">
                 {data.funds} XRD
                 </div>
                   
@@ -396,7 +396,7 @@ const CommunityDetails = () => {
                             },
                           ]}
                         />
-                        <div className="text-sm w-full flex flex-col items-center justify-center ">
+                        <div className="text-sm w-full flex-col items-center justify-center md:flex hidden ">
                         <div className="flex items-center justify-between w-28">
                              Total Token: <span className="bg-[#BF40BF] h-4 w-4"></span>
                           </div>

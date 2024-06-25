@@ -19,6 +19,7 @@ import UserDashboardLayout from "./Layout/UserDashboardLayout";
 import EditPage from "./Pages/UserDasboard/EditPage";
 import One from './Pages/Resources/Blogs/One'
 import Create from "./Pages/Create";
+import TokenDistribution from "./Pages/CommunityPage/TokenDistribution";
 
 function App() {
   return (
@@ -55,6 +56,8 @@ function App() {
           <Route index element={<CommunityDetails />} />
           <Route path="members" element={<Members />} />
           <Route path="comments" element={<Comments />} />
+          <Route path="tokenDistribution" element={<TokenDistribution />} />
+
           
         </Route>
    
