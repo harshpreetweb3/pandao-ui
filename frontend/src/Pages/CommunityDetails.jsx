@@ -36,6 +36,9 @@ function removeNewLines(input) {
 
 const CommunityDetails = () => {
   const { accounts } = useAccount();
+  const [openBuyModal,setBuyModal]=useState(false)
+  const [openSellModal,setSellModal]=useState(false)
+
   const navigate = useNavigate();
   const params = useParams();
   const [data, setData] = useState([]);
@@ -165,6 +168,8 @@ const CommunityDetails = () => {
           }
         );
         console.log(response.data);
+        toast.success("Token Bought");
+        setBuyModal(false)
       } catch (error) {
         window.alert(error);
       }
@@ -209,6 +214,9 @@ const CommunityDetails = () => {
           }
         );
         console.log(response.data);
+        toast.success("Token Sold");
+
+        setSellModal(false)
       } catch (error) {
         window.alert(error);
       }
@@ -384,7 +392,7 @@ const CommunityDetails = () => {
                       </div>
                       <div className="flex items-center gap-1">
                       <div>
-                        <Dialog>
+                        <Dialog open={openSellModal} onOpenChange={setSellModal}>
                           <DialogTrigger asChild>
                             <Button variant="radix">Sell Token</Button>
                           </DialogTrigger>
@@ -415,7 +423,7 @@ const CommunityDetails = () => {
                         </Dialog>
                       </div>
                       <div>
-                        <Dialog>
+                        <Dialog open={openBuyModal} onOpenChange={setBuyModal} >
                           <DialogTrigger asChild>
                             <Button variant="radix">Buy Token</Button>
                           </DialogTrigger>
