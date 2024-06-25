@@ -5,12 +5,20 @@ import { Card } from "@/components/ui/card";
 import AvatarCircles from "@/components/ui/myComponents/avatarCircle";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { Bitcoin, Check, ChevronRight, Contact, Copy, Users } from "lucide-react";
+import {
+  Bitcoin,
+  Check,
+  ChevronRight,
+  Contact,
+  Copy,
+  Users,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import extractTransactionsData from "@/utils/GetTransactionRecipt";
+import { PieChart } from "react-minimal-pie-chart";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +45,7 @@ const CommunityDetails = () => {
   const sendTransaction = useSendTransaction();
   const [loading, setLoading] = useState(false);
   const [manifest, setManifest] = useState("");
-const [token,setToken]=useState(0)
+  const [token, setToken] = useState(0);
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
     setCopied(true);
@@ -222,7 +230,6 @@ const [token,setToken]=useState(0)
                       Join Community
                     </Button>
                   )}
-          
                 </div>
               </div>
               <div className="grid gap-4">
@@ -264,6 +271,15 @@ const [token,setToken]=useState(0)
             </Card>
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
               <div className="md:w-[60%] space-y-3">
+              <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
+                <div>
+                Total Funds
+                </div>
+                <div className="bg-purple-600 shadow-lg w-28 flex items-center justify-center rounded-lg text-white p-1">
+                {data.funds}
+                </div>
+                  
+                </Card>
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
                   {comments.length === 0 && <div>No Comment</div>}
                   <div className="space-y-4">
@@ -318,59 +334,77 @@ const [token,setToken]=useState(0)
               </div>
               <div className="md:w-[40%] space-y-6 w-[100%]  ">
                 <div className="flex flex-col gap-2 w-full ">
-                <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
+                  <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
                     <div className="flex items-center justify-between">
                       <div className="bg-slate-200 w-fit p-2 rounded-full">
                         <Bitcoin className=" text-blue-700" />
                       </div>
                       <div>
-                      <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="radix">Buy Token</Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Buy Token</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="text-right">
-                            Token
-                          </Label>
-                          <Input
-                            id="name"
-                            className="col-span-3"
-                            placeholder="How many Token you want to buy"
-                            type="number"
-                            onChange={(e)=>setToken(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button variant="radix" onClick={handleBuyToken}>
-                          Buy Token
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button variant="radix">Buy Token</Button>
+                          </DialogTrigger>
+                          <DialogContent className="sm:max-w-[425px]">
+                            <DialogHeader>
+                              <DialogTitle>Buy Token</DialogTitle>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                              <div className="grid grid-cols-4 items-center gap-4">
+                                <Label htmlFor="name" className="text-right">
+                                  Token
+                                </Label>
+                                <Input
+                                  id="name"
+                                  className="col-span-3"
+                                  placeholder="How many Token you want to buy"
+                                  type="number"
+                                  onChange={(e) => setToken(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter>
+                              <Button variant="radix" onClick={handleBuyToken}>
+                                Buy Token
+                              </Button>
+                            </DialogFooter>
+                          </DialogContent>
+                        </Dialog>
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-3xl flex flex-col gap-3 font-semibold">
-                        <span>
-                        {data.total_token} Tokens
-
-                        </span>
+                        <span>{data.total_token} Tokens</span>
                         <div className="flex flex-col text-base">
+                          <span>Token Price: {data.token_price}</span>
                           <span>
-                        Token Price:  {data.token_price} 
-                          </span>
-                          <span>
-                         Token Buy Back Price : {data.token_buy_back_price}
+                            Token Buy Back Price : {data.token_buy_back_price}
                           </span>
                         </div>
                       </div>
-               
+                      <div className="h-20 w-20 ">
+                        <PieChart
+                          data={[
+                            {
+                              title: "Total Token",
+                              value: data.total_token,
+                              color: "#BF40BF",
+                            },
+                            {
+                              title: "Token Bought",
+                              value: data.token_bought,
+                              color: "#770737",
+                            },
+                          ]}
+                        />
+                        {/* <div className="text-sm w-full">
+                          <div>
+                            Total Token
+                          </div>
+                          <div>
+                             Bought : <span className="bg-black h-20 w-20">sds</span>
+                          </div>
+                        </div> */}
+                      </div>
                     </div>
                   </Card>
                   <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
