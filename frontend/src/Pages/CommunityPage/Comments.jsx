@@ -108,7 +108,7 @@ const Comments = () => {
                                 className="group"
                                 onClick={() =>
                                   navigate(
-                                    `/userProfile/${comment.user_address}`
+                                    `/userDashboard/userProfile/${comment.user_address}`
                                   )
                                 }
                               >

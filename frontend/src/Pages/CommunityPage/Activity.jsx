@@ -109,7 +109,7 @@ const Activity = () => {
                                 className="group"
                                 onClick={() =>
                                   navigate(
-                                    `/userProfile/${ac.user_address}`
+                                    `/userDashboard/userProfile/${ac.user_address}`
                                   )
                                 }
                               >
