@@ -20,6 +20,7 @@ import EditPage from "./Pages/UserDasboard/EditPage";
 import One from './Pages/Resources/Blogs/One'
 import Create from "./Pages/Create";
 import TokenDistribution from "./Pages/CommunityPage/TokenDistribution";
+import Activity from "./Pages/CommunityPage/Activity";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           <Route path="members" element={<Members />} />
           <Route path="comments" element={<Comments />} />
           <Route path="tokenDistribution" element={<TokenDistribution />} />
+          <Route path="activity" element={<Activity />} />
 
           
         </Route>
