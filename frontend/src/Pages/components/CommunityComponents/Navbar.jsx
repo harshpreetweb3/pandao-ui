@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate, useParams } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import MobileSidebar from "../MobileSidebar";
-import { ChevronLeft, Rocket } from "lucide-react";
+import { ChevronLeft} from "lucide-react";
 import { useRdt } from "@/hooks/useRdt";
 import axios from "axios";
 import MobileNav from "./MobileNav";
@@ -111,6 +111,17 @@ const Navbar = () => {
             end
           >
             <li>Activity</li>
+          </NavLink>
+          <NavLink
+            to={`/community/detail/${params.id}/proposals`}
+            className={({ isActive }) =>
+              isActive
+                ? "bg-white text-blue-800 w-36 text-center py-2 px-4 rounded-lg font-semibold"
+                : "bg-transparent text-black w-36 text-center py-2 px-4 rounded-lg hover:text-[#003bf5] "
+            }
+            end
+          >
+            <li>Proposals</li>
           </NavLink>
         </ul>
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">

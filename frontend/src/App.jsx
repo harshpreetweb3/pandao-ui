@@ -21,6 +21,7 @@ import One from './Pages/Resources/Blogs/One'
 import Create from "./Pages/Create";
 import TokenDistribution from "./Pages/CommunityPage/TokenDistribution";
 import Activity from "./Pages/CommunityPage/Activity";
+import Proposals from "./Pages/CommunityPage/Proposals";
 
 function App() {
   return (
@@ -59,6 +60,8 @@ function App() {
           <Route path="comments" element={<Comments />} />
           <Route path="tokenDistribution" element={<TokenDistribution />} />
           <Route path="activity" element={<Activity />} />
+          <Route path="proposals" element={<Proposals />} />
+
 
           
         </Route>

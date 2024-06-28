@@ -36,8 +36,8 @@ function removeNewLines(input) {
 
 const CommunityDetails = () => {
   const { accounts } = useAccount();
-  const [openBuyModal,setBuyModal]=useState(false)
-  const [openSellModal,setSellModal]=useState(false)
+  const [openBuyModal, setBuyModal] = useState(false);
+  const [openSellModal, setSellModal] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -169,7 +169,7 @@ const CommunityDetails = () => {
         );
         console.log(response.data);
         toast.success("Token Bought");
-        setBuyModal(false)
+        setBuyModal(false);
       } catch (error) {
         window.alert(error);
       }
@@ -216,7 +216,7 @@ const CommunityDetails = () => {
         console.log(response.data);
         toast.success("Token Sold");
 
-        setSellModal(false)
+        setSellModal(false);
       } catch (error) {
         window.alert(error);
       }
@@ -322,14 +322,22 @@ const CommunityDetails = () => {
             </Card>
             <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
               <div className="md:w-[60%] space-y-3">
-              <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
-                <div>
-                Total Funds
-                </div>
-                <div className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white p-1">
-                {data.funds} XRD
-                </div>
-                  
+                <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
+                  <div>Total Proposals</div>
+                  <div className="flex items-center gap-2">
+                    <div  onClick={() =>
+                      navigate(`/community/detail/${params.id}/proposals`)
+                    } className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white py-1 px-2 cursor-pointer ">
+                      New Proposal
+                    </div>
+                   
+                  </div>
+                </Card>
+                <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
+                  <div>Total Funds</div>
+                  <div className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white p-1">
+                    {data.funds} XRD
+                  </div>
                 </Card>
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
                   {comments.length === 0 && <div>No Comment</div>}
@@ -391,70 +399,81 @@ const CommunityDetails = () => {
                         <Bitcoin className=" text-blue-700" />
                       </div>
                       <div className="flex items-center gap-1">
-                      <div>
-                        <Dialog open={openSellModal} onOpenChange={setSellModal}>
-                          <DialogTrigger asChild>
-                            <Button variant="radix">Sell Token</Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Sell Token</DialogTitle>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right">
-                                  Token
-                                </Label>
-                                <Input
-                                  id="name"
-                                  className="col-span-3"
-                                  placeholder="How many Token you want to Sell"
-                                  type="number"
-                                  onChange={(e) => setToken(e.target.value)}
-                                />
+                        <div>
+                          <Dialog
+                            open={openSellModal}
+                            onOpenChange={setSellModal}
+                          >
+                            <DialogTrigger asChild>
+                              <Button variant="radix">Sell Token</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>Sell Token</DialogTitle>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                  <Label htmlFor="name" className="text-right">
+                                    Token
+                                  </Label>
+                                  <Input
+                                    id="name"
+                                    className="col-span-3"
+                                    placeholder="How many Token you want to Sell"
+                                    type="number"
+                                    onChange={(e) => setToken(e.target.value)}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <DialogFooter>
-                              <Button variant="radix" onClick={handleSellToken}>
-                                Sell Token
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
-                      </div>
-                      <div>
-                        <Dialog open={openBuyModal} onOpenChange={setBuyModal} >
-                          <DialogTrigger asChild>
-                            <Button variant="radix">Buy Token</Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                              <DialogTitle>Buy Token</DialogTitle>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                              <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right">
-                                  Token
-                                </Label>
-                                <Input
-                                  id="name"
-                                  className="col-span-3"
-                                  placeholder="How many Token you want to buy"
-                                  type="number"
-                                  onChange={(e) => setToken(e.target.value)}
-                                />
+                              <DialogFooter>
+                                <Button
+                                  variant="radix"
+                                  onClick={handleSellToken}
+                                >
+                                  Sell Token
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
+                        <div>
+                          <Dialog
+                            open={openBuyModal}
+                            onOpenChange={setBuyModal}
+                          >
+                            <DialogTrigger asChild>
+                              <Button variant="radix">Buy Token</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>Buy Token</DialogTitle>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                  <Label htmlFor="name" className="text-right">
+                                    Token
+                                  </Label>
+                                  <Input
+                                    id="name"
+                                    className="col-span-3"
+                                    placeholder="How many Token you want to buy"
+                                    type="number"
+                                    onChange={(e) => setToken(e.target.value)}
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            <DialogFooter>
-                              <Button variant="radix" onClick={handleBuyToken}>
-                                Buy Token
-                              </Button>
-                            </DialogFooter>
-                          </DialogContent>
-                        </Dialog>
+                              <DialogFooter>
+                                <Button
+                                  variant="radix"
+                                  onClick={handleBuyToken}
+                                >
+                                  Buy Token
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
+                        </div>
                       </div>
-                      </div>
-                   
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="text-3xl flex flex-col gap-3 font-semibold">
@@ -482,11 +501,13 @@ const CommunityDetails = () => {
                           ]}
                         />
                         <div className="text-sm w-full flex-col items-center justify-center md:flex hidden ">
-                        <div className="flex items-center justify-between w-28">
-                             Total Token: <span className="bg-[#BF40BF] h-4 w-4"></span>
+                          <div className="flex items-center justify-between w-28">
+                            Total Token:{" "}
+                            <span className="bg-[#BF40BF] h-4 w-4"></span>
                           </div>
                           <div className="flex items-center justify-between w-28">
-                             Bought : <span className="bg-[#770737] h-4 w-4"></span>
+                            Bought :{" "}
+                            <span className="bg-[#770737] h-4 w-4"></span>
                           </div>
                         </div>
                       </div>
