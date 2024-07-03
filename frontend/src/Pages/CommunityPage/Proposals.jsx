@@ -97,10 +97,10 @@ const Proposals = () => {
           }
         );
         console.log(response.data);
-        toast.success("Token Bought");
+        toast.success("Proposal Submitted");
         setLoadingButton(false);
       } catch (error) {
-        toast.error("Somwthing went wrong");
+        toast.error("Something went wrong");
         setLoadingButton(false);
       }
     }
@@ -135,7 +135,7 @@ const Proposals = () => {
                     </div>
                   </div>
                   <div className="text-3xl font-semibold">
-                    {proposal.length} Proposals so far.
+                    Proposals so far.
                   </div>
                 </Card>
                 <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
