@@ -22,6 +22,7 @@ const Proposals = () => {
   const params = useParams();
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
   const [form, setShowForm] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -51,7 +52,7 @@ const Proposals = () => {
     }
 
     try {
-    
+    setLoadingButton(true)
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/build/praposal`,
 
@@ -73,8 +74,11 @@ const Proposals = () => {
       console.error("Error submitting proposal:", error);
       // Handle error (e.g., show error message to user)
     }
-    const { receipt } = await sendTransaction(manifest).finally(() =>
+    const { receipt } = await sendTransaction(manifest).finally(() =>{
       setLoading(false)
+      setLoadingButton(false)
+    }
+   
     );
     let txId = receipt.transaction.intent_hash;
     if (txId) {
@@ -93,9 +97,11 @@ const Proposals = () => {
         );
         console.log(response.data);
         toast.success("Token Bought");
+        setLoadingButton(false)
       
       } catch (error) {
-        window.alert(error);
+        toast.error("Somwthing went wrong");
+        setLoadingButton(false)
       }
     }
   };
@@ -107,7 +113,6 @@ const Proposals = () => {
     navigate("/");
     return null;
   }
-  console.log(startDate, endDate);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
       {form ? (
@@ -230,9 +235,12 @@ const Proposals = () => {
                   />
                 </div>
               </div>
-              <Button variant="radix" className="w-full mt-2">
+              {loadingButton ? ( <Button variant="radix" disabled className="w-full mt-2">
+                Submitting....
+              </Button> ) :  <Button variant="radix" className="w-full mt-2">
                 Submit Proposal
-              </Button>
+              </Button>}
+      
             </form>
           </div>
         </div>
