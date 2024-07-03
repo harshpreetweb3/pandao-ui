@@ -2,28 +2,28 @@ import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import {
-
-    ActivityIcon,
-  HandHelping,
-  MessageCircle,
-
-} from "lucide-react";
+import { HandHelping } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import CustomDatePicker from "./components/CustomDatePicker";
+import { Input } from "@/components/ui/input";
 const Proposals = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
   const [activity, setActivity] = useState([]);
   const [loading, setLoading] = useState(true);
-
-
+  const [form, setShowForm] = useState(true);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [minimumQuorum, setMinimumQuorum] = useState("");
+  const [proposalText, setProposalText] = useState("");
   const fetchComments = async () => {
     try {
       const res = await axios.get(
@@ -35,6 +35,36 @@ const Proposals = () => {
       console.error("Error fetching blueprint data:", error);
     }
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate form inputs
+    if (!proposalText || !startDate || !endDate || !minimumQuorum) {
+      alert("Please fill out all fields.");
+      return;
+    }
+
+    try {
+    
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/build/praposal`,
+        {
+          community_id: params.id,
+          minimumQuorum: parseInt(minimumQuorum),
+          start_time: startDate.toISOString(),
+          end_time: endDate.toISOString(),
+          proposal: proposalText,
+        }
+      );
+
+      // Handle successful submission (e.g., navigate to success page, show confirmation)
+      console.log("Proposal submitted successfully:", res.data);
+      // Optionally update UI or navigate to another page after successful submission
+    } catch (error) {
+      console.error("Error submitting proposal:", error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
   useEffect(() => {
     fetchComments();
   }, [params.id]);
@@ -43,79 +73,136 @@ const Proposals = () => {
     navigate("/");
     return null;
   }
+  console.log(startDate, endDate);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
-      <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
-        <div className="space-y-6 md:w-[100%] ">
-          <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-            <div className="md:w-[100%] space-y-6  ">
-              <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
-                <div className="flex items-center justify-between">
-                  <div className="bg-slate-200 w-fit p-2 rounded-full">
-                    <HandHelping className=" text-blue-700" />
+      {form ? (
+        <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
+          <div className="space-y-6 md:w-[100%] ">
+            <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
+              <div className="md:w-[100%] space-y-6  ">
+                <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
+                  <div className="flex items-center justify-between">
+                    <div className="bg-slate-200 w-fit p-2 rounded-full">
+                      <HandHelping className=" text-blue-700" />
+                    </div>
+                    <div>
+                      <Button
+                        onClick={() => setShowForm(!form)}
+                        variant="radix"
+                      >
+                        Create Proposal
+                      </Button>
+                    </div>
                   </div>
-                  <div>
-                    <Button variant="radix">
-                      Create Proposal
-                    </Button>
+                  <div className="text-3xl font-semibold">
+                    {activity.length} Activities so far.
                   </div>
-                </div>
-                <div className="text-3xl font-semibold">
-                  {activity.length} Activities so far.
-                </div>
-              </Card>
-              <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
-                <div className="p-2 border-b-2 -translate-x-2">Activity</div>
-                {!loading && (
-                  <div className="space-y-4">
-                    {activity &&
-                      activity.map((ac, index) => (
-                        <div
-                          key={index}
-                          className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
-                        >
-                          <Avatar className="shrink-0 object-cover">
-                            <img src={ac.user_image_url} alt="Avatar" />
-                            <AvatarFallback>JD</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <div
-                                className="group"
-                                onClick={() =>
-                                  navigate(
-                                    `/userDashboard/userProfile/${ac.user_address}`
-                                  )
-                                }
-                              >
-                                <div className="font-medium group-hover:underline cursor-pointer">
-                                  {ac.user_name}
+                </Card>
+                <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
+                  <div className="p-2 border-b-2 -translate-x-2">Activity</div>
+                  {!loading && (
+                    <div className="space-y-4">
+                      {activity &&
+                        activity.map((ac, index) => (
+                          <div
+                            key={index}
+                            className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
+                          >
+                            <Avatar className="shrink-0 object-cover">
+                              <img src={ac.user_image_url} alt="Avatar" />
+                              <AvatarFallback>JD</AvatarFallback>
+                            </Avatar>
+                            <div className="flex-1 space-y-2">
+                              <div className="flex items-center justify-between">
+                                <div
+                                  className="group"
+                                  onClick={() =>
+                                    navigate(
+                                      `/userDashboard/userProfile/${ac.user_address}`
+                                    )
+                                  }
+                                >
+                                  <div className="font-medium group-hover:underline cursor-pointer">
+                                    {ac.user_name}
+                                  </div>
+                                  <div className="font-light group-hover:underline cursor-pointer">
+                                    {clipAddress(ac.user_address)}
+                                  </div>
                                 </div>
-                                <div className="font-light group-hover:underline cursor-pointer">
-                                  {clipAddress(ac.user_address)}
-                                </div>
+                                {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
                               </div>
-                              {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
+                              <p className="text-gray-800 dark:text-gray-400 font-medium">
+                                {ac.info}
+                              </p>
                             </div>
-                            <p className="text-gray-800 dark:text-gray-400 font-medium">
-                              {ac.info}
-                            </p>
                           </div>
-                        </div>
-                      ))}
-               
-                  </div>
-                )}
-                {loading && (
-                   <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
-                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
-                </div>
-                )}
-              </Card>
+                        ))}
+                    </div>
+                  )}
+                  {loading && (
+                    <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                    </div>
+                  )}
+                </Card>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center max-w-[1440px] mx-auto my-12 p-2">
+          <div className="text-4xl font-semibold p-4  bg-white w-full text-center">
+            Proposal Form
+          </div>
+          <div className="flex items-center justify-center p-2 w-full mx-auto">
+            <form className="w-1/2 flex flex-col gap-2" onSubmit={handleSubmit}>
+              <div className="flex flex-col gap-2">
+                <Label className="text-2xl p-1">Proposal</Label>
+                <Textarea
+                  placeholder="Type your proposal here ..."
+                  value={proposalText}
+                  onChange={(e) => setProposalText(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col mt-3 gap-3 w-full ">
+                <div className="text-xl p-1">Proposal Timing</div>
+                <div className="flex items-center justify-between">
+                  <div>To:</div>
+                  <label className="">
+                    <DatePicker
+                      selected={startDate}
+                      onChange={(date) => setStartDate(date)}
+                      customInput={<CustomDatePicker />}
+                    />
+                  </label>
+                  <div>From:</div>
+                  <label>
+                    <DatePicker
+                      selected={endDate}
+                      onChange={(date) => setEndDate(date)}
+                      customInput={<CustomDatePicker />}
+                    />
+                  </label>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <Label className="text-2xl p-1">Minimum Quorum</Label>
+                  <Input
+                    placeholder="Enter Minimum quorum"
+                    type="number"
+                    value={minimumQuorum}
+                    onChange={(e) => setMinimumQuorum(e.target.value)}
+                  />
+                </div>
+              </div>
+              <Button variant="radix" className="w-full mt-2">
+                Submit Proposal
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
