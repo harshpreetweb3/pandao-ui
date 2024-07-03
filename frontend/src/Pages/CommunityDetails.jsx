@@ -399,6 +399,7 @@ const CommunityDetails = () => {
                         <Bitcoin className=" text-blue-700" />
                       </div>
                       <div className="flex items-center gap-1">
+                      {data.total_token > 0 && data.token_bought > 0 && (
                         <div>
                           <Dialog
                             open={openSellModal}
@@ -435,7 +436,8 @@ const CommunityDetails = () => {
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
-                        </div>
+                        </div>)}
+                        {data.total_token > data.token_bought && (
                         <div>
                           <Dialog
                             open={openBuyModal}
@@ -472,7 +474,7 @@ const CommunityDetails = () => {
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
-                        </div>
+                        </div>)}
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -490,7 +492,7 @@ const CommunityDetails = () => {
                           data={[
                             {
                               title: "Total Token",
-                              value: data.total_token,
+                              value: data.total_token-data.token_bought,
                               color: "#BF40BF",
                             },
                             {

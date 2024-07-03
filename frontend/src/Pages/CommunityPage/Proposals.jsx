@@ -13,6 +13,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CustomDatePicker from "./components/CustomDatePicker";
 import { Input } from "@/components/ui/input";
+import { useSendTransaction } from "@/hooks/useSendTransaction";
+import { toast } from "sonner";
+
 const Proposals = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
@@ -24,6 +27,9 @@ const Proposals = () => {
   const [endDate, setEndDate] = useState(new Date());
   const [minimumQuorum, setMinimumQuorum] = useState("");
   const [proposalText, setProposalText] = useState("");
+  const [manifest, setManifest] = useState("");
+  const sendTransaction = useSendTransaction();
+
   const fetchComments = async () => {
     try {
       const res = await axios.get(
@@ -48,21 +54,49 @@ const Proposals = () => {
     
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/build/praposal`,
+
         {
+          userAddress:accounts[0].address,
           community_id: params.id,
-          minimumQuorum: parseInt(minimumQuorum),
-          start_time: startDate.toISOString(),
-          end_time: endDate.toISOString(),
+          minimumquorum: parseInt(minimumQuorum),
+          start_time: JSON.stringify(Math.floor(startDate.getTime() / 1000)), 
+          end_time: JSON.stringify(Math.floor(endDate.getTime() / 1000)), 
           proposal: proposalText,
         }
       );
 
       // Handle successful submission (e.g., navigate to success page, show confirmation)
       console.log("Proposal submitted successfully:", res.data);
+      setManifest(res.data)
       // Optionally update UI or navigate to another page after successful submission
     } catch (error) {
       console.error("Error submitting proposal:", error);
       // Handle error (e.g., show error message to user)
+    }
+    const { receipt } = await sendTransaction(manifest).finally(() =>
+      setLoading(false)
+    );
+    let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        toast.success("Token Bought");
+      
+      } catch (error) {
+        window.alert(error);
+      }
     }
   };
   useEffect(() => {
