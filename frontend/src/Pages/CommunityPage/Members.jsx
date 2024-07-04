@@ -82,6 +82,10 @@ const Members = () => {
                 <div className="p-2 border-b-2 -translate-x-2">
                     Members
                 </div>
+                {participants.length===0 && <div className="flex items-center justify-center h-20">
+
+                  Be the first one to join the community
+                </div> }
                   {participants.length > 0 &&
                     participants.map((participant, index) => (
 

@@ -78,11 +78,11 @@ const Comments = () => {
                   <div className="bg-slate-200 w-fit p-2 rounded-full">
                     <MessageCircle className=" text-blue-700" />
                   </div>
-                  <div>
+                  {/* <div>
                     <Button variant="radix">
                       Manage Comments
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="text-3xl font-semibold">
                   {comments.length} Comments so far.

@@ -94,6 +94,7 @@ const TokenDistribution = () => {
                 <div className="text-3xl font-semibold">Vote Power</div>
               </Card>
               <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
+                
                 <Table>
                   {/* <TableCaption>A list of your recent .</TableCaption> */}
                   <TableHeader>
@@ -104,6 +105,7 @@ const TokenDistribution = () => {
                       {/* <TableHead className="text-right">Amount</TableHead> */}
                     </TableRow>
                   </TableHeader>
+                
                   <TableBody>
                     {tokens.map((token, index) => (
                       <TableRow key={index}>
@@ -123,6 +125,9 @@ const TokenDistribution = () => {
                     ))}
                   </TableBody>
                 </Table>
+                {tokens.length===0 && <div className="flex items-center justify-center h-20">
+                    No trade happend yet.
+                  </div>}
               </Card>
             </div>
           </div>
