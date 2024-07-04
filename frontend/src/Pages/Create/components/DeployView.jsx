@@ -222,9 +222,12 @@ navigate("/");
           />
         </div>
         <div className="flex items-center justify-between">
-          <Button variant="radix" className="w-full" disabled={!allFieldsFilled()} onClick={handleClaimToken}>
+          {loading ?(<Button variant="radix" className="w-full" disabled>
+            Deploying....
+          </Button>) :( <Button variant="radix" className="w-full" disabled={!allFieldsFilled()} onClick={handleClaimToken}>
             Deploy
-          </Button>
+          </Button>)}
+         
         </div>
       </div>
     </div>
