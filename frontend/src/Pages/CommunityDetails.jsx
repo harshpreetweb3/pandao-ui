@@ -423,6 +423,7 @@ const CommunityDetails = () => {
                                     placeholder="How many Token you want to Sell"
                                     type="number"
                                     onChange={(e) => setToken(e.target.value)}
+                                    required
                                   />
                                 </div>
                               </div>
@@ -430,6 +431,7 @@ const CommunityDetails = () => {
                                 <Button
                                   variant="radix"
                                   onClick={handleSellToken}
+                                  disabled={!token}
                                 >
                                   Sell Token
                                 </Button>
@@ -461,6 +463,7 @@ const CommunityDetails = () => {
                                     placeholder="How many Token you want to buy"
                                     type="number"
                                     onChange={(e) => setToken(e.target.value)}
+                                    required
                                   />
                                 </div>
                               </div>
@@ -468,6 +471,7 @@ const CommunityDetails = () => {
                                 <Button
                                   variant="radix"
                                   onClick={handleBuyToken}
+                                  disabled={!token}
                                 >
                                   Buy Token
                                 </Button>
