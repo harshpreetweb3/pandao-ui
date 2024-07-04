@@ -29,6 +29,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
+import useCustomAlertStore from "@/store/customAlertStore";
+import { CustomAlert } from "./GlobalComponents/CustomAlert";
 
 function removeNewLines(input) {
   return input.replace(/\n\s*/g, " ");
@@ -38,6 +40,8 @@ const CommunityDetails = () => {
   const { accounts } = useAccount();
   const [openBuyModal, setBuyModal] = useState(false);
   const [openSellModal, setSellModal] = useState(false);
+  const {setOpen,setText}=useCustomAlertStore()
+
 
   const navigate = useNavigate();
   const params = useParams();
@@ -137,6 +141,7 @@ const CommunityDetails = () => {
     };
 
     try {
+      setLoading(true)
       const response = await axios.post(
         `${
           import.meta.env.VITE_BACKEND_URL
@@ -148,6 +153,9 @@ const CommunityDetails = () => {
     } catch (error) {
       console.log("Error joining community:", error);
       toast.error("Something went wrong");
+      setText("Please join the community")
+      setOpen(true)
+      setLoading(false)
     }
     const { receipt } = await sendTransaction(manifest).finally(() =>
       setLoading(false)
@@ -169,7 +177,10 @@ const CommunityDetails = () => {
         );
         console.log(response.data);
         toast.success("Token Bought");
+        setText("Token Bought")
+        setOpen(true)
         setBuyModal(false);
+        setLoading(false)
       } catch (error) {
         window.alert(error);
       }
@@ -183,6 +194,7 @@ const CommunityDetails = () => {
     };
 
     try {
+      setLoading(true)
       const response = await axios.post(
         `${
           import.meta.env.VITE_BACKEND_URL
@@ -215,8 +227,10 @@ const CommunityDetails = () => {
         );
         console.log(response.data);
         toast.success("Token Sold");
-
+        setText("Token Sold")
+        setOpen(true)
         setSellModal(false);
+        setLoading(false)
       } catch (error) {
         window.alert(error);
       }
@@ -267,6 +281,7 @@ const CommunityDetails = () => {
   );
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 to-purple-50 text-black px-2">
+      <CustomAlert/>
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
@@ -428,13 +443,19 @@ const CommunityDetails = () => {
                                 </div>
                               </div>
                               <DialogFooter>
-                                <Button
+                              {loading ?   <Button
+                                  variant="radix"
+                                  disabled
+                                >
+                            Selling...   
+                                </Button> :   <Button
                                   variant="radix"
                                   onClick={handleSellToken}
                                   disabled={!token}
                                 >
-                                  Sell Token
-                                </Button>
+                            Sell Token    
+                                </Button> }
+                              
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
@@ -468,13 +489,19 @@ const CommunityDetails = () => {
                                 </div>
                               </div>
                               <DialogFooter>
-                                <Button
+                              {loading ?   <Button
+                                  variant="radix"
+                                  disabled
+                                >
+                            Buying...   
+                                </Button> :   <Button
                                   variant="radix"
                                   onClick={handleBuyToken}
                                   disabled={!token}
                                 >
-                                  Buy Token
-                                </Button>
+                            Buy Token    
+                                </Button> }
+                              
                               </DialogFooter>
                             </DialogContent>
                           </Dialog>
