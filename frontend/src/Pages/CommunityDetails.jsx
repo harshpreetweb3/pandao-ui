@@ -527,7 +527,7 @@ const CommunityDetails = () => {
                           }
                           variant="radix"
                         >
-                          Manage members
+                          View members
                         </Button>
                       </div>
                     </div>

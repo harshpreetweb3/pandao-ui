@@ -61,11 +61,11 @@ const Members = () => {
                     <div className="bg-slate-200 w-fit p-2 rounded-full">
                       <Users className=" text-blue-700" />
                     </div>
-                    <div>
+                    {/* <div>
                       <Button variant="radix" >
                         Manage members
                       </Button>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="flex items-center justify-between">
                       <div className="text-3xl font-semibold">
