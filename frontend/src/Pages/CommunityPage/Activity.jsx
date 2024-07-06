@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { SkeletonCard } from "../GlobalComponents/Skeleton";
 
 const Activity = () => {
   const { accounts } = useAccount();
@@ -132,8 +133,9 @@ const Activity = () => {
                   </div>
                 )}
                 {loading && (
-                   <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
-                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                   <div className="flex flex-col h-[200px] items-center justify-center text-center  mt-5  ">
+             <SkeletonCard/>
+          
                 </div>
                 )}
               </Card>
