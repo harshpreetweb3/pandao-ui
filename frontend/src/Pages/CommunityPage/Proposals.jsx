@@ -144,6 +144,15 @@ const Proposals = () => {
                   </div>
                   {!loading && (
                     <div className="space-y-4">
+                    {!proposal && (
+                       <div className="flex items-center justify-center h-10">
+                        No Active Proposal
+                       </div>
+                      )}
+                    </div>
+                  )}
+                  {!loading && (
+                    <div className="space-y-4">
                       {proposal && (
                         <div className="flex  flex-col items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black">
                           <div>{proposal.proposal}</div>
