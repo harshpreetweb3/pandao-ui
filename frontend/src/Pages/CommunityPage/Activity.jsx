@@ -8,6 +8,7 @@ import axios from "axios";
 import {
 
     ActivityIcon,
+  ClockIcon,
   MessageCircle,
 
 } from "lucide-react";
@@ -15,7 +16,22 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { SkeletonCard } from "../GlobalComponents/Skeleton";
+function formatStandardDateTime(isoString) {
+  const date = new Date(isoString);
 
+  // Get the components of the date and time
+  const year = date.getFullYear();
+  const month = date.toLocaleString('default', { month: 'long' });
+  const day = date.getDate();
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const seconds = date.getSeconds().toString().padStart(2, '0');
+
+  // Construct the formatted string
+  const formattedDate = `${month} ${day}, ${year}, ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
+}
 const Activity = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
@@ -126,6 +142,11 @@ const Activity = () => {
                             <p className="text-gray-800 dark:text-gray-400 font-medium">
                               {ac.info}
                             </p>
+                            <div className="py-2 flex items-center gap-2 hover:text-slate-600">
+                            <ClockIcon className="h-5 w-5"/> <p>
+                            {formatStandardDateTime(ac.created_at)}
+                              </p> 
+                            </div>
                           </div>
                         </div>
                       ))}

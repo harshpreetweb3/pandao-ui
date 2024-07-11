@@ -19,6 +19,7 @@ import { convertUnixTimestamp } from "@/utils/functions/ConvertDate";
 
 const Proposals = () => {
   const { accounts } = useAccount();
+  const [vote,setVote]=useState(Boolean);
   const navigate = useNavigate();
   const params = useParams();
   const [proposal, setProposal] = useState("");
@@ -105,6 +106,29 @@ const Proposals = () => {
       }
     }
   };
+  const handleAgainst= async()=>{
+
+    setVote(true)
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
+
+        {
+          proposal_address: proposal.proposal_address,
+          userAddress: accounts[0].address,
+          vote_against: vote
+        }
+      );
+
+      // Handle successful submission (e.g., navigate to success page, show confirmation)
+      console.log("Vote submitted successfully:", res.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const handleFor=()=>{
+    setVote(false)
+  }
   useEffect(() => {
     fetchProposals();
   }, [params.id]);
@@ -113,6 +137,7 @@ const Proposals = () => {
     navigate("/");
     return null;
   }
+  console.log(vote)
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
       {form ? (
@@ -173,13 +198,13 @@ const Proposals = () => {
                             </div>
                           </div>
                           <div className="flex  items-center gap-3 ">
-                            <Button size="sm"  className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 ">
+                            <Button size="sm" onClick={handleFor} className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 ">
                               <span>Voted For :</span>
                               <span>
                                 {proposal.voted_for}
                               </span>
                             </Button>
-                            <Button size="sm" className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800">
+                            <Button size="sm" onClick={handleAgainst} className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800">
                               <span>Voted Against : </span>
                               <span>
                                 {" "}
