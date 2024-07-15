@@ -3,14 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useViewStore from "@/store/view";
 import axios from "axios";
-import { Building2, GraduationCap } from "lucide-react";
+import { Banknote, Building2, GraduationCap, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SkeletonCard } from "../GlobalComponents/Skeleton";
 
 const ExploreSection = () => {
   const [data, setData] = useState([]);
-  const {setView}=useViewStore()
+  const { setView } = useViewStore();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -26,7 +26,7 @@ const ExploreSection = () => {
         setLoading(false);
       }
     };
-    setView("1")
+    setView("1");
     fetchBluePrint();
   }, [setView]);
   return (
@@ -80,10 +80,10 @@ const ExploreSection = () => {
           )}
           {loading ? (
             <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-3">
-  <SkeletonCard/>
-  <SkeletonCard/> <SkeletonCard/> <SkeletonCard/> <SkeletonCard/> <SkeletonCard/>
+              <SkeletonCard />
+              <SkeletonCard /> <SkeletonCard /> <SkeletonCard />{" "}
+              <SkeletonCard /> <SkeletonCard />
             </div>
-          
           ) : (
             <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-4 ">
               {data.length > 0 &&
@@ -93,13 +93,19 @@ const ExploreSection = () => {
                     onClick={() => {
                       navigate(`/community/detail/${dao.id}`);
                     }}
-                    className="flex overflow-hidden flex-col items-start justify-between p-5 h-[160px] cursor-pointer hover:shadow-md "
+                    className="flex overflow-hidden flex-col items-start justify-between p-5 h-[180px] cursor-pointer hover:shadow-md ga "
                   >
-                    <div className="flex items-start gap-2">
+                    <div className="flex items-start gap-">
                       <div className="h-16 w-16">
                         <Avatar className="h-14 w-14">
-                          <AvatarImage src={dao.image} alt="@shadcn" className="h-14 w-14" />
-                          <AvatarFallback className="h-14 w-14">CN</AvatarFallback>
+                          <AvatarImage
+                            src={dao.image}
+                            alt="@shadcn"
+                            className="h-14 w-14"
+                          />
+                          <AvatarFallback className="h-14 w-14">
+                            CN
+                          </AvatarFallback>
                         </Avatar>
                       </div>
                       <div>
@@ -108,6 +114,19 @@ const ExploreSection = () => {
                       </div>
                     </div>
                     <div className="line-clamp-2">{dao.description}</div>
+                    <div className="flex items-center justify-start w-full">
+                      <div className="flex items-center  gap-2 ">
+                        <div className="flex items-center gap-2 border-2 px-2 rounded-md shadow-sm hover:shadow-md">
+                          {" "}
+                          <Users className="h-4 w-4" />{" "}
+                          <p> {dao.number_of_participants} </p>{" "}
+                        </div>
+                        <div className="flex items-center gap-2   border-2 px-2 rounded-md shadow-sm hover:shadow-md">
+                          {" "}
+                          <Banknote className="h-4 w-4" /> <p>{dao.funds}</p>{" "}
+                        </div>
+                      </div>
+                    </div>
                   </Card>
                 ))}
             </div>
