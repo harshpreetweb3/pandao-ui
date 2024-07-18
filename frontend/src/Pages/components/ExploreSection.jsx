@@ -31,7 +31,7 @@ const ExploreSection = () => {
   }, [setView]);
   return (
     <div className="bg-slate-100 ">
-      <div className=" flex flex-col items-start p-3 md:p-0  justify-start   -translate-y-24 mx-auto max-w-[1000px]">
+      <div className=" flex flex-col items-start p-3 md:p-0  justify-start   -translate-y-24 mx-auto max-w-[1200px]">
         <div className="w-full min-h-1/2 grid md:grid-cols-3 grid-cols-1 gap-3 ">
           <Card className=" p-5 w-full gap-4 flex flex-col items-center justify-between bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90   ">
             <div className=" w-full">
