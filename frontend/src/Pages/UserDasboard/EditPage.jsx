@@ -37,12 +37,12 @@ const EditPage = () => {
         );
         const data = res.data;
         setUserData(data);
-        setAbout(data.about);
+        setAbout(data.usermetadata.about);
         setSocialLinks({
-          x_url: data.x_url || "",
-          website_url: data.website_url || "",
-          linkedin: data.linkedin || "",
-          tiktok: data.tiktok || "",
+          x_url: data.usermetadata.x_url || "",
+          website_url: data.usermetadata.website_url || "",
+          linkedin: data.usermetadata.linkedin || "",
+       
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -80,11 +80,11 @@ const EditPage = () => {
 
   return (
     <div className="pt-20 px-4 min-h-screen bg-blue-50">
-      <Card className="border-0   bg-white  md:top-20 flex md:flex-row flex-col md:items-start items-center h-full mt-1  max-w-[1000px] mx-auto gap-3 p-5">
+      <Card className="border-0   bg-white  md:top-20 flex md:flex-row flex-col md:items-start items-center h-full mt-1  max-w-[1200px] mx-auto gap-3 p-5">
         <CardHeader className="p-0 mt-4 flex flex-col items-center">
           <Avatar className="h-72 w-72 border-[5px] border-purple-500">
             <AvatarImage
-              src={fileUrl || userData.image_url}
+              src={fileUrl || userData.usermetadata?.image_url}
               className="h-72 w-72 object-cover"
             />
             <AvatarFallback>CN</AvatarFallback>
@@ -141,7 +141,7 @@ const EditPage = () => {
               className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-black"
             />
           </div>
-          <div className="flex items-center w-full gap-2">
+          {/* <div className="flex items-center w-full gap-2">
             <FaTiktok className="text-black" />
             <input
               value={socialLinks.tiktok}
@@ -151,7 +151,7 @@ const EditPage = () => {
               placeholder="Your Tiktok"
               className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-black"
             />
-          </div>
+          </div> */}
           <div className="flex gap-2 items-center w-full">
             <Button
               onClick={handleUpdateUser}

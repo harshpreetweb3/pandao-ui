@@ -32,8 +32,8 @@ const UserDashboard = () => {
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
   const [userData, setUserData] = useState({});
-  const [edit, setEdit] = useState(false);
-  const [fileUrl, setFileUrl] = useState("");
+  // const [edit, setEdit] = useState(false);
+  // const [fileUrl, setFileUrl] = useState("");
   const [about, setAbout] = useState("");
   const [socialLinks, setSocialLinks] = useState({
     x_url: "",
@@ -50,11 +50,11 @@ const UserDashboard = () => {
     }, 1000);
   };
 
-  const handleFileId = (id) => {
-    const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
-    setFileUrl(url);
-    console.log("Received file URL:", url);
-  };
+  // const handleFileId = (id) => {
+  //   const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
+  //   setFileUrl(url);
+  //   console.log("Received file URL:", url);
+  // };
 
   useEffect(() => {
     const fetchBluePrint = async () => {
@@ -79,10 +79,9 @@ const UserDashboard = () => {
         setUserData(res.data);
         setAbout(res.data.about);
         setSocialLinks({
-          x_url: res.data.x_url || "",
-          website_url: res.data.website_url || "",
-          linkedin: res.data.linkedin || "",
-          tiktok: res.data.tiktok || "",
+          x_url: res.data.usermetadata.x_url || "",
+          website_url: res.data.usermetadata.website_url || "",
+          linkedin: res.data.usermetadata.linkedin || "",
         });
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -93,56 +92,55 @@ const UserDashboard = () => {
     fetchUserData();
   }, [accounts]);
 
-  const handleUpdateUser = async () => {
-    try {
-      const updatedData = {
-        ...userData,
-        about,
-        image_url: fileUrl || userData.image_url,
-        ...socialLinks,
-      };
-      await axios.patch(
-        `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
-        updatedData
-      );
-      setUserData(updatedData);
-      setEdit(false);
-    } catch (error) {
-      console.error("Error updating user data:", error);
-    }
-  };
+  // const handleUpdateUser = async () => {
+  //   try {
+  //     const updatedData = {
+  //       ...userData,
+  //       about,
+  //       image_url: fileUrl || userData.image_url,
+  //       ...socialLinks,
+  //     };
+  //     await axios.patch(
+  //       `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
+  //       updatedData
+  //     );
+  //     setUserData(updatedData);
+  //     setEdit(false);
+  //   } catch (error) {
+  //     console.error("Error updating user data:", error);
+  //   }
+  // };
 
   if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
   }
-
   return (
     <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black p-7">
       {userData && (
         <>
-          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1000px] mx-auto rounded-sm p-5 text-black ">
-              <CardHeader className="p-0 ">
-                <Avatar className="h-72 w-72 border-[5px] border-purple-400">
+          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
+            <CardHeader className="p-0 ">
+              <Avatar className="h-72 w-72 border-[5px] border-purple-400">
+                {userData.usermetadata?.image_url && (
                   <AvatarImage
-                    src={userData.image_url}
+                    src={userData.usermetadata.image_url}
                     className="h-72 w-72 object-cover"
                   />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </CardHeader>
-              <CardContent className="text-xl font-bold flex flex-col gap-2 w-full p-5">
+                )}
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+            </CardHeader>
+            <CardContent className="text-xl  relative font-bold flex flex-col gap-2 w-full p-5 justify-between">
+              <div  className="flex flex-col gap-1">
                 <div className="text-black font-semibold text-3xl">
                   {userData.name}
                 </div>
-                <div className="text-black font-light text-sm text-left px-0">
-                  {userData.about}
+                <div className="text-black font-light text-base text-left px-0">
+                  {userData.usermetadata?.about}
                 </div>
-                <div
-                  className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
-                 
-                >
-              {clipAddress(accounts[0].address)}
+                <div className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group">
+                  {clipAddress(accounts[0].address)}
                   <button
                     onClick={() => handleCopy(accounts[0].address)}
                     disabled={copied}
@@ -179,21 +177,23 @@ const UserDashboard = () => {
                     </div>
                   </div>
                 )}{" "}
-                {socialLinks.tiktok && (
+                {/* {socialLinks.tiktok && (
                   <div className="flex items-center w-full gap-2">
                     <FaTiktok className="text-black" />
                     <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
                       {socialLinks.tiktok}
                     </div>
                   </div>
-                )}
-                <Button
-                  onClick={() => navigate("/userDashboard/edit")}
-                  className="bg-slate-700 border-2"
-                >
-                  Edit Profile
-                </Button>
-              </CardContent>
+                )} */}
+              </div>
+
+              <Button
+                onClick={() => navigate("/userDashboard/edit")}
+                className="bg-slate-700 border-2 absolute right-0 top-2"
+              >
+                Edit Profile
+              </Button>
+            </CardContent>
           </Card>
 
           {/* <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
