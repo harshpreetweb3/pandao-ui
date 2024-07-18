@@ -7,6 +7,12 @@ import { Banknote, Building2, GraduationCap, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SkeletonCard } from "../GlobalComponents/Skeleton";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ExploreSection = () => {
   const [data, setData] = useState([]);
@@ -114,16 +120,36 @@ const ExploreSection = () => {
                       </div>
                     </div>
                     <div className="line-clamp-2">{dao.description}</div>
-                    <div className="flex items-center justify-start w-full">
+                    <div className="flex items-center justify-start w-full mt-1">
                       <div className="flex items-center  gap-2 ">
-                        <div className="flex items-center gap-2 border-2 px-2 rounded-md shadow-sm hover:shadow-md">
-                          {" "}
-                          <Users className="h-4 w-4" />{" "}
-                          <p> {dao.number_of_participants} </p>{" "}
+                        <div className="flex items-center gap-2 border-2 px-2 rounded-md shadow-sm ">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger className="flex items-center gap-1">
+                              <Users className="h-4 w-4" />{" "}
+                              <p> {dao.number_of_participants} </p>{" "}
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom">
+                                <p>Total Number of Participant</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        
                         </div>
-                        <div className="flex items-center gap-2   border-2 px-2 rounded-md shadow-sm hover:shadow-md">
+                        <div className="flex items-center gap-2   border-2 px-2 rounded-md shadow-sm ">
                           {" "}
-                          <Banknote className="h-4 w-4" /> <p>{dao.funds}</p>{" "}
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger className="flex items-center gap-1">
+                              <Banknote className="h-4 w-4" />{" "}
+                              <p> {dao.fund || 0} </p>{" "}
+                              </TooltipTrigger>
+                              <TooltipContent side="bottom">
+                                <p>Total Funds</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        
                         </div>
                       </div>
                     </div>
