@@ -16,6 +16,7 @@ const EditPage = () => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
   const [fileUrl, setFileUrl] = useState("");
+  const [coverUrl, setCoverUrl] = useState("");
   const [about, setAbout] = useState("");
   const [socialLinks, setSocialLinks] = useState({
     x_url: "",
@@ -38,6 +39,7 @@ const EditPage = () => {
         const data = res.data;
         setUserData(data);
         setAbout(data.usermetadata.about);
+        setCoverUrl(data.usermetadata.cover_url);
         setSocialLinks({
           x_url: data.usermetadata.x_url || "",
           website_url: data.usermetadata.website_url || "",
@@ -57,6 +59,11 @@ const EditPage = () => {
     setFileUrl(url);
     console.log("Received file URL:", url);
   };
+  const handleCoverId = (id) => {
+    const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
+    setCoverUrl(url);
+    console.log("Received file URL:", url);
+  };
 
   const handleUpdateUser = async () => {
     try {
@@ -64,6 +71,7 @@ const EditPage = () => {
         ...userData,
         about,
         image_url: fileUrl || userData.image_url,
+        cocover_url: coverUrl,
         ...socialLinks,
       };
       await axios.patch(
@@ -79,9 +87,20 @@ const EditPage = () => {
   };
 
   return (
-    <div className="pt-20 px-4 min-h-screen bg-blue-50">
-      <Card className="border-0   bg-white  md:top-20 flex md:flex-row flex-col md:items-start items-center h-full mt-1  max-w-[1200px] mx-auto gap-3 p-5">
-        <CardHeader className="p-0 mt-4 flex flex-col items-center">
+    <div className="pt-20 px-4 min-h-screen bg-blue-50 overflow-hidden">
+         <Card className="w-full relative flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
+            <img
+               src={coverUrl || "/Pandao.png"}
+              alt="Cover"
+              className="aspect-video h-48 w-full object-cover"
+            />
+            <div className="absolute bottom-0  right-0  flex items-end justify-end -mr-20">
+            <ImageUpdater onUploadSuccess={handleCoverId}  />
+
+            </div>
+          </Card>
+      <Card className="border-0 rounded-t-none border-t-0   bg-white  md:top-20 flex md:flex-row flex-col md:items-start items-center h-full mt-1  max-w-[1200px] mx-auto gap-3 p-5">
+        <CardHeader className="p-0 mt-4 flex flex-col items-center -translate-y-32">
           <Avatar className="h-72 w-72 border-[5px] border-purple-500">
             <AvatarImage
               src={fileUrl || userData.usermetadata?.image_url}

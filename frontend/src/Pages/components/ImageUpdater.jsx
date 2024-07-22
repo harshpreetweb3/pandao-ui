@@ -88,7 +88,7 @@ const ImageUpdater = ({ onUploadSuccess }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 mt-2">
+    <div className="flex rounded-none flex-col items-center justify-center gap-2 mt-2 w-fit">
       <Input type="file" onChange={handleFileChange} className="w-1/2 m-0" />
       {uploadStatus && (
         <p className={`text-sm ${isSuccess ? "text-green-500" : "text-red-500"}`}>

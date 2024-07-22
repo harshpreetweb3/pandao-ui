@@ -14,6 +14,7 @@ import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
 const UserDashboard = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
+  const [coverUrl, setCoverUrl] = useState("");
   const [activityData, setActivityData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -79,6 +80,7 @@ const UserDashboard = () => {
         console.log(res.data);
         setUserData(res.data);
         setAbout(res.data.about);
+        setCoverUrl(data.usermetadata.cover_url);
         setSocialLinks({
           x_url: res.data.usermetadata.x_url || "",
           website_url: res.data.usermetadata.website_url || "",
@@ -110,8 +112,15 @@ const UserDashboard = () => {
     <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black p-7">
       {userData && (
         <div className="flex flex-col w-full">
-          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
-            <CardHeader className="p-0 ">
+          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
+            <img
+             src={coverUrl || "/Pandao.png"}
+              alt="Cover"
+              className="aspect-video h-48 w-full object-cover"
+            />
+          </Card>
+          <Card className="w-full rounded-t-none border-t-0 flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
+            <CardHeader className="p-0 -translate-y-32 ">
               <Avatar className="h-72 w-72 border-[5px] border-purple-400">
                 {userData.usermetadata?.image_url && (
                   <AvatarImage
