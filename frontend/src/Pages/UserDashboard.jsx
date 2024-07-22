@@ -80,7 +80,7 @@ const UserDashboard = () => {
         console.log(res.data);
         setUserData(res.data);
         setAbout(res.data.about);
-        setCoverUrl(data.usermetadata.cover_url);
+        setCoverUrl(res.data.usermetadata.cover_url);
         setSocialLinks({
           x_url: res.data.usermetadata.x_url || "",
           website_url: res.data.usermetadata.website_url || "",
@@ -113,11 +113,12 @@ const UserDashboard = () => {
       {userData && (
         <div className="flex flex-col w-full">
           <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
+          {userData.usermetadata?.cover_url && (
             <img
              src={coverUrl || "/Pandao.png"}
               alt="Cover"
               className="aspect-video h-48 w-full object-cover"
-            />
+            />)}
           </Card>
           <Card className="w-full rounded-t-none border-t-0 flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
             <CardHeader className="p-0 -translate-y-32 ">

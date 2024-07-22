@@ -71,7 +71,7 @@ const EditPage = () => {
         ...userData,
         about,
         image_url: fileUrl || userData.image_url,
-        cocover_url: coverUrl,
+        cover_url: coverUrl,
         ...socialLinks,
       };
       await axios.patch(
