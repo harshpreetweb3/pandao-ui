@@ -40,8 +40,7 @@ const CommunityDetails = () => {
   const { accounts } = useAccount();
   const [openBuyModal, setBuyModal] = useState(false);
   const [openSellModal, setSellModal] = useState(false);
-  const {setOpen,setText}=useCustomAlertStore()
-
+  const { setOpen, setText } = useCustomAlertStore();
 
   const navigate = useNavigate();
   const params = useParams();
@@ -141,7 +140,7 @@ const CommunityDetails = () => {
     };
 
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios.post(
         `${
           import.meta.env.VITE_BACKEND_URL
@@ -153,9 +152,9 @@ const CommunityDetails = () => {
     } catch (error) {
       console.log("Error joining community:", error);
       toast.error("Something went wrong");
-      setText("Please join the community")
-      setOpen(true)
-      setLoading(false)
+      setText("Please join the community");
+      setOpen(true);
+      setLoading(false);
     }
     const { receipt } = await sendTransaction(manifest).finally(() =>
       setLoading(false)
@@ -177,10 +176,10 @@ const CommunityDetails = () => {
         );
         console.log(response.data);
         toast.success("Token Bought");
-        setText("Token Bought")
-        setOpen(true)
+        setText("Token Bought");
+        setOpen(true);
         setBuyModal(false);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         window.alert(error);
       }
@@ -194,7 +193,7 @@ const CommunityDetails = () => {
     };
 
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await axios.post(
         `${
           import.meta.env.VITE_BACKEND_URL
@@ -227,10 +226,10 @@ const CommunityDetails = () => {
         );
         console.log(response.data);
         toast.success("Token Sold");
-        setText("Token Sold")
-        setOpen(true)
+        setText("Token Sold");
+        setOpen(true);
         setSellModal(false);
-        setLoading(false)
+        setLoading(false);
       } catch (error) {
         window.alert(error);
       }
@@ -281,57 +280,68 @@ const CommunityDetails = () => {
   );
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 to-purple-50 text-black px-2">
-      <CustomAlert/>
+      <CustomAlert />
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
-            <Card className="bg-white md:w-[90%] mx-auto md:p-10 p-6 shadow-lg">
-              <div className="flex md:flex-row flex-col items-center justify-between gap-5">
-                <h1 className="text-3xl font-bold text-left w-full">
-                  {data.name}
-                </h1>
-                <div className="flex items-end md:items-start md:justify-end w-full gap-2">
-                  {!isUserParticipant && (
-                    <Button variant="radix" onClick={handleJoinCommunity}>
-                      Join Community
-                    </Button>
-                  )}
-                </div>
-              </div>
-              <div className="grid gap-4">
-                <div>
-                  <h2 className="text-xl font-semibold">Community Overview</h2>
-                  <p className=" mt-2">{data.description}</p>
-                </div>
-                <div>
-                  <h2 className="text-md font-semibold">Owner Name</h2>
-                  <p className="text-gray-800 dark:text-gray-400 mt-2">
-                    {data.owner?.name || "N/A"}
-                  </p>
-                </div>
-                <div>
-                  <h2 className="text-md font-semibold">Owner Address</h2>
-                  <div className="flex items-center  gap-2">
-                    <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
-                      {clipAddress(data.owner_address || "N/A")}
-                    </p>
-                    <p
-                      className="cursor-pointer"
-                      onClick={() => handleCopy(data.owner_address)}
-                    >
-                      {copied ? (
-                        <Check className="h-4 w-4" />
-                      ) : (
-                        <Copy className="h-4 w-4" />
-                      )}
-                    </p>
+            <Card className="bg-white md:w-[90%] mx-auto md:p-5 p-6 shadow-lg flex  md:flex-row flex-col gap-3">
+              <Avatar className="h-28 w-28 border-[5px] border-purple-400">
+                <AvatarImage
+                  src={data.image}
+                  className="h-28 w-28 object-cover"
+                />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <div className="w-full">
+                <div className="flex md:flex-row flex-col items-center justify-between gap-5">
+                  <h1 className="text-3xl font-bold text-left w-full">
+                    {data.name}
+                  </h1>
+                  <div className="flex items-end md:items-start md:justify-end w-full gap-2">
+                    {!isUserParticipant && (
+                      <Button variant="radix" onClick={handleJoinCommunity}>
+                        Join Community
+                      </Button>
+                    )}
                   </div>
                 </div>
-                <div>
-                  <h2 className="text-md font-semibold">Component Address</h2>
-                  <p className="text-gray-900 dark:text-gray-400 mt-2">
-                    {data.component_address || "N/A"}
-                  </p>
+                <div className="grid gap-4">
+                  <div>
+                    <h2 className="text-xl font-semibold">
+                      Community Overview
+                    </h2>
+                    <p className=" mt-2">{data.description}</p>
+                  </div>
+                  <div>
+                    <h2 className="text-md font-semibold">Owner Name</h2>
+                    <p className="text-gray-800 dark:text-gray-400 mt-2">
+                      {data.owner?.name || "N/A"}
+                    </p>
+                  </div>
+                  <div>
+                    <h2 className="text-md font-semibold">Owner Address</h2>
+                    <div className="flex items-center  gap-2">
+                      <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis overflow-hidden">
+                        {clipAddress(data.owner_address || "N/A")}
+                      </p>
+                      <p
+                        className="cursor-pointer"
+                        onClick={() => handleCopy(data.owner_address)}
+                      >
+                        {copied ? (
+                          <Check className="h-4 w-4" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-md font-semibold">Component Address</h2>
+                    <p className="text-gray-900 dark:text-gray-400 mt-2">
+                      {data.component_address || "N/A"}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Card>
@@ -340,12 +350,14 @@ const CommunityDetails = () => {
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
                   <div>Total Proposals</div>
                   <div className="flex items-center gap-2">
-                    <div  onClick={() =>
-                      navigate(`/community/detail/${params.id}/proposals`)
-                    } className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white py-1 px-2 cursor-pointer ">
+                    <div
+                      onClick={() =>
+                        navigate(`/community/detail/${params.id}/proposals`)
+                      }
+                      className="bg-purple-600 shadow-lg min-w-28 flex items-center justify-center rounded-lg text-white py-1 px-2 cursor-pointer "
+                    >
                       New Proposal
                     </div>
-                   
                   </div>
                 </Card>
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg flex items-center justify-between ">
@@ -408,104 +420,112 @@ const CommunityDetails = () => {
               </div>
               <div className="md:w-[40%] space-y-6 w-[100%]  ">
                 <div className="flex flex-col gap-2 w-full ">
-                  <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10">
+                  <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10 md:h-80">
                     <div className="flex items-center justify-between">
                       <div className="bg-slate-200 w-fit p-2 rounded-full">
                         <Bitcoin className=" text-blue-700" />
                       </div>
                       <div className="flex items-center gap-1">
-                      {data.total_token > 0 && data.token_bought > 0 && (
-                        <div>
-                          <Dialog
-                            open={openSellModal}
-                            onOpenChange={setSellModal}
-                          >
-                            <DialogTrigger asChild>
-                              <Button variant="radix">Sell Token</Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Sell Token</DialogTitle>
-                              </DialogHeader>
-                              <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label htmlFor="name" className="text-right">
-                                    Token
-                                  </Label>
-                                  <Input
-                                    id="name"
-                                    className="col-span-3"
-                                    placeholder="How many Token you want to Sell"
-                                    type="number"
-                                    onChange={(e) => setToken(e.target.value)}
-                                    required
-                                  />
+                        {data.total_token > 0 && data.token_bought > 0 && (
+                          <div>
+                            <Dialog
+                              open={openSellModal}
+                              onOpenChange={setSellModal}
+                            >
+                              <DialogTrigger asChild>
+                                <Button variant="radix">Sell Token</Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                  <DialogTitle>Sell Token</DialogTitle>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                  <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                      htmlFor="name"
+                                      className="text-right"
+                                    >
+                                      Token
+                                    </Label>
+                                    <Input
+                                      id="name"
+                                      className="col-span-3"
+                                      placeholder="How many Token you want to Sell"
+                                      type="number"
+                                      onChange={(e) => setToken(e.target.value)}
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <DialogFooter>
-                              {loading ?   <Button
-                                  variant="radix"
-                                  disabled
-                                >
-                            Selling...   
-                                </Button> :   <Button
-                                  variant="radix"
-                                  onClick={handleSellToken}
-                                  disabled={!token}
-                                >
-                            Sell Token    
-                                </Button> }
-                              
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </div>)}
+                                <DialogFooter>
+                                  {loading ? (
+                                    <Button variant="radix" disabled>
+                                      Selling...
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      variant="radix"
+                                      onClick={handleSellToken}
+                                      disabled={!token}
+                                    >
+                                      Sell Token
+                                    </Button>
+                                  )}
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        )}
                         {data.total_token > data.token_bought && (
-                        <div>
-                          <Dialog
-                            open={openBuyModal}
-                            onOpenChange={setBuyModal}
-                          >
-                            <DialogTrigger asChild>
-                              <Button variant="radix">Buy Token</Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                              <DialogHeader>
-                                <DialogTitle>Buy Token</DialogTitle>
-                              </DialogHeader>
-                              <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                  <Label htmlFor="name" className="text-right">
-                                    Token
-                                  </Label>
-                                  <Input
-                                    id="name"
-                                    className="col-span-3"
-                                    placeholder="How many Token you want to buy"
-                                    type="number"
-                                    onChange={(e) => setToken(e.target.value)}
-                                    required
-                                  />
+                          <div>
+                            <Dialog
+                              open={openBuyModal}
+                              onOpenChange={setBuyModal}
+                            >
+                              <DialogTrigger asChild>
+                                <Button variant="radix">Buy Token</Button>
+                              </DialogTrigger>
+                              <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                  <DialogTitle>Buy Token</DialogTitle>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                  <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label
+                                      htmlFor="name"
+                                      className="text-right"
+                                    >
+                                      Token
+                                    </Label>
+                                    <Input
+                                      id="name"
+                                      className="col-span-3"
+                                      placeholder="How many Token you want to buy"
+                                      type="number"
+                                      onChange={(e) => setToken(e.target.value)}
+                                      required
+                                    />
+                                  </div>
                                 </div>
-                              </div>
-                              <DialogFooter>
-                              {loading ?   <Button
-                                  variant="radix"
-                                  disabled
-                                >
-                            Buying...   
-                                </Button> :   <Button
-                                  variant="radix"
-                                  onClick={handleBuyToken}
-                                  disabled={!token}
-                                >
-                            Buy Token    
-                                </Button> }
-                              
-                              </DialogFooter>
-                            </DialogContent>
-                          </Dialog>
-                        </div>)}
+                                <DialogFooter>
+                                  {loading ? (
+                                    <Button variant="radix" disabled>
+                                      Buying...
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      variant="radix"
+                                      onClick={handleBuyToken}
+                                      disabled={!token}
+                                    >
+                                      Buy Token
+                                    </Button>
+                                  )}
+                                </DialogFooter>
+                              </DialogContent>
+                            </Dialog>
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center justify-between">
@@ -523,7 +543,7 @@ const CommunityDetails = () => {
                           data={[
                             {
                               title: "Total Token",
-                              value: data.total_token-data.token_bought,
+                              value: data.total_token - data.token_bought,
                               color: "#BF40BF",
                             },
                             {
