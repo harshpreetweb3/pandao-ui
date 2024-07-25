@@ -19,11 +19,15 @@ import { convertUnixTimestamp } from "@/utils/functions/ConvertDate";
 
 const Proposals = () => {
   const { accounts } = useAccount();
-  const [vote,setVote]=useState(Boolean);
+  const [vote, setVote] = useState(Boolean);
   const navigate = useNavigate();
   const params = useParams();
   const [proposal, setProposal] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loadingAgainst, setLoadingAgainst] = useState(true);
+  const [loadingFor, setLoadingFor] = useState(true);
+  const [loadingButtonAgainst, setLoadingButtonAgainst] = useState(false);
+  const [loadingButtonFor, setLoadingButtonFor] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
   const [form, setShowForm] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
@@ -31,6 +35,8 @@ const Proposals = () => {
   const [minimumQuorum, setMinimumQuorum] = useState("");
   const [proposalText, setProposalText] = useState("");
   const [manifest, setManifest] = useState("");
+  const [manifestForVoteAgainst, setManifestForVoteAgainst] = useState("");
+  const [manifestForVoteFor, setManifestForVoteFor] = useState("");
   const sendTransaction = useSendTransaction();
 
   const fetchProposals = async () => {
@@ -106,29 +112,106 @@ const Proposals = () => {
       }
     }
   };
-  const handleAgainst= async()=>{
-
-    setVote(true)
+  const handleAgainst = async () => {
+    setVote(true);
     try {
+      setLoadingButtonAgainst(true);
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
 
         {
           proposal_address: proposal.proposal_address,
           userAddress: accounts[0].address,
-          vote_against: vote
+          vote_against: vote,
         }
       );
 
       // Handle successful submission (e.g., navigate to success page, show confirmation)
       console.log("Vote submitted successfully:", res.data);
+      setManifestForVoteAgainst(res.data);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  const handleFor=()=>{
-    setVote(false)
-  }
+    const { receipt } = await sendTransaction(manifestForVoteAgainst).finally(
+      () => {
+        setLoadingAgainst(false);
+        setLoadingButtonAgainst(false);
+      }
+    );
+    let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        toast.success("Vote Submitted");
+        setLoadingButtonAgainst(false);
+      } catch (error) {
+        toast.error("Something went wrong");
+        setLoadingButtonAgainst(false);
+      }
+    }
+  };
+  const handleFor = async () => {
+    setVote(false);
+    try {
+      setLoadingButtonFor(true);
+      const res = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
+
+        {
+          proposal_address: proposal.proposal_address,
+          userAddress: accounts[0].address,
+          vote_against: vote,
+        }
+      );
+
+      // Handle successful submission (e.g., navigate to success page, show confirmation)
+      console.log("Vote submitted successfully:", res.data);
+      setManifestForVoteFor(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+    const { receipt } = await sendTransaction(manifestForVoteFor).finally(
+      () => {
+        setLoadingFor(false);
+        setLoadingButtonFor(false);
+      }
+    );
+    let txId = receipt.transaction.intent_hash;
+    if (txId) {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+          {
+            tx_id: txId,
+            user_address: accounts[0].address,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data);
+        toast.success("Vote Submitted");
+        setLoadingButtonFor(false);
+      } catch (error) {
+        toast.error("Something went wrong");
+        setLoadingButtonFor(false);
+      }
+    }
+  };
   useEffect(() => {
     fetchProposals();
   }, [params.id]);
@@ -137,7 +220,7 @@ const Proposals = () => {
     navigate("/");
     return null;
   }
-  console.log(vote)
+  console.log(vote);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
       {form ? (
@@ -169,10 +252,10 @@ const Proposals = () => {
                   </div>
                   {!loading && (
                     <div className="space-y-4">
-                    {!proposal && (
-                       <div className="flex items-center justify-center h-10">
-                        No Active Proposal
-                       </div>
+                      {!proposal && (
+                        <div className="flex items-center justify-center h-10">
+                          No Active Proposal
+                        </div>
                       )}
                     </div>
                   )}
@@ -198,19 +281,43 @@ const Proposals = () => {
                             </div>
                           </div>
                           <div className="flex  items-center gap-3 ">
-                            <Button size="sm" onClick={handleFor} className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 ">
-                              <span>Voted For :</span>
-                              <span>
-                                {proposal.voted_for}
-                              </span>
-                            </Button>
-                            <Button size="sm" onClick={handleAgainst} className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800">
-                              <span>Voted Against : </span>
-                              <span>
-                                {" "}
-                                 {proposal.voted_against}{" "}
-                              </span>
-                            </Button>
+                            {loadingButtonFor ? (
+                              <Button
+                                size="sm"
+                                disabled
+                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+                              >
+                                Voting...
+                              </Button>
+                            ) : (
+                              <Button
+                                size="sm"
+                                onClick={handleFor}
+                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+                              >
+                                <span>Voted For :</span>
+                                <span>{proposal.voted_for}</span>
+                              </Button>
+                            )}
+
+                            {loadingButtonAgainst ? (
+                              <Button
+                                size="sm"
+                                disabled
+                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+                              >
+                                Voting..
+                              </Button>
+                            ) : (
+                              <Button
+                                size="sm"
+                                onClick={handleAgainst}
+                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+                              >
+                                <span>Voted Against : </span>
+                                <span> {proposal.voted_against} </span>
+                              </Button>
+                            )}
                           </div>
                           <div className="text-xs">
                             Published by{" "}
