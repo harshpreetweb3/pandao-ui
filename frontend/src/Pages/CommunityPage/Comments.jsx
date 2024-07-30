@@ -5,11 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import {
-
-  MessageCircle,
-
-} from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -145,9 +141,9 @@ const Comments = () => {
                   </div>
                 )}
                 {loading && (
-                   <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
-                   <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
-                </div>
+                  <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                    <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                  </div>
                 )}
               </Card>
             </div>

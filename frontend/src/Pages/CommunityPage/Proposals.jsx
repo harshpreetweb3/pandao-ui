@@ -373,9 +373,9 @@ const Proposals = () => {
                   <div className="bg-white col-span-2 rounded-md p-2">
                     <div>
                       {loadingCommnets ? (
-                        <div className="flex items-center justify-center h-20">
-                          Loading..
-                        </div>
+                      <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                    </div>
                       ) : (
                         <>
                           {comments &&
