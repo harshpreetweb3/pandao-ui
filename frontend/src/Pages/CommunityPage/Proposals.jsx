@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
-import { HandHelping } from "lucide-react";
+import { ChevronLeft, HandHelping } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { useSendTransaction } from "@/hooks/useSendTransaction";
 import { toast } from "sonner";
 import { convertUnixTimestamp } from "@/utils/functions/ConvertDate";
+import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
 
 const Proposals = () => {
   const { accounts } = useAccount();
@@ -23,7 +24,10 @@ const Proposals = () => {
   const navigate = useNavigate();
   const params = useParams();
   const [proposal, setProposal] = useState("");
+  const [comment, setComment] = useState("");
+
   const [loading, setLoading] = useState(true);
+  const [loadingCommnets, setLoadingComments] = useState(true);
   const [loadingAgainst, setLoadingAgainst] = useState(true);
   const [loadingFor, setLoadingFor] = useState(true);
   const [loadingButtonAgainst, setLoadingButtonAgainst] = useState(false);
@@ -32,13 +36,38 @@ const Proposals = () => {
   const [form, setShowForm] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [comments, setComments] = useState([]);
   const [minimumQuorum, setMinimumQuorum] = useState("");
   const [proposalText, setProposalText] = useState("");
   const [manifest, setManifest] = useState("");
   const [manifestForVoteAgainst, setManifestForVoteAgainst] = useState("");
   const [manifestForVoteFor, setManifestForVoteFor] = useState("");
   const sendTransaction = useSendTransaction();
+  const handleAddComment = async () => {
+    if (comment.trim() === "") {
+      toast.error("Add Something");
+      return;
+    }
+    const data = {
+      user_addr: accounts[0].address,
 
+      comment: comment,
+      proposal_id: proposal.id,
+    };
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments`,
+        data
+      );
+      console.log("Comment Response:", response.data);
+      toast.success("Comment Added");
+      setComment("");
+      fetchProposalsComments();
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
   const fetchProposals = async () => {
     try {
       const res = await axios.get(
@@ -48,6 +77,20 @@ const Proposals = () => {
       );
       setProposal(res.data);
       setLoading(false);
+    } catch (error) {
+      console.error("Error fetching blueprint data:", error);
+    }
+  };
+  const fetchProposalsComments = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments/${
+          proposal.id
+        }`
+      );
+      setComments(res.data);
+      setLoadingComments(false);
+      
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
     }
@@ -214,39 +257,29 @@ const Proposals = () => {
   };
   useEffect(() => {
     fetchProposals();
-  }, [params.id]);
+    if (proposal.id) {
+      fetchProposalsComments();
+    }
+  }, [params.id, proposal.id]);
 
   if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
   }
-  console.log(vote);
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
       {form ? (
         <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
           <div className="space-y-6 md:w-[100%] ">
-            <div className="flex md:flex-row flex-col md:w-[90%] mx-auto gap-2">
-              <div className="md:w-[100%] space-y-6  ">
-                <Card className="bg-white md:w-[100%] mx-auto md:p-10 p-4  space-y-10">
-                  <div className="flex items-center justify-between">
-                    <div className="bg-slate-200 w-fit p-2 rounded-full">
-                      <HandHelping className=" text-blue-700" />
-                    </div>
-                    <div>
-                      <Button
-                        onClick={() => setShowForm(!form)}
-                        variant="radix"
-                      >
-                        Create Proposal
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="text-3xl font-semibold">
-                    Proposals so far.
-                  </div>
-                </Card>
-                <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
+            <div className="flex md:flex-row flex-col md:w-[100%] mx-auto gap-2">
+              <div className="md:w-[100%] space-y-2  ">
+                <div className="w-full  flex items-end justify-end">
+                  <Button onClick={() => setShowForm(!form)} variant="radix">
+                    Create Proposal
+                  </Button>
+                </div>
+
+                <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 space-y-2 ">
                   <div className="p-2 border-b-2 -translate-x-2">
                     Active Proposal
                   </div>
@@ -336,12 +369,86 @@ const Proposals = () => {
                     </div>
                   )}
                 </Card>
+                <div className="grid  md:grid-cols-3 grid-cols-1 gap-3 px-1">
+                  <div className="bg-white col-span-2 rounded-md p-2">
+                    <div>
+                      {loadingCommnets ? (
+                        <div className="flex items-center justify-center h-20">
+                          Loading..
+                        </div>
+                      ) : (
+                        <>
+                          {comments &&
+                            comments.map((comment, index) => (
+                              <div
+                                key={index}
+                                className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
+                              >
+                                <Avatar className="shrink-0 object-cover">
+                                  <img src={comment.image_url} alt="Avatar" />
+                                  <AvatarFallback>JD</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-1 space-y-2">
+                                  <div className="flex items-center justify-between">
+                                    <div
+                                      className="group"
+                                      onClick={() =>
+                                        navigate(
+                                          `/userDashboard/userProfile/${comment.public_address}`
+                                        )
+                                      }
+                                    >
+                                      <div className="font-medium group-hover:underline cursor-pointer">
+                                        {comment.user_name}
+                                      </div>
+                                      <div className="font-light group-hover:underline cursor-pointer">
+                                        {clipAddress(comment.public_address)}
+                                      </div>
+                                    </div>
+                                    {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
+                                  </div>
+                                  <p className="text-gray-800 dark:text-gray-400 font-medium">
+                                    {comment.comment}
+                                  </p>
+                                  <div>
+                                    {formatStandardDateTime(comment.timestamp)}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                        </>
+                      )}
+
+                      <div className="flex flex-col items-end gap-2 mt-1">
+                        <Textarea
+                          placeholder="Add a new comment..."
+                          className="flex-1 text-black"
+                          value={comment}
+                          required
+                          onChange={(e) => setComment(e.target.value)}
+                        />
+                        <Button onClick={handleAddComment} variant="radix">
+                          Submit
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-span-1 bg-white shadow-sm flex items-center justify-center p-2 rounded-md">
+                    Previous
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center max-w-[1440px] mx-auto my-12 p-2">
+        <div className="flex flex-col items-center justify-center max-w-[1440px] mx-auto my-6 p-2">
+          <div
+            onClick={() => setShowForm(!form)}
+            className="w-full cursor-pointer flex items-start m-2"
+          >
+            <ChevronLeft /> <span>Back</span>
+          </div>
           <div className="text-4xl font-semibold p-4  bg-white w-full text-center">
             Proposal Form
           </div>
