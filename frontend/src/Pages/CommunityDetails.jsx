@@ -402,7 +402,7 @@ const CommunityDetails = () => {
                 <div className="bg-transparent w-full mx-auto  flex items-center  ">
                   <Card
                     onClick={() =>
-                      navigate(`/community/detail/${params.id}/comments`)
+                      navigate(`/community/detail/${params.id}/discussion`)
                     }
                     className=" group  p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer "
                   >

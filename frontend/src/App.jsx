@@ -57,7 +57,7 @@ function App() {
         >
           <Route index element={<CommunityDetails />} />
           <Route path="members" element={<Members />} />
-          <Route path="comments" element={<Comments />} />
+          <Route path="discussion" element={<Comments />} />
           <Route path="tokenDistribution" element={<TokenDistribution />} />
           <Route path="activity" element={<Activity />} />
           <Route path="proposals" element={<Proposals />} />

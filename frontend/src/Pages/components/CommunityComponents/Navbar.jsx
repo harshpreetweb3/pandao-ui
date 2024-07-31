@@ -80,7 +80,7 @@ const Navbar = () => {
             <li>Members</li>
           </NavLink>
           <NavLink
-            to={`/community/detail/${params.id}/comments`}
+            to={`/community/detail/${params.id}/discussion`}
             className={({ isActive }) =>
               isActive
                 ? "bg-white text-blue-800 w-32 text-center py-2 px-4 rounded-lg font-semibold"
@@ -88,7 +88,7 @@ const Navbar = () => {
             }
             end
           >
-            <li>Comments</li>
+            <li>Discussion</li>
           </NavLink>
           <NavLink
             to={`/community/detail/${params.id}/tokenDistribution`}
