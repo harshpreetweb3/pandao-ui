@@ -1,7 +1,14 @@
 import { useAccount } from "@/AccountContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import axios from "axios";
@@ -14,30 +21,32 @@ const Comments = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  const [title, setTitle] = useState("");
+  const [communities, setCommunities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open,setOpen]=useState(false)
 
-  const handleAddComment = async () => {
-    if (comment.trim() === "") {
+  const handleAddDiscussion = async () => {
+    if (title.trim() === "") {
       alert("Add Somthign");
       return;
     }
     const data = {
       user_addr: accounts[0].address,
 
-      comment: comment,
+      discussion_title: title,
       community_id: params.id,
     };
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comment`,
+        `${import.meta.env.VITE_BACKEND_URL}/community/discussion`,
         data
       );
       console.log("Comment Response:", response.data);
       toast.success("Comment Added");
-      setComment("");
+      setTitle("");
+      setOpen(false)
       fetchComments();
     } catch (error) {
       console.error("Error adding comment:", error);
@@ -47,9 +56,9 @@ const Comments = () => {
   const fetchComments = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comments/${params.id}`
+        `${import.meta.env.VITE_BACKEND_URL}/community/discussion/${params.id}`
       );
-      setComments(res.data);
+      setCommunities(res.data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
@@ -74,70 +83,53 @@ const Comments = () => {
                   <div className="bg-slate-200 w-fit p-2 rounded-full">
                     <MessageCircle className=" text-blue-700" />
                   </div>
-                  {/* <div>
-                    <Button variant="radix">
-                      Manage Comments
-                    </Button>
-                  </div> */}
+                  <div>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger>
+                        <Button variant="radix">Start new discussion</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogTitle>Discussion Title</DialogTitle>
+                        <Input placeholder="Enter the discussion title" value={title} onChange={(e)=>setTitle(e.target.value)} />
+                        <Button variant="radix" onClick={handleAddDiscussion}>Start</Button>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
                 </div>
                 <div className="text-3xl font-semibold">
-                  {comments.length} Comments so far.
+                  {communities.length} discussions so far.
                 </div>
               </Card>
-              <Card className="bg-white md:w-[70%] mx-auto md:p-4 p-4 space-y-2 ">
-                <div className="p-2 border-b-2 -translate-x-2">Comments</div>
+              <Card className="bg-white md:w-[80%] mx-auto md:p-4 p-4 space-y-2 ">
+                <div className="p-2 border-b-2 -translate-x-2">Discussions</div>
                 {!loading && (
                   <div className="space-y-4">
-                    {comments &&
-                      comments.map((comment, index) => (
-                        <div
-                          key={index}
-                          className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
-                        >
-                          <Avatar className="shrink-0 object-cover">
-                            <img src={comment.user_image} alt="Avatar" />
-                            <AvatarFallback>JD</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <div
-                                className="group"
-                                onClick={() =>
-                                  navigate(
-                                    `/userDashboard/userProfile/${comment.user_address}`
-                                  )
-                                }
-                              >
-                                <div className="font-medium group-hover:underline cursor-pointer">
-                                  {comment.user_name}
-                                </div>
-                                <div className="font-light group-hover:underline cursor-pointer">
-                                  {clipAddress(comment.user_address)}
-                                </div>
-                              </div>
-                              {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
+                    {communities.length > 0 && (
+                      <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                        {communities.map((community, index) => (
+                          <Card
+                            key={index}
+                            className="p-4 flex flex-col gap-2 hover:shadow-lg shadow-md cursor-pointer"
+                          >
+                            <div className="text-lg font-semibold">
+                              {community.title}
                             </div>
-                            <p className="text-gray-800 dark:text-gray-400 font-medium">
-                              {comment.comment}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    <div className="flex flex-col items-end gap-2">
-                      <Textarea
-                        placeholder="Add a new comment..."
-                        className="flex-1 text-black"
-                        value={comment}
-                        required
-                        onChange={(e) => setComment(e.target.value)}
-                      />
-                      <Button
-                        onClick={handleAddComment}
-                        className="bg-blue-600 hover:bg-blue-500 text-white"
-                      >
-                        Submit
-                      </Button>
-                    </div>
+                            <div className="text-sm flex items-center gap-2">
+                              <div>Started By - </div>
+                              <div className="flex items-center gap-1">
+                                <div>
+                                  <Avatar className="h-6 w-6">
+                                    <AvatarImage src={community.user_image} />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                  </Avatar>
+                                </div>
+                                <div>{community.user_name}</div>
+                              </div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 )}
                 {loading && (

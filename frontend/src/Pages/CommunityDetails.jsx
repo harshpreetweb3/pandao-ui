@@ -46,7 +46,7 @@ const CommunityDetails = () => {
   const params = useParams();
   const [data, setData] = useState([]);
   const [participants, setParticipants] = useState([]);
-  const [comments, setComments] = useState([]);
+  const [communities, setCommunities] = useState([]);
   const [copied, setCopied] = useState(false);
   const sendTransaction = useSendTransaction();
   const [loading, setLoading] = useState(false);
@@ -258,9 +258,9 @@ const CommunityDetails = () => {
   const fetchComments = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/comments/${params.id}`
+        `${import.meta.env.VITE_BACKEND_URL}/community/discussion/${params.id}`
       );
-      setComments(res.data);
+      setCommunities(res.data);
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
     }
@@ -367,44 +367,37 @@ const CommunityDetails = () => {
                   </div>
                 </Card>
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 shadow-lg ">
-                  {comments.length === 0 && <div>No Comment</div>}
-                  <div className="space-y-4">
-                    {comments &&
-                      comments.slice(0, 4).map((comment, index) => (
-                        <div
+                  {communities.length === 0 && (
+                    <div className="flex items-center justify-center">
+                      No active discussions
+                    </div>
+                  )}
+                  {communities.length > 0 && (
+                    <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
+                      {communities.map((community, index) => (
+                        <Card
                           key={index}
-                          className="flex items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black"
+                          className="p-4 flex flex-col gap-2 hover:shadow-lg shadow-md cursor-pointer"
                         >
-                          <Avatar className="shrink-0 object-cover">
-                            <img src={comment.user_image} alt="Avatar" />
-                            <AvatarFallback>JD</AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 space-y-2">
-                            <div className="flex items-center justify-between">
-                              <div
-                                className="group"
-                                onClick={() =>
-                                  navigate(
-                                    `/userDashboard/userProfile/${comment.user_address}`
-                                  )
-                                }
-                              >
-                                <div className="font-medium group-hover:underline cursor-pointer">
-                                  {comment.user_name}
-                                </div>
-                                <div className="font-light group-hover:underline cursor-pointer">
-                                  {clipAddress(comment.user_address)}
-                                </div>
-                              </div>
-                              {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
-                            </div>
-                            <p className="text-gray-800 dark:text-gray-400 font-medium">
-                              {comment.comment}
-                            </p>
+                          <div className="text-lg font-semibold">
+                            {community.title}
                           </div>
-                        </div>
+                          <div className="text-sm flex items-center gap-2">
+                            <div>Started By - </div>
+                            <div className="flex items-center">
+                              <div>
+                                <Avatar className="h-6 w-6">
+                                  <AvatarImage src={community.user_image} />
+                                  <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                              </div>
+                              <div>{community.user_name}</div>
+                            </div>
+                          </div>
+                        </Card>
                       ))}
-                  </div>
+                    </div>
+                  )}
                 </Card>
                 <div className="bg-transparent w-full mx-auto  flex items-center  ">
                   <Card
@@ -413,7 +406,7 @@ const CommunityDetails = () => {
                     }
                     className=" group  p-3 w-64 text-center flex items-center justify-center hover:text-blue-700 cursor-pointer "
                   >
-                    <p>See all Comments </p>
+                    <p>See all Discussions </p>
                     <ChevronRight className="h-5 w-5 group-hover:translate-x-1 duration-300 transition-transform" />
                   </Card>
                 </div>
