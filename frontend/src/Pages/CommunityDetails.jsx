@@ -377,6 +377,9 @@ const CommunityDetails = () => {
                       {communities.map((community, index) => (
                         <Card
                           key={index}
+                          onClick={() =>
+                            navigate(`/community/detail/${params.id}/discussion`)
+                          }
                           className="p-4 flex flex-col gap-2 hover:shadow-lg shadow-md cursor-pointer"
                         >
                           <div className="text-lg font-semibold">
@@ -384,7 +387,7 @@ const CommunityDetails = () => {
                           </div>
                           <div className="text-sm flex items-center gap-2">
                             <div>Started By - </div>
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-1">
                               <div>
                                 <Avatar className="h-6 w-6">
                                   <AvatarImage src={community.user_image} />
