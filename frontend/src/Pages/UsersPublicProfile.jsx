@@ -6,17 +6,27 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-import { Check, ChevronLeft, Copy, Globe } from "lucide-react";
+import {
+  Activity,
+  Check,
+  ChevronLeft,
+  ClockIcon,
+  Copy,
+  Globe,
+} from "lucide-react";
 
 import { FaLinkedinIn, FaTiktok, FaXTwitter } from "react-icons/fa6";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import { Button } from "@/components/ui/button";
+import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
 
 const UserPublicProfile = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
   const [coverUrl, setCoverUrl] = useState("");
+  const [activityData, setActivityData] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
 
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
@@ -44,7 +54,25 @@ const UserPublicProfile = () => {
   //     setFileUrl(url);
   //     console.log("Received file URL:", url);
   //   };
-
+  const fetchActivity = async (user_address, page, page_size) => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/user/activity`,
+        {
+          params: {
+            user_address,
+            page,
+            page_size,
+          },
+        }
+      );
+      setActivityData(res.data.data);
+      setTotalPages(res.data.page);
+      console.log(res.data, "data");
+    } catch (error) {
+      console.error("Error fetching activity data:", error);
+    }
+  };
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
@@ -75,10 +103,16 @@ const UserPublicProfile = () => {
       }
     };
 
-    fetchBluePrint();
-    fetchUserData();
+    if (accounts && accounts.length > 0 && accounts[0].address) {
+      fetchBluePrint();
+      fetchUserData();
+    }
   }, [accounts, params.id]);
-
+  useEffect(() => {
+    if (userData.public_address) {
+      fetchActivity(userData.public_address, 1, 10);
+    }
+  }, [userData.public_address]);
   //   const handleUpdateUser = async () => {
   //     try {
   //       const updatedData = {
@@ -113,15 +147,20 @@ const UserPublicProfile = () => {
       {userData && (
         <div className="flex flex-col w-full">
           <div className="w-full flex items-start justify-between mx-auto max-w-[1200px] ">
-          <div onClick={()=>navigate(-1)} className="w-fit cursor-pointer  flex items-center h-10 group"><ChevronLeft className="group-hover:-translate-x-2 duration-300 transition-transform"/> <span>Back </span> </div>
-
+            <div
+              onClick={() => navigate(-1)}
+              className="w-fit cursor-pointer  flex items-center h-10 group"
+            >
+              <ChevronLeft className="group-hover:-translate-x-2 duration-300 transition-transform" />{" "}
+              <span>Back </span>{" "}
+            </div>
           </div>
           <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
-          <img
-  src={userData.usermetadata?.cover_url || "/Pandao.png"}
-  alt="Cover"
-  className="aspect-video h-48 w-full object-cover"
-/>
+            <img
+              src={userData.usermetadata?.cover_url || "/Pandao.png"}
+              alt="Cover"
+              className="aspect-video h-48 w-full object-cover"
+            />
           </Card>
           <Card className="w-full rounded-t-none border-t-0 flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
             <CardHeader className="p-0 -translate-y-32 ">
@@ -191,6 +230,51 @@ const UserPublicProfile = () => {
                 )} */}
               </div>
             </CardContent>
+          </Card>
+          <Card className="w-full flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black  ">
+            <div className="text-xl font-bold">User Activity</div>
+            <div className="w-full mt-4 flex flex-col gap-2 ">
+              {activityData.map((activity, index) => (
+                <div key={index} className="p-4 border-2 rounded-lg group ">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-start gap-2">
+                      <Avatar className="h-8 w-8 mt-1">
+                        <AvatarImage
+                          src={activity.user_image_url}
+                          className="h-8 w-8 object-cover"
+                        />
+
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span>{activity.info}</span>
+                        </div>
+                        <div className="text-sm flex items-center gap-1 font-light">
+                          <ClockIcon className="h-3 w-3" />{" "}
+                          <span>
+                            {formatStandardDateTime(activity.created_at)}
+                          </span>{" "}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border-2 rounded-full p-2 group-hover:text-purple-600 group-hover:border-purple-600">
+                      <Activity className="h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* <div className="flex justify-between mt-4">
+              <Button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
+                Previous
+              </Button>
+              <span>Page {currentPage} of {totalPages}</span>
+              <Button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
+                Next
+              </Button>
+            </div> */}
           </Card>
         </div>
       )}
