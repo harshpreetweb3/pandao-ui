@@ -28,6 +28,7 @@ const Comments = () => {
   const [open, setOpen] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
   const [selectedDiscussion, setSelectedDiscussion] = useState(null);
+  const [selectedDiscussionTitle, setSelectedDiscussionTitle] = useState(""); // New state for the discussion title
   const [newComment, setNewComment] = useState(""); // New state for the comment text
 
   const handleAddDiscussion = async () => {
@@ -68,13 +69,14 @@ const Comments = () => {
     }
   };
 
-  const fetchDiscussionComments = async (discussionId) => {
+  const fetchDiscussionComments = async (discussionId, discussionTitle) => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/discussion/comments/${discussionId}`
       );
       setSelectedComments(res.data);
       setSelectedDiscussion(discussionId);
+      setSelectedDiscussionTitle(discussionTitle); // Set the discussion title
     } catch (error) {
       console.error("Error fetching discussion comments:", error);
     }
@@ -89,7 +91,7 @@ const Comments = () => {
       user_addr: accounts[0].address,
       discussion_id: selectedDiscussion,
       comment: newComment,
-      image:"string"
+      image: "string",
     };
 
     try {
@@ -100,7 +102,7 @@ const Comments = () => {
       console.log("Add Comment Response:", response.data);
       toast.success("Comment Added");
       setNewComment("");
-      fetchDiscussionComments(selectedDiscussion);
+      fetchDiscussionComments(selectedDiscussion, selectedDiscussionTitle);
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -128,9 +130,11 @@ const Comments = () => {
                   </div>
                   <div>
                     <Dialog open={open} onOpenChange={setOpen}>
-                { !selectedDiscussion &&     <DialogTrigger>
-                        <Button variant="radix">Start new discussion</Button>
-                      </DialogTrigger>}
+                      {!selectedDiscussion && (
+                        <DialogTrigger>
+                          <Button variant="radix">Start new discussion</Button>
+                        </DialogTrigger>
+                      )}
                       <DialogContent>
                         <DialogTitle>Discussion Title</DialogTitle>
                         <Input
@@ -146,14 +150,12 @@ const Comments = () => {
                   </div>
                 </div>
                 <div className="text-3xl font-semibold">
-                  {communities.length} discussions so far.
+                  {selectedDiscussion ? selectedDiscussionTitle : `${communities.length} discussions so far.`}
                 </div>
               </Card>
               {!selectedDiscussion && (
                 <Card className="bg-white md:w-[80%] mx-auto md:p-4 p-4 space-y-2">
-                  <div className="p-2 border-b-2 -translate-x-2">
-                    Discussions
-                  </div>
+                  <div className="p-2 border-b-2 -translate-x-2">Discussions</div>
                   {!loading && (
                     <div className="space-y-4">
                       {communities.length > 0 && (
@@ -163,7 +165,7 @@ const Comments = () => {
                               key={index}
                               className="p-4 flex flex-col gap-2 hover:shadow-lg shadow-md cursor-pointer"
                               onClick={() =>
-                                fetchDiscussionComments(community.id)
+                                fetchDiscussionComments(community.id, community.title)
                               }
                             >
                               <div className="text-lg font-semibold">
@@ -197,7 +199,7 @@ const Comments = () => {
               {selectedDiscussion && (
                 <Card className="bg-white md:w-[80%] mx-auto md:p-4 p-4 space-y-2 mt-4">
                   <div className="flex items-center justify-between border-b-2">
-                    <div className="p-2  -translate-x-2">Comments</div>
+                    <div className="p-2 -translate-x-2">Comments</div>
                     <Button
                       size="sm"
                       variant="link"
