@@ -4,24 +4,19 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAccount } from "@/AccountContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import {
-  Card,
-  CardContent,
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
-  CardHeader,
-
-} from "@/components/ui/card";
-
-
-import { Check, Copy, Globe } from "lucide-react";
+import { Check, ChevronLeft, Copy, Globe } from "lucide-react";
 
 import { FaLinkedinIn, FaTiktok, FaXTwitter } from "react-icons/fa6";
 import { clipAddress } from "@/utils/functions/ClipAddress";
+import { Button } from "@/components/ui/button";
 
 const UserPublicProfile = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const params = useParams();
+  const [coverUrl, setCoverUrl] = useState("");
 
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
@@ -116,216 +111,44 @@ const UserPublicProfile = () => {
   return (
     <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-blue-50 p-7">
       {userData && (
-        <>
-          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1000px] mx-auto rounded-sm p-5 text-black ">
-            <CardHeader className="p-0 ">
+        <div className="flex flex-col w-full">
+          <div className="w-full flex items-start justify-between mx-auto max-w-[1200px] ">
+          <div onClick={()=>navigate(-1)} className="w-fit cursor-pointer  flex items-center h-10 group"><ChevronLeft className="group-hover:-translate-x-2 duration-300 transition-transform"/> <span>Back </span> </div>
+
+          </div>
+          <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
+          <img
+  src={userData.usermetadata?.cover_url || "/Pandao.png"}
+  alt="Cover"
+  className="aspect-video h-48 w-full object-cover"
+/>
+          </Card>
+          <Card className="w-full rounded-t-none border-t-0 flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm p-5 text-black ">
+            <CardHeader className="p-0 -translate-y-32 ">
               <Avatar className="h-72 w-72 border-[5px] border-purple-400">
-                <AvatarImage
-                  src={fileUrl || userData.image_url}
-                  className="h-72 w-72 object-cover"
-                />
+                {userData.usermetadata?.image_url && (
+                  <AvatarImage
+                    src={userData.usermetadata.image_url}
+                    className="h-72 w-72 object-cover"
+                  />
+                )}
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </CardHeader>
-            <CardContent className="text-xl font-bold flex flex-col gap-2 w-full p-5">
-              <div className="text-black font-semibold text-3xl">
-                {userData.name}
-              </div>
-              <div className="text-black font-light text-sm text-left px-0">
-                {userData.about}
-              </div>
-              <div className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group">
-                {clipAddress(userData.public_address)}
-                <button
-                  onClick={() => handleCopy(userData.public_address)}
-                  disabled={copied}
-                  className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
-                >
-                  {copied ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </button>
-              </div>
-              {socialLinks.x_url && (
-                <div className="flex items-center w-full gap-2">
-                  <FaXTwitter className="text-black" />
-                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                    {socialLinks.x_url}
-                  </div>
-                </div>
-              )}
-              {socialLinks.website_url && (
-                <div className="flex items-center w-full gap-2">
-                  <Globe className="text-black" />
-                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                    {socialLinks.website_url}
-                  </div>
-                </div>
-              )}
-              {socialLinks.linkedin && (
-                <div className="flex items-center w-full gap-2">
-                  <FaLinkedinIn className="text-black" />
-                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                    {socialLinks.linkedin}
-                  </div>
-                </div>
-              )}{" "}
-              {socialLinks.tiktok && (
-                <div className="flex items-center w-full gap-2">
-                  <FaTiktok className="text-black" />
-                  <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
-                    {socialLinks.tiktok}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-          {/* <div className="max-w-[1440px] flex md:flex-row flex-col w-full mx-auto gap-2">
-       
-            <Card className="border-0 md:w-[25%] md:sticky md:top-20 flex flex-col items-center h-full mt-1 bg-transparent max-w-[1440px] gap-3">
-              <CardHeader className="p-0 mt-4 flex flex-col items-center">
-                <Avatar className="h-72 w-72 border-[5px] border-pink-500">
-                  <AvatarImage
-                    src={fileUrl || userData.image_url}
-                    className="h-72 w-72 object-cover"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <ImageUpdater onUploadSuccess={handleFileId} />
-              </CardHeader>
-              <CardContent className="text-xl font-bold flex flex-col gap-2 w-full px-2">
-                <div className="text-white font-semibold text-4xl">
+            <CardContent className="text-xl  relative font-bold flex flex-col gap-2 w-full p-5 justify-between">
+              <div className="flex flex-col gap-1">
+                <div className="text-black font-semibold text-3xl">
                   {userData.name}
                 </div>
-                <Textarea
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value)}
-                  className="w-full bg-transparent text-white"
-                  maxLength="150"
-                />
-                <div
-                  className="bg-purple-400 py-1 px-2 rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
-                  style={{ maxWidth: "100%" }}
-                >
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger> {accounts[0].address}</TooltipTrigger>
-                      <TooltipContent>{accounts[0].address}</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <button
-                    onClick={() => handleCopy(accounts[0].address)}
-                    disabled={copied}
-                    className="py-0 bg-purple-500 text-white rounded-md px-2 h-6 text-xs absolute top-2 right-2 group-hover:block hidden"
-                  >
-                    {copied ? (
-                      <Check className="h-4 w-4" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                  </button>
+                <div className="text-black font-light text-base text-left px-0">
+                  {userData.usermetadata?.about}
                 </div>
-                <div className="text-white text-sm">Social Accounts</div>
-                <div className="flex items-center w-full gap-2">
-                  <FaXTwitter className="text-white" />
-                  <input
-                    value={socialLinks.x_url}
-                    onChange={(e) =>
-                      setSocialLinks({ ...socialLinks, x_url: e.target.value })
-                    }
-                    placeholder="Your X url"
-                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
-                  />
-                </div>
-                <div className="flex items-center w-full gap-2">
-                  <Globe className="text-white" />
-                  <input
-                    value={socialLinks.website_url}
-                    onChange={(e) =>
-                      setSocialLinks({
-                        ...socialLinks,
-                        website_url: e.target.value,
-                      })
-                    }
-                    placeholder="Your website URL"
-                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
-                  />
-                </div>
-                <div className="flex items-center w-full gap-2">
-                  <FaLinkedinIn className="text-white" />
-                  <input
-                    value={socialLinks.linkedin}
-                    onChange={(e) =>
-                      setSocialLinks({
-                        ...socialLinks,
-                        linkedin: e.target.value,
-                      })
-                    }
-                    placeholder="Your LinkedIn"
-                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
-                  />
-                </div>{" "}
-                <div className="flex items-center w-full gap-2">
-                  <FaTiktok className="text-white" />
-                  <input
-                    value={socialLinks.tiktok}
-                    onChange={(e) =>
-                      setSocialLinks({ ...socialLinks, tiktok: e.target.value })
-                    }
-                    placeholder="Your Placeholder"
-                    className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-white"
-                  />
-                </div>
-                <div className="flex gap-2 items-center">
-                  <Button
-                    onClick={handleUpdateUser}
-                    className="bg-green-600 hover:bg-green-700 border-2"
-                  >
-                    Save
-                  </Button>
-                  <Button
-                    onClick={() => setEdit(false)}
-                    className="bg-slate-700 border-2 "
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-       
-            <Card className="border-0 md:w-[25%] md:sticky md:top-20 flex flex-col items-center h-full mt-1 bg-transparent max-w-[1440px]">
-              <CardHeader className="p-0 mt-4">
-                <Avatar className="h-72 w-72 border-[5px] border-pink-500">
-                  <AvatarImage
-                    src={userData.image_url}
-                    className="h-72 w-72 object-cover"
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-              </CardHeader>
-              <CardContent className="text-xl font-bold flex flex-col gap-2 w-full px-2">
-                <div className="text-white font-semibold text-4xl">
-                  {userData.name}
-                </div>
-                <div className="text-white font-light text-lg text-left px-0">
-                  {userData.about}
-                </div>
-                <div
-                  className="bg-purple-400 py-1 px-2 rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group"
-                  style={{ maxWidth: "100%" }}
-                >
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger> {userData.public_address}</TooltipTrigger>
-                      <TooltipContent>{userData.public_address}</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div className="py-1 w-[300px]  rounded-sm flex flex-wrap text-ellipsis overflow-hidden relative group">
+                  {clipAddress(userData.public_address)}
                   <button
                     onClick={() => handleCopy(userData.public_address)}
                     disabled={copied}
-                    className="py-0 bg-purple-500 text-white rounded-md px-2 h-6 text-xs absolute top-2 right-2 group-hover:block hidden"
+                    className="py-0  text-black rounded-md px-2 h-6 text-xs absolute top-2 -right-2 group-hover:block "
                   >
                     {copied ? (
                       <Check className="h-4 w-4" />
@@ -336,109 +159,40 @@ const UserPublicProfile = () => {
                 </div>
                 {socialLinks.x_url && (
                   <div className="flex items-center w-full gap-2">
-                    <FaXTwitter className="text-white" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                    <FaXTwitter className="text-black" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
                       {socialLinks.x_url}
                     </div>
                   </div>
                 )}
                 {socialLinks.website_url && (
                   <div className="flex items-center w-full gap-2">
-                    <Globe className="text-white" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                    <Globe className="text-black" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
                       {socialLinks.website_url}
                     </div>
                   </div>
                 )}
                 {socialLinks.linkedin && (
                   <div className="flex items-center w-full gap-2">
-                    <FaLinkedinIn className="text-white" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                    <FaLinkedinIn className="text-black" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
                       {socialLinks.linkedin}
                     </div>
                   </div>
                 )}{" "}
-                {socialLinks.tiktok && (
+                {/* {socialLinks.tiktok && (
                   <div className="flex items-center w-full gap-2">
-                    <FaTiktok className="text-white" />
-                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-white">
+                    <FaTiktok className="text-black" />
+                    <div className="px-3 py-1 text-sm w-full bg-transparent  text-black">
                       {socialLinks.tiktok}
                     </div>
                   </div>
-                )}
-        
-              </CardContent>
-            </Card>
-       
-
-          <div className="md:w-[75%] mt-10 flex flex-col items-center justify-start">
-            <div className="flex gap-2 items-center justify-end w-full border-b-2 border-gray-500 pb-3">
-              <Button
-                onClick={() => {
-                  navigate("/exploreDao");
-                }}
-                variant="outline"
-                className="text-white bg-purple-600"
-              >
-                Explore DAO
-              </Button>
-            </div>
-            <div className="w-full">
-              {data.length === 0 && (
-                <Card className="w-full flex flex-col items-center p-5 text-xl font-bold mt-2 bg-gray-200 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 max-w-[1440px]">
-                  Currently there is no Activity by User
-                </Card>
-              )}
-              <div className="grid grid-cols-1 gap-2 mt-5">
-                {data.map((item) => (
-                  <Card
-                    key={item.id}
-                    className="rounded-sm bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-purple-400 to-purple-300 hover:to-purple-400 hover:from-purple-400 cursor-pointer"
-                 
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <CardTitle>{item.name}</CardTitle>
-                          <CardDescription className="mt-1 text-black">
-                            {item.description}
-                          </CardDescription>
-                        </div>
-                        <Badge variant="">Deployed</Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-col gap-4">
-                        <div>
-                          <p className="text-sm text-gray-900 dark:text-gray-400">
-                            Owner Name:
-                          </p>
-                          <p className="font-medium">{item.owner.name}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-900 dark:text-gray-400">
-                            Owner Address
-                          </p>
-                          <p className="font-medium">{item.owner_address}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <div className="flex items-center justify-end gap-2">
-                        <Button  onClick={()=>{
-                    navigate(`/community/detail/${item.id}`)
-                  }} size="sm" variant="outline">
-                          Interact
-                        </Button>
-                      </div>
-                    </CardFooter>
-                  </Card>
-                ))}
+                )} */}
               </div>
-            </div>
-          </div>
-        </div> */}
-        </>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </div>
   );
