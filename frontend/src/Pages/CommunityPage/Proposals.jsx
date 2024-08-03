@@ -44,6 +44,10 @@ const Proposals = () => {
   const [manifestForVoteFor, setManifestForVoteFor] = useState("");
   const sendTransaction = useSendTransaction();
   const handleAddComment = async () => {
+    if (!proposal || !proposal.id) {
+      toast.error("Proposal not loaded");
+      return;
+    }
     if (comment.trim() === "") {
       toast.error("Add Something");
       return;
@@ -82,6 +86,10 @@ const Proposals = () => {
     }
   };
   const fetchProposalsComments = async () => {
+    if (!proposal || !proposal.id) {
+      console.error("Proposal not available for fetching comments.");
+      return;
+    }
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments/${
@@ -90,11 +98,11 @@ const Proposals = () => {
       );
       setComments(res.data);
       setLoadingComments(false);
-      
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -257,11 +265,10 @@ const Proposals = () => {
   };
   useEffect(() => {
     fetchProposals();
-    if (proposal.id) {
-      fetchProposalsComments();
-    }
-  }, [params.id, proposal.id]);
-
+  }, [params.id]);
+  useEffect(() => {
+    fetchProposalsComments();
+  }, [proposal]);
   if (!accounts || accounts.length === 0) {
     navigate("/");
     return null;
@@ -292,7 +299,7 @@ const Proposals = () => {
                       )}
                     </div>
                   )}
-                  {!loading && (
+                  {!loading && proposal && (
                     <div className="space-y-4">
                       {proposal && (
                         <div className="flex  flex-col items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black">
@@ -371,11 +378,12 @@ const Proposals = () => {
                 </Card>
                 <div className="grid  md:grid-cols-3 grid-cols-1 gap-3 px-1">
                   <div className="bg-white col-span-2 rounded-md p-2">
+               
                     <div>
                       {loadingCommnets ? (
-                      <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
-                      <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
-                    </div>
+                        <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                          <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+                        </div>
                       ) : (
                         <>
                           {comments &&
