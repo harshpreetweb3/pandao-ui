@@ -17,6 +17,8 @@ import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import ImageUpdater from "../components/ImageUpdater";
+import CommnetImageUpdater from "../components/CommentImageUpdater";
 
 const Comments = () => {
   const { accounts } = useAccount();
@@ -28,8 +30,9 @@ const Comments = () => {
   const [open, setOpen] = useState(false);
   const [selectedComments, setSelectedComments] = useState([]);
   const [selectedDiscussion, setSelectedDiscussion] = useState(null);
-  const [selectedDiscussionTitle, setSelectedDiscussionTitle] = useState(""); // New state for the discussion title
-  const [newComment, setNewComment] = useState(""); // New state for the comment text
+  const [selectedDiscussionTitle, setSelectedDiscussionTitle] = useState(""); 
+  const [newComment, setNewComment] = useState(""); 
+  const [commentUrl,setCommentUrl]=useState("")
 
   const handleAddDiscussion = async () => {
     if (title.trim() === "") {
@@ -93,7 +96,7 @@ const Comments = () => {
       user_addr: accounts[0].address,
       discussion_id: selectedDiscussion,
       comment: newComment,
-      image: "string",
+      image: commentUrl ||  "string",
     };
 
     try {
@@ -104,12 +107,17 @@ const Comments = () => {
       console.log("Add Comment Response:", response.data);
       toast.success("Comment Added");
       setNewComment("");
+      setCommentUrl("")
       fetchDiscussionComments(selectedDiscussion, selectedDiscussionTitle);
     } catch (error) {
       console.error("Error adding comment:", error);
     }
   };
-
+  const handleCommentId = (id) => {
+    const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
+    console.log("Received file URL:", url);
+    setCommentUrl(url)
+  };
   useEffect(() => {
     fetchComments();
   }, [params.id]);
@@ -225,9 +233,18 @@ const Comments = () => {
                       {selectedComments.map((comment, index) => (
                         <Card
                           key={index}
-                          className="p-4 flex flex-col gap-2 shadow-md "
+                          className="p-2 flex flex-col gap-2 shadow-md "
                         >
-                          <div>{comment.comment}</div>
+                          <div className="bg-purple-50 p-2 font-semibold rounded-sm">{comment.comment}</div>
+                          <div>
+                            {comment.image && comment.image!=="string" &&
+                            <img
+                            src={comment.image}
+                            className="h-[320px] w-[320px] aspect-square object-cover"
+                            />
+
+                            }
+                          </div>
                           <div className="text-sm flex items-center gap-2">
                             <div>Posted By - </div>
                             <div className="flex items-center gap-1">
@@ -255,9 +272,19 @@ const Comments = () => {
                       value={newComment}
                       onChange={(e) => setNewComment(e.target.value)}
                     />
-                    <Button variant="radix" onClick={handleAddComment}>
+                
+                    <div className="flex items-center w-fit">
+                    <Button variant="radix" className="rounded-r-none" onClick={handleAddComment}>
                       Add Comment
                     </Button>
+                    <CommnetImageUpdater  onUploadSuccess={handleCommentId} />
+                    </div>
+                    {commentUrl !=="" && <img
+                    src={commentUrl}
+                    className="h-40 w-60 object-cover"
+                    />}
+       
+
                   </div>
                 </Card>
               )}
