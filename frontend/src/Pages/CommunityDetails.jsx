@@ -31,6 +31,7 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import useCustomAlertStore from "@/store/customAlertStore";
 import { CustomAlert } from "./GlobalComponents/CustomAlert";
+import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
 
 function removeNewLines(input) {
   return input.replace(/\n\s*/g, " ");
@@ -374,7 +375,7 @@ const CommunityDetails = () => {
                   )}
                   {communities.length > 0 && (
                     <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
-                      {communities.map((community, index) => (
+                      {communities.slice(0,4).map((community, index) => (
                         <Card
                           key={index}
                           onClick={() =>
@@ -396,6 +397,9 @@ const CommunityDetails = () => {
                               </div>
                               <div>{community.user_name}</div>
                             </div>
+                          </div>
+                          <div className="w-full border-t-2 pt-2">
+                            {formatStandardDateTime(community.created_at)}
                           </div>
                         </Card>
                       ))}
