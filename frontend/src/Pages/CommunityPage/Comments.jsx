@@ -72,7 +72,9 @@ const Comments = () => {
   const fetchDiscussionComments = async (discussionId, discussionTitle) => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_BACKEND_URL}/community/discussion/comments/${discussionId}`
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/community/discussion/comments/${discussionId}`
       );
       setSelectedComments(res.data);
       setSelectedDiscussion(discussionId);
@@ -150,12 +152,16 @@ const Comments = () => {
                   </div>
                 </div>
                 <div className="text-3xl font-semibold">
-                  {selectedDiscussion ? selectedDiscussionTitle : `${communities.length} discussions so far.`}
+                  {selectedDiscussion
+                    ? selectedDiscussionTitle
+                    : `${communities.length} discussions so far.`}
                 </div>
               </Card>
               {!selectedDiscussion && (
                 <Card className="bg-white md:w-[80%] mx-auto md:p-4 p-4 space-y-2">
-                  <div className="p-2 border-b-2 -translate-x-2">Discussions</div>
+                  <div className="p-2 border-b-2 -translate-x-2">
+                    Discussions
+                  </div>
                   {!loading && (
                     <div className="space-y-4">
                       {communities.length > 0 && (
@@ -165,7 +171,10 @@ const Comments = () => {
                               key={index}
                               className="p-4 flex flex-col gap-2 hover:shadow-lg shadow-md cursor-pointer"
                               onClick={() =>
-                                fetchDiscussionComments(community.id, community.title)
+                                fetchDiscussionComments(
+                                  community.id,
+                                  community.title
+                                )
                               }
                             >
                               <div className="text-lg font-semibold">
@@ -182,6 +191,9 @@ const Comments = () => {
                                   </div>
                                   <div>{community.user_name}</div>
                                 </div>
+                              </div>
+                              <div className="w-full border-t-2 pt-2">
+                                {formatStandardDateTime(community.created_at)}
                               </div>
                             </Card>
                           ))}
