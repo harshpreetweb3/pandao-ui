@@ -32,7 +32,9 @@ const UserDashboard = () => {
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
   const [userData, setUserData] = useState({});
-  const [createdComminities,setCreatedCommunities]=useState([])
+  const [createdComminities, setCreatedCommunities] = useState([]);
+  const [participatedComminities, setParticipatedCommunities] = useState([]);
+
   // const [edit, setEdit] = useState(false);
   // const [fileUrl, setFileUrl] = useState("");
   const [about, setAbout] = useState("");
@@ -104,20 +106,33 @@ const UserDashboard = () => {
     const fetchCreatedCommunity = async (user_address) => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/user/community/${user_address}?owner=false`,
-        
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/user/community/${user_address}?owner=true`
         );
-       setCreatedCommunities(res.data)
+        setCreatedCommunities(res.data);
       } catch (error) {
         console.error("Error fetching activity data:", error);
       }
     };
-
+    const fetchCreatedParticipated = async (user_address) => {
+      try {
+        const res = await axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/user/community/${user_address}?owner=false`
+        );
+        setParticipatedCommunities(res.data);
+      } catch (error) {
+        console.error("Error fetching activity data:", error);
+      }
+    };
     if (accounts && accounts.length > 0 && accounts[0].address) {
       fetchBluePrint();
       fetchUserData();
       fetchActivity(accounts[0].address, 1, 10);
-      fetchCreatedCommunity(accounts[0].address)
+      fetchCreatedCommunity(accounts[0].address);
+      fetchCreatedParticipated(accounts[0].address);
     }
   }, [accounts, currentPage, pageSize]);
 
@@ -232,38 +247,97 @@ const UserDashboard = () => {
                   </Button>
                 </CardContent>
               </Card>
-              <div>
-              <Card className="w-full flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm p-5 text-black  ">
-            <div className="text-xl font-bold">Created Communities</div>
-            <div className="w-full mt-4 flex flex-col gap-2 ">
-              {createdComminities.map((activity, index) => (
-                <div key={index} className="p-4 border-2 rounded-lg group hover:shadow-md ">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Avatar className="h-12 w-12 mt-1">
-                        <AvatarImage
-                          src={activity.community_image}
-                          className="h-12 w-12 object-cover"
-                        />
-
-                        <AvatarFallback>CN</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span>{activity.community_name}</span>
-                        </div>
-                       
+              <div className="flex w-full max-w-[1400px] mx-auto">
+                <Card className=" flex mt-1  flex-col shadow-md items-center md:items-start w-full mx-auto rounded-sm p-5 text-black  ">
+                  <div className="text-xl font-bold">Created Communities</div>
+                  <div className="w-full mt-4 flex flex-col gap-2 h-full ">
+                    {createdComminities.length === 0 && (
+                      <div className="flex items-center justify-center text-center h-full ">
+                        No comminities created
                       </div>
-                    </div>
-                    <div onClick={()=>navigate(`/community/detail/${activity.community_id}`)} className="border-2 rounded-full p-2 group-hover:text-purple-600 group-hover:border-purple-600 cursor-pointer">
-                      <SquareArrowOutUpRight className="h-4 w-4" />
-                    </div>
+                    )}
+                    {createdComminities.length > 0 &&
+                      createdComminities.map((activity, index) => (
+                        <div
+                          key={index}
+                          className="p-4 border-2 rounded-lg group hover:shadow-md "
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-12 w-12 mt-1">
+                                <AvatarImage
+                                  src={activity.community_image}
+                                  className="h-12 w-12 object-cover"
+                                />
+
+                                <AvatarFallback>CN</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span>{activity.community_name}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              onClick={() =>
+                                navigate(
+                                  `/community/detail/${activity.community_id}`
+                                )
+                              }
+                              className="border-2 rounded-full p-2 group-hover:text-purple-600 group-hover:border-purple-600 cursor-pointer"
+                            >
+                              <SquareArrowOutUpRight className="h-4 w-4" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                   </div>
-                </div>
-              ))}
-            </div>
-           
-          </Card>
+                </Card>
+                <Card className="w-full flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm p-5 text-black  ">
+                  <div className="text-xl font-bold"> Communities Participated</div>
+                  <div className="w-full mt-4 flex flex-col gap-2 h-full">
+                    {participatedComminities.length === 0 && (
+                      <div className="flex items-center justify-center text-center h-full">
+                        No participated comminities.
+                      </div>
+                    )}
+                    {participatedComminities.length > 0 &&
+                      participatedComminities.map((activity, index) => (
+                        <div
+                          key={index}
+                          className="p-4 border-2 rounded-lg group hover:shadow-md "
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Avatar className="h-12 w-12 mt-1">
+                                <AvatarImage
+                                  src={activity.community_image}
+                                  className="h-12 w-12 object-cover"
+                                />
+
+                                <AvatarFallback>CN</AvatarFallback>
+                              </Avatar>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <span>{activity.community_name}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <div
+                              onClick={() =>
+                                navigate(
+                                  `/community/detail/${activity.community_id}`
+                                )
+                              }
+                              className="border-2 rounded-full p-2 group-hover:text-purple-600 group-hover:border-purple-600 cursor-pointer"
+                            >
+                              <SquareArrowOutUpRight className="h-4 w-4" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </Card>
               </div>
             </div>
           )}
