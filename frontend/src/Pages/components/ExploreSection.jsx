@@ -127,7 +127,7 @@ const ExploreSection = () => {
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
                               <Users className="h-4 w-4" />{" "}
-                              <p> {dao.number_of_participants} </p>{" "}
+                              <p className="text-sm"> {dao.number_of_participants} </p>{" "}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Number of Participant</p>
@@ -142,7 +142,7 @@ const ExploreSection = () => {
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
                               <Banknote className="h-4 w-4" />{" "}
-                              <p> {dao.fund || 0} </p>{" "}
+                              <p className="text-sm"> {dao.funds || 0} </p>{" "}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Funds</p>
