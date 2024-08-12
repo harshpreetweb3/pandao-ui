@@ -105,6 +105,11 @@ const Comments = () => {
         data
       );
       console.log("Add Comment Response:", response.data);
+      if(response.data.status_code===401){
+        toast.warning("Not a community member");
+        setNewComment("")
+        return
+      }
       toast.success("Comment Added");
       setNewComment("");
       setCommentUrl("")

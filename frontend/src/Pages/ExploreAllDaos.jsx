@@ -38,7 +38,9 @@ const ExploreAllDao = () => {
         navigate("/");
         return null;
       }
-    return ( <div className="min-h-screen pt-20 max-w-[1440px] mx-auto bg-blue-50">
+    return ( 
+    <div className="bg-blue-50">
+    <div className="min-h-screen pt-20 max-w-[1440px] mx-auto ">
         <div className="px-2 mt-2 text-3xl font-semibold">
             Explore all DAOs
         </div>
@@ -120,7 +122,9 @@ const ExploreAllDao = () => {
                 ))}
             </div>
           )}
-    </div> );
+    </div>
+    </div>
+ );
 }
  
 export default ExploreAllDao;
