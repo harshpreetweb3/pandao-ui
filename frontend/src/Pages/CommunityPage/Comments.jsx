@@ -56,7 +56,13 @@ const Comments = () => {
       setOpen(false);
       fetchComments();
     } catch (error) {
-      console.error("Error adding discussion:", error);
+      if(error.response.status===401){
+        toast.warning("Non member cannot add discussion");
+        setTitle("");
+        setOpen(false);
+      }
+      console.error("Error adding discussion:", error.response.status);
+
     }
   };
 
