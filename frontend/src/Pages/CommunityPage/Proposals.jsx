@@ -39,6 +39,7 @@ const Proposals = () => {
   const [comments, setComments] = useState([]);
   const [minimumQuorum, setMinimumQuorum] = useState("");
   const [proposalText, setProposalText] = useState("");
+  const [proposalDescription, setProposalDescription] = useState("");
   const [manifest, setManifest] = useState("");
   const [manifestForVoteAgainst, setManifestForVoteAgainst] = useState("");
   const [manifestForVoteFor, setManifestForVoteFor] = useState("");
@@ -107,7 +108,7 @@ const Proposals = () => {
     e.preventDefault();
 
     // Validate form inputs
-    if (!proposalText || !startDate || !endDate || !minimumQuorum) {
+    if (!proposalText || !startDate || !endDate || !minimumQuorum ||!proposalDescription ) {
       alert("Please fill out all fields.");
       return;
     }
@@ -124,6 +125,7 @@ const Proposals = () => {
           start_time: JSON.stringify(Math.floor(startDate.getTime() / 1000)),
           end_time: JSON.stringify(Math.floor(endDate.getTime() / 1000)),
           proposal: proposalText,
+          description: proposalDescription
         }
       );
 
@@ -468,6 +470,14 @@ const Proposals = () => {
                   placeholder="Type your proposal here ..."
                   value={proposalText}
                   onChange={(e) => setProposalText(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <Label className="text-lg p-1">Proposal Description</Label>
+                <Textarea
+                  placeholder="Type your proposal description ..."
+                  value={proposalDescription}
+                  onChange={(e) => setProposalDescription(e.target.value)}
                 />
               </div>
               <div className="flex flex-col mt-3 gap-3 w-full ">
