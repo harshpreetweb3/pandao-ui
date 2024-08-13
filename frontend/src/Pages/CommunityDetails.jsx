@@ -181,6 +181,8 @@ const CommunityDetails = () => {
         setOpen(true);
         setBuyModal(false);
         setLoading(false);
+        window.location.reload()
+
       } catch (error) {
         window.alert(error);
       }
@@ -231,6 +233,7 @@ const CommunityDetails = () => {
         setOpen(true);
         setSellModal(false);
         setLoading(false);
+        window.location.reload()
       } catch (error) {
         window.alert(error);
       }
