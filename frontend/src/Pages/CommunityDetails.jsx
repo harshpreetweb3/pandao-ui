@@ -285,7 +285,7 @@ const CommunityDetails = () => {
       <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
         {data && (
           <div className="space-y-6 md:w-[100%] ">
-            <Card className="bg-white md:w-[90%] mx-auto md:p-5 p-6 shadow-lg flex  md:flex-row flex-col gap-3">
+            <Card className="bg-white md:w-[90%] mx-auto md:p-5 p-6 shadow-lg flex  md:flex-row flex-col gap-3 overflow-hidden">
               <Avatar className="h-28 w-28 border-[5px] border-purple-400">
                 <AvatarImage
                   src={data.image}
