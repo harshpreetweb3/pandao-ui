@@ -9,6 +9,8 @@ import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import useTokenWeightStore from "@/store/templateStore/tokenWeightStore";
+import CommunityImageUrl from "@/Pages/components/CommunityImageUrl";
+import TokenImageURL from "@/Pages/components/TokenImage";
 
 const DescribeView = () => {
   const { setView } = useViewStore();
@@ -16,7 +18,16 @@ const DescribeView = () => {
   const { accounts } = useAccount();
   const { formFields, setFormFields } = useTokenWeightStore(); // Use the Zustand store
   const [data, setData] = useState([]);
-
+  const handleUrlId = (id) => {
+    const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
+    console.log("Received file URL:", url);
+    setFormFields({ communityImage: url });
+  };
+  const handleTokenUrl = (id2) => {
+    const url2 = `https://ucarecdn.com/${id2}/-/preview/1000x562/`;
+    console.log("Received file URLsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdS:", url2);
+    setFormFields({ tokenImage: url2 });
+  };
   useEffect(() => {
     if (accounts && accounts.length > 0) {
       setFormFields({ userAddress: accounts[0].address }); // Set the userAddress
@@ -100,25 +111,37 @@ const handleViewChange=()=>{
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Community Image URL</span>
+          <div className="flex items-center ">
           <Input
             name="communityImage"
-            className="border-slate-300 focus:ring-1 focus:ring-purple-400"
+            className="border-slate-300 focus:ring-1 focus:ring-purple-400 rounded-r-none"
             placeholder="Type your Community Image URL..."
             value={formFields.communityImage}
-            onChange={handleInputChange}
+            //onChange={handleInputChange}
             required
+            disabled
           />
+          <CommunityImageUrl onUploadSuccess={handleUrlId}/>
+          </div>
+  
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Token Image URL</span>
+          <div className="flex items-center ">
           <Input
             name="tokenImage"
             className="border-slate-300 focus:ring-1 focus:ring-purple-400"
             placeholder="Type your Token Image URL..."
             value={formFields.tokenImage}
-            onChange={handleInputChange}
+           //onChange={handleInputChange}
             required
+            disabled
+            
           />
+
+<TokenImageURL onUploadComplete2={handleTokenUrl}/>
+          </div>
+         
         </div>
         <div className="flex items-center justify-between">
           <Button onClick={() => setView("2")}>Back</Button>
