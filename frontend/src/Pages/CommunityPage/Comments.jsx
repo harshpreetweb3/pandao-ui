@@ -183,6 +183,9 @@ const Comments = () => {
                   </div>
                   {!loading && (
                     <div className="space-y-4">
+                      {communities.length === 0 && <div className="flex items-center justify-center h-20">
+                        No Active Discussion
+                      </div> }
                       {communities.length > 0 && (
                         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                           {communities.map((community, index) => (
