@@ -40,7 +40,7 @@ const ExploreAllDao = () => {
       }
     return ( 
     <div className="bg-blue-50">
-    <div className="min-h-screen pt-20 max-w-[1440px] mx-auto ">
+    <div className="min-h-screen pt-20 max-w-[1200px] mx-auto ">
         <div className="px-2 mt-2 text-3xl font-semibold">
             Explore all DAOs
         </div>
