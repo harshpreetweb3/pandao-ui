@@ -23,7 +23,7 @@ const ExploreAllDao = () => {
         const fetchBluePrint = async () => {
           try {
             const res = await axios.get(
-              `${import.meta.env.VITE_BACKEND_URL}/community`
+              `${import.meta.env.VITE_BACKEND_URL}/community/all`
             );
             setData(res.data);
           } catch (error) {
