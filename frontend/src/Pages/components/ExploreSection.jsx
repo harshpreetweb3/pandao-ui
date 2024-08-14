@@ -3,7 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useViewStore from "@/store/view";
 import axios from "axios";
-import { Banknote, Building2, GraduationCap, Users } from "lucide-react";
+import {
+  Banknote,
+  Building2,
+  Check,
+  Filter,
+  GraduationCap,
+  Users,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SkeletonCard } from "../GlobalComponents/Skeleton";
@@ -13,17 +20,24 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 const ExploreSection = () => {
   const [data, setData] = useState([]);
   const { setView } = useViewStore();
   const [loading, setLoading] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("participants");
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/community`
+          `${import.meta.env.VITE_BACKEND_URL}/community?sort=${selectedOption}`
         );
         setData(res.data);
       } catch (error) {
@@ -34,7 +48,17 @@ const ExploreSection = () => {
     };
     setView("1");
     fetchBluePrint();
-  }, [setView]);
+  }, [setView, selectedOption]);
+  const options = [
+    { id: "participants", label: "Participants" },
+    { id: "funds", label: "Funds" },
+    { id: "name", label: "Name" },
+  ];
+  const handleOptionSelect = (optionId) => {
+    setSelectedOption(optionId);
+    setOpen(false);
+  };
+
   return (
     <div className="bg-slate-100 ">
       <div className=" flex flex-col items-start p-3 md:p-0  justify-start   -translate-y-24 mx-auto max-w-[1200px]">
@@ -78,7 +102,28 @@ const ExploreSection = () => {
           </Card>
         </div>
         <div className=" mt-14 w-full">
-          <div className="text-3xl  font-semibold">Explore Top DAOs</div>
+          <div className="flex items-center justify-between">
+            <div className="text-3xl  font-semibold">Explore Top DAOs</div>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger className="bg-white p-2 rounded-md">
+                <Filter className="" />
+              </PopoverTrigger>
+              <PopoverContent className="mr-[100px] p-2">
+                {options.map((option) => (
+                  <div
+                    key={option.id}
+                    onClick={() => handleOptionSelect(option.id)}
+                    className={`flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100 rounded-md ${selectedOption === option.id ? "bg-gray-100" :""}`}
+                  >
+                    <span>{option.label}</span>
+                    {selectedOption === option.id && (
+                      <Check className="h-4 w-4 text-green-600" />
+                    )}
+                  </div>
+                ))}
+              </PopoverContent>
+            </Popover>
+          </div>
           {!loading && data.length === 0 && (
             <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
               No Deployed DAOs
@@ -126,30 +171,31 @@ const ExploreSection = () => {
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
-                              <Users className="h-4 w-4" />{" "}
-                              <p className="text-sm"> {dao.number_of_participants} </p>{" "}
+                                <Users className="h-4 w-4" />{" "}
+                                <p className="text-sm">
+                                  {" "}
+                                  {dao.number_of_participants}{" "}
+                                </p>{" "}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Number of Participant</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        
                         </div>
                         <div className="flex items-center gap-2   border-2 px-2 rounded-md shadow-sm ">
                           {" "}
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
-                              <Banknote className="h-4 w-4" />{" "}
-                              <p className="text-sm"> {dao.funds || 0} </p>{" "}
+                                <Banknote className="h-4 w-4" />{" "}
+                                <p className="text-sm"> {dao.funds || 0} </p>{" "}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Funds</p>
                               </TooltipContent>
                             </Tooltip>
                           </TooltipProvider>
-                        
                         </div>
                       </div>
                     </div>
