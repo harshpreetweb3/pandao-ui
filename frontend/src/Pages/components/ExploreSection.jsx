@@ -175,7 +175,7 @@ const ExploreSection = () => {
                   <Card
                     key={index}
                     onClick={() => {
-                      navigate(`/community/detail/${dao.id}`);
+                      handleNavigation(`/community/detail/${dao.id}`);
                     }}
                     className="flex overflow-hidden flex-col items-start justify-between p-5 h-[180px] cursor-pointer hover:shadow-md ga "
                   >

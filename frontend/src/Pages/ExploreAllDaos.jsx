@@ -11,9 +11,12 @@ import { SkeletonCard } from "./GlobalComponents/Skeleton";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Banknote, Users } from "lucide-react";
+import { useAccount } from "@/AccountContext";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 const ExploreAllDao = () => {
   const navigate = useNavigate();
-
+  const { accounts } = useAccount();
+  const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -31,9 +34,28 @@ const ExploreAllDao = () => {
     };
     fetchBluePrint();
   }, []);
+  const handleNavigation = (path) => {
+    if (accounts && accounts.length > 0) {
+      navigate(path);
+    } else {
+      setOpen(true);
+    }
+  };
 
   return (
     <div className="bg-blue-50">
+       <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>You have not connected your Wallet</DialogTitle>
+            <DialogDescription>
+             Please connect your wallet your Radix Wallet
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
       <div className="min-h-screen pt-20 max-w-[1200px] mx-auto ">
         <div className="px-2 mt-2 text-3xl font-semibold">Explore all DAOs</div>
         {!loading && data.length === 0 && (
@@ -54,7 +76,7 @@ const ExploreAllDao = () => {
                 <Card
                   key={index}
                   onClick={() => {
-                    navigate(`/community/detail/${dao.id}`);
+                    handleNavigation(`/community/detail/${dao.id}`);
                   }}
                   className="flex overflow-hidden flex-col items-start justify-between p-5 h-[180px] cursor-pointer hover:shadow-md ga "
                 >
