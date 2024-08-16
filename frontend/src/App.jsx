@@ -23,6 +23,7 @@ import TokenDistribution from "./Pages/CommunityPage/TokenDistribution";
 import Activity from "./Pages/CommunityPage/Activity";
 import Proposals from "./Pages/CommunityPage/Proposals";
 import ExploreAllDao from "./Pages/ExploreAllDaos";
+import Blog from "./Pages/Blogs";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
           <Route path="create" element={<Create/>} />
           <Route path="products" element={<Product />} />
           <Route path="explore" element={<ExploreAllDao />} />
-
+          <Route path="blog" element={<Blog />} />
           <Route path="resources" element={<Resource />} />
           <Route path="resources/1" element={<One />} />
           <Route path="exploreDao/:slug" element={<DaoDetailsPage />} />

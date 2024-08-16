@@ -65,6 +65,9 @@ const Navbar = () => {
           <Link to="/explore">
             <li>Explore</li>
           </Link>
+          <Link to="/blog">
+            <li>Blog</li>
+          </Link>
         </ul>
         <div className="w-full md:flex items-center justify-end gap-4 hidden ">
          
