@@ -54,15 +54,12 @@ const Blog = () => {
         )}
         {loading ? (
           <div className="mt-5 grid md:grid-cols-3 grid-cols-1 gap-3 pb-20">
-<Skeleton className="h-[300px] bg-purple-200"/>    
-<Skeleton className="h-[300px] bg-purple-200"/>           
-<Skeleton className="h-[300px] bg-purple-200"/>           
-<Skeleton className="h-[300px] bg-purple-200"/>      
-<Skeleton className="h-[300px] bg-purple-200"/>           
-<Skeleton className="h-[300px] bg-purple-200"/>           
-
-
-
+            <Skeleton className="h-[300px] bg-purple-200" />
+            <Skeleton className="h-[300px] bg-purple-200" />
+            <Skeleton className="h-[300px] bg-purple-200" />
+            <Skeleton className="h-[300px] bg-purple-200" />
+            <Skeleton className="h-[300px] bg-purple-200" />
+            <Skeleton className="h-[300px] bg-purple-200" />
           </div>
         ) : (
           <div className="mt-5 grid md:grid-cols-3 grid-cols-1 gap-4 px-2 pb-10">
@@ -75,7 +72,11 @@ const Blog = () => {
                   }}
                   className="flex overflow-hidden flex-col items-start justify-start  h-[350px] cursor-pointer hover:shadow-md  "
                 >
-                    <img src={dao.thumbnail_image} alt="alt" className="w-full h-40 object-cover aspect-video"/>
+                  <img
+                    src={dao.thumbnail_image}
+                    alt="alt"
+                    className="w-full h-40 object-cover aspect-video"
+                  />
 
                   <div className="text-xl font-semibold p-5 ">{dao.title}</div>
                   {/* <div className="text-sm font-semibold">{dao.owner.name}</div> */}
