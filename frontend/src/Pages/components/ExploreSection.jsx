@@ -25,13 +25,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useAccount } from "@/AccountContext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const ExploreSection = () => {
   const [data, setData] = useState([]);
   const { setView } = useViewStore();
+  const { accounts } = useAccount();
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState("participants");
   const [open, setOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchBluePrint = async () => {
@@ -58,9 +69,31 @@ const ExploreSection = () => {
     setSelectedOption(optionId);
     setOpen(false);
   };
-
+  const handleNavigation = (path) => {
+    if (accounts && accounts.length > 0) {
+      navigate(path);
+    } else {
+      setIsDialogOpen(true);
+    }
+  };
+  // if (!accounts || accounts.length === 0 || !data) {
+  //   navigate("/");
+  //   return null;
+  // }
   return (
     <div className="bg-slate-100 ">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger></DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>You have not connected your Wallet</DialogTitle>
+            <DialogDescription>
+             Please connect your wallet your Radix Wallet
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+
       <div className=" flex flex-col items-start p-3 md:p-0  justify-start   -translate-y-24 mx-auto max-w-[1200px]">
         <div className="w-full min-h-1/2 grid md:grid-cols-3 grid-cols-1 gap-3 ">
           <Card className=" p-5 w-full gap-4 flex flex-col items-center justify-between bg-white rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-90   ">
@@ -75,9 +108,7 @@ const ExploreSection = () => {
             </p>
             <div className="w-full">
               <Button
-                onClick={() => {
-                  navigate("/create");
-                }}
+                onClick={() => handleNavigation("/create")}
                 variant="radix"
               >
                 Create a DAO
@@ -113,7 +144,9 @@ const ExploreSection = () => {
                   <div
                     key={option.id}
                     onClick={() => handleOptionSelect(option.id)}
-                    className={`flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100 rounded-md ${selectedOption === option.id ? "bg-gray-100" :""}`}
+                    className={`flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100 rounded-md ${
+                      selectedOption === option.id ? "bg-gray-100" : ""
+                    }`}
                   >
                     <span>{option.label}</span>
                     {selectedOption === option.id && (
