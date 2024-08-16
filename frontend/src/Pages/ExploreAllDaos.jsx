@@ -1,4 +1,3 @@
-import { useAccount } from "@/AccountContext";
 import { useNavigate } from "react-router-dom";
 import {
     Tooltip,
@@ -7,14 +6,12 @@ import {
     TooltipTrigger,
   } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react";
-import useViewStore from "@/store/view";
 import axios from "axios";
 import { SkeletonCard } from "./GlobalComponents/Skeleton";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Banknote, Users } from "lucide-react";
 const ExploreAllDao = () => {
-    const { accounts } = useAccount();
     const navigate = useNavigate();
 
     const [data, setData] = useState([]);
@@ -34,10 +31,7 @@ const ExploreAllDao = () => {
         };
         fetchBluePrint();
       }, []);
-    if (!accounts || accounts.length === 0) {
-        navigate("/");
-        return null;
-      }
+
     return ( 
     <div className="bg-blue-50">
     <div className="min-h-screen pt-20 max-w-[1200px] mx-auto ">
