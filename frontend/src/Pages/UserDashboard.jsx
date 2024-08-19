@@ -147,7 +147,7 @@ const UserDashboard = () => {
   // };
 
   return (
-    <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black p-7">
+    <div className=" relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black pb-7 pt-2 px-7">
       <Tabs defaultValue="overview" className="w-full  t ">
         <TabsList className=" w-full flex  items-center justify-start  max-w-[1400px] mx-auto  ">
           <div
@@ -163,9 +163,15 @@ const UserDashboard = () => {
           {userData && (
             <div className="flex flex-col w-full">
               <Card className="w-full flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm  text-black border-b-0 h-48">
-                {userData.usermetadata?.cover_url && (
+                {userData.usermetadata?.cover_url ? (
                   <img
                     src={coverUrl || "/Pandao.png"}
+                    alt="Cover"
+                    className="aspect-video h-48 w-full object-cover"
+                  />
+                ):(
+                  <img
+                    src= "/Pandao.png"
                     alt="Cover"
                     className="aspect-video h-48 w-full object-cover"
                   />

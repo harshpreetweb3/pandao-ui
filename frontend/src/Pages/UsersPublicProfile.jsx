@@ -173,7 +173,7 @@ const UserPublicProfile = () => {
   }
 
   return (
-    <div className="pt-20 relative flex items-start gap-3 justify-start min-h-screen bg-blue-50 p-7">
+    <div className=" relative flex items-start gap-3 justify-start min-h-screen bg-blue-50 pb-7 pt-2 px-7">
       <Tabs defaultValue="overview" className="w-full  t ">
         <TabsList className=" w-full flex  items-center justify-start  max-w-[1400px] mx-auto  ">
           <div

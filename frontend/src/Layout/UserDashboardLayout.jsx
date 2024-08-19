@@ -6,7 +6,6 @@ import { Outlet } from "react-router-dom";
 const UserDashboardLayout = ({ children }) => {
   return (
     <div>
-      <Navbar/>
       <div className="community-details-content">{children || <Outlet />}</div>
       <Footer/>
     </div>
