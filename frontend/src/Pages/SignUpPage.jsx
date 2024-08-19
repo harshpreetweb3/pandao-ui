@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 // import axios from 'axios';
 import ImageUpload from "./components/ImageUpload";
 import axios from "axios";
+import GridPattern from "@/components/ui/myComponents/grid-bg";
 
 const SignupPage = () => {
   const { accounts } = useAccount();
@@ -81,15 +81,31 @@ const SignupPage = () => {
     return null;
   }
   return (
-    <div className="pt-20 pb-10 items-center gap-3 justify-center min-h-screen bg-[radial-gradient(ellipse_at_left,_var(--tw-gradient-stops))] from-[#281038] from-0% via-[#181734] via-50% to-[#0D1E3B] to-100% text-black px-2">
+    <div className="pt-10 pb-10 items-center  gap-3 justify-center min-h-screen bg-purple-50 text-black px-2 ">
+      <GridPattern
+        squares={[
+          [4, 4],
+          [5, 1],
+          [8, 2],
+          [5, 3],
+          [5, 5],
+          [10, 10],
+          [12, 15],
+          [15, 10],
+          [10, 15],
+          [15, 10],
+          [10, 15],
+          [15, 10],
+        ]}
+      />
+
       {accounts && (
         <div className="max-w-[1440px] flex items-center justify-center mx-auto p-3 gap-3">
-          <Card className=" w-[500px] ">
+          <Card className=" w-[500px] shadow-xl bg-white z-30 ">
             <CardHeader>
-              <CardTitle className="text-xl">Sign Up</CardTitle>
-              <CardDescription>
-                Enter your information to create an account
-              </CardDescription>
+              <CardTitle className="text-4xl font-semibold w-full text-center">
+                Sign Up
+              </CardTitle>
             </CardHeader>
             <CardContent className="">
               <form onSubmit={handleSubmit} className="grid gap-4">
