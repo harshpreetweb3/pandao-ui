@@ -25,12 +25,16 @@ const UserDashboard = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
   const [coverUrl, setCoverUrl] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const [activityData, setActivityData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
+  const [dataAll, setDataAll] = useState([]);
+
   const [userData, setUserData] = useState({});
   const [createdComminities, setCreatedCommunities] = useState([]);
   const [participatedComminities, setParticipatedCommunities] = useState([]);
@@ -82,7 +86,19 @@ const UserDashboard = () => {
         console.error("Error fetching activity data:", error);
       }
     };
-
+    const fetchAll = async () => {
+      try {
+        const res = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/community/all`
+        );
+        setDataAll(res.data);
+        console.log(res.data)
+      } catch (error) {
+        console.error("Error fetching blueprint data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     const fetchUserData = async () => {
       try {
         const res = await axios.get(
@@ -133,6 +149,7 @@ const UserDashboard = () => {
       fetchActivity(accounts[0].address, 1, 10);
       fetchCreatedCommunity(accounts[0].address);
       fetchCreatedParticipated(accounts[0].address);
+      fetchAll()
     }
   }, [accounts, currentPage, pageSize]);
 
@@ -348,13 +365,13 @@ const UserDashboard = () => {
                 <Card className="w-full md:col-span-3 flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm p-5 text-black  ">
                   <div className="text-xl font-bold"> Communities you might be interested In</div>
                   <div className="w-full mt-4 flex flex-col gap-2 h-full">
-                    {participatedComminities.length === 0 && (
+                    {dataAll.length === 0 && (
                       <div className="flex items-center justify-center text-center h-full">
-                        No participated comminities.
+                        No active comminities.
                       </div>
                     )}
-                    {participatedComminities.length > 0 &&
-                      participatedComminities.map((activity, index) => (
+                    {dataAll.length > 0 &&
+                      dataAll.map((activity, index) => (
                         <div
                           key={index}
                           className="p-4 border-2 rounded-lg group hover:shadow-md "
@@ -363,22 +380,25 @@ const UserDashboard = () => {
                             <div className="flex items-center gap-2">
                               <Avatar className="h-12 w-12 mt-1">
                                 <AvatarImage
-                                  src={activity.community_image}
+                                  src={activity.image}
                                   className="h-12 w-12 object-cover"
                                 />
 
                                 <AvatarFallback>CN</AvatarFallback>
                               </Avatar>
                               <div>
-                                <div className="flex items-center gap-2">
-                                  <span>{activity.community_name}</span>
+                                <div className="flex items-center gap-2 text-xl px-4">
+                                  <span>{activity.name}</span>
+                                </div>
+                                <div className="flex items-center gap-2 px-4">
+                                  <span className="line-clamp-2">{activity.description}</span>
                                 </div>
                               </div>
                             </div>
                             <div
                               onClick={() =>
                                 navigate(
-                                  `/community/detail/${activity.community_id}`
+                                  `/community/detail/${activity.id}`
                                 )
                               }
                               className="border-2 rounded-full p-2 group-hover:text-purple-600 group-hover:border-purple-600 cursor-pointer"
