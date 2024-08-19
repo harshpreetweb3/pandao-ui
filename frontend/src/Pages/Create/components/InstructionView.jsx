@@ -8,9 +8,9 @@ const InstructionView = () => {
   const { setView } = useViewStore();
 
   return (
-    <div className="max-w-[1300px] mx-auto mt-20">
-      <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
-        <div className="text-4xl font-semibold">Build your DAO</div>
+    <div className="max-w-[1300px] mx-auto mt-20 ">
+      <Card className="bg-white relative z-40 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
+        <div className="text-4xl font-semibold ">Build your DAO</div>
         <div className="flex md:flex-row flex-col items-center justify-between gap-3">
           <span className="w-full">
             Start simple and learn as you go. You can always evolve your DAO in

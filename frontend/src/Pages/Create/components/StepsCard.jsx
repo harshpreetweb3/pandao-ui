@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 
 export const StepsCard = ({ step, title, icon: Icon }) => {
   return (
-    <Card className="bg-white w-full text-black md:mt-10 mt-2 p-6 flex flex-col gap-3 rounded-xl shadow-sm h-96">
+    <Card className="bg-white z-10 w-full text-black md:mt-10 mt-2 p-6 flex flex-col gap-3 rounded-xl shadow-sm h-96">
       <div className="bg-purple-50 rounded-md text-center flex items-center justify-center h-72">
         <Icon className="h-28 w-28 text-purple-400" />
       </div>
