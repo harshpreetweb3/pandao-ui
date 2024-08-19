@@ -167,7 +167,7 @@ navigate("/");
     )}
   </ReceiptModal>
   <div className="max-w-[1000px] mx-auto mt-20">
-      <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
+      <Card className="bg-white relative z-40 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
         <div className="mb-6 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div>Deploy DAO</div>
@@ -183,7 +183,7 @@ navigate("/");
           </span>
         </div>
       </Card>
-      <div className="max-w-[600px] mx-auto mt-5 flex flex-col gap-3">
+      <div className="max-w-[600px] mx-auto mt-5 flex flex-col gap-3 bg-white p-5 rounded-xl relative z-30">
      
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Token Supply</span>

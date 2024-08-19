@@ -68,7 +68,7 @@ const handleViewChange=()=>{
   };
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
-      <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
+      <Card className="bg-white relative z-40 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
         <div className="mb-6 flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <div>Describe your DAO</div>
@@ -84,7 +84,7 @@ const handleViewChange=()=>{
           </span>
         </div>
       </Card>
-      <div className="max-w-[600px] mx-auto mt-5 flex flex-col gap-3">
+      <div className="max-w-[600px] mx-auto mt-2 flex flex-col gap-3 relative z-40 bg-white p-5 rounded-lg shadow-lg">
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Community Name</span>
           <span className="text-xs px-1">Keep it short and simple</span>
