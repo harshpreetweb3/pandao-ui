@@ -39,7 +39,7 @@ const TemplateView = () => {
   }
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
-      <Card className="bg-white text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
+      <Card className="bg-white relative z-30 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
         <div className="mb-6 flex flex-col gap-2">
           <div className="flex items-center justify-between ">
             <div>Create your DAO</div>
@@ -64,7 +64,7 @@ const TemplateView = () => {
             </Button> */}
         </div>
       </Card>
-      <div className="max-w-[1000px] pt-4  grid md:grid-cols-3 grid-cols-1 mx-auto  gap-3">
+      <div className="max-w-[1000px] pt-4  relative z-30 grid md:grid-cols-3 grid-cols-1 mx-auto  gap-3">
         {loading ? (
           <>
             <div className="flex items-center justify-center w-full h-52   col-span-3 rounded-md mt-4">
