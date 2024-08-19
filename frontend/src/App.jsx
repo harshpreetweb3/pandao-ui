@@ -24,6 +24,7 @@ import Activity from "./Pages/CommunityPage/Activity";
 import Proposals from "./Pages/CommunityPage/Proposals";
 import ExploreAllDao from "./Pages/ExploreAllDaos";
 import Blog from "./Pages/Blogs";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="create" element={<Create/>} />
+          <Route path="privacypolicy" element={<PrivacyPolicy/>} />
           <Route path="products" element={<Product />} />
           <Route path="explore" element={<ExploreAllDao />} />
           <Route path="blog" element={<Blog />} />
