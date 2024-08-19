@@ -34,8 +34,8 @@ const Footer = () => {
             <Link to="/privacypolicy" className="hover:underline cursor-pointer">
             Privacy Policy 
             </Link>
-            <Link to="/" className="hover:underline cursor-pointer">
-              LinkedIn
+            <Link to="/termsandcondition" className="hover:underline cursor-pointer">
+Terms and Conditions
             </Link>
           </div>
         </div>

@@ -25,6 +25,7 @@ import Proposals from "./Pages/CommunityPage/Proposals";
 import ExploreAllDao from "./Pages/ExploreAllDaos";
 import Blog from "./Pages/Blogs";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import Termsandconditon from "./Pages/TermsandConditions";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
           <Route path="aboutus" element={<Aboutus />} />
           <Route path="create" element={<Create/>} />
           <Route path="privacypolicy" element={<PrivacyPolicy/>} />
+          <Route path="termsandcondition" element={<Termsandconditon/>} />
+
           <Route path="products" element={<Product />} />
           <Route path="explore" element={<ExploreAllDao />} />
           <Route path="blog" element={<Blog />} />
