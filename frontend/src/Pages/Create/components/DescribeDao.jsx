@@ -11,12 +11,13 @@ import { Textarea } from "@/components/ui/textarea";
 import useTokenWeightStore from "@/store/templateStore/tokenWeightStore";
 import CommunityImageUrl from "@/Pages/components/CommunityImageUrl";
 import TokenImageURL from "@/Pages/components/TokenImage";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const DescribeView = () => {
   const { setView } = useViewStore();
   const navigate = useNavigate();
   const { accounts } = useAccount();
-  const { formFields, setFormFields } = useTokenWeightStore(); // Use the Zustand store
+  const { formFields, setFormFields } = useTokenWeightStore(); 
   const [data, setData] = useState([]);
   const handleUrlId = (id) => {
     const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
@@ -59,13 +60,18 @@ const handleViewChange=()=>{
       formFields.communityName.trim() !== "" &&
       formFields.description.trim() !== "" &&
       formFields.communityImage.trim() !== "" &&
-      formFields.tokenImage.trim() !== ""
+      formFields.tokenImage.trim() !== "" && 
+       formFields.daoPurpose.trim() !== ""
     );
   };
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ [name]: value });
   };
+  const handleDaoPurposeChange = (value) => {
+    setFormFields({ daoPurpose: value });
+  };
+
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
       <Card className="bg-white relative z-40 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
@@ -108,6 +114,22 @@ const handleViewChange=()=>{
             onChange={handleInputChange}
             required
           />
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="font-medium text-lg px-1">What is the purpose of creating this DAO. </span>
+          <Select onValueChange={handleDaoPurposeChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select the purpose" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="governance">Governance</SelectItem>
+              <SelectItem value="communityBuilding">Community Building</SelectItem>
+              <SelectItem value="fundraising">Fundraising</SelectItem>
+              <SelectItem value="socialImpact">Social Impact</SelectItem>
+            </SelectContent>
+          </Select>
+
+  
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Community Image URL</span>

@@ -98,6 +98,7 @@ const Proposals = () => {
         }`
       );
       setComments(res.data);
+      console.log(res.data)
       setLoadingComments(false);
     } catch (error) {
       console.error("Error fetching blueprint data:", error);
@@ -382,7 +383,7 @@ const Proposals = () => {
                   <div className="bg-white col-span-2 rounded-md p-2">
                
                     <div>
-                      {loadingCommnets ? (
+                      {loadingCommnets && proposal ? (
                         <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
                           <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
                         </div>

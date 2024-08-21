@@ -11,6 +11,7 @@ const useTokenWeightStore = create((set) => ({
     communityImage: "",
     tokenImage: "",
     userAddress: "", // Adding userAddress
+    daoPurpose: "", 
   },
   formFields: {
     communityName: "",
@@ -21,6 +22,7 @@ const useTokenWeightStore = create((set) => ({
     communityImage: "",
     tokenImage: "",
     userAddress: "", // Adding userAddress
+    daoPurpose: "",
   },
   setFormFields: (fields) => set((state) => ({
     formFields: {
