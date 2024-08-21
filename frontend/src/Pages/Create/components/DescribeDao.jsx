@@ -11,7 +11,8 @@ import { Textarea } from "@/components/ui/textarea";
 import useTokenWeightStore from "@/store/templateStore/tokenWeightStore";
 import CommunityImageUrl from "@/Pages/components/CommunityImageUrl";
 import TokenImageURL from "@/Pages/components/TokenImage";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select as Select2, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Select from 'react-select';  // Import react-select
 
 const DescribeView = () => {
   const { setView } = useViewStore();
@@ -19,30 +20,40 @@ const DescribeView = () => {
   const { accounts } = useAccount();
   const { formFields, setFormFields } = useTokenWeightStore(); 
   const [data, setData] = useState([]);
+  
+  const predefinedTags = [
+    { value: 'blockchain', label: 'Blockchain' },
+    { value: 'web3', label: 'Web3' },
+    { value: 'nft', label: 'NFT' },
+    { value: 'defi', label: 'DeFi' },
+    { value: 'community', label: 'Community' },
+    // Add more tags as needed
+  ];
+
   const handleUrlId = (id) => {
     const url = `https://ucarecdn.com/${id}/-/preview/1000x562/`;
-    console.log("Received file URL:", url);
     setFormFields({ communityImage: url });
   };
+
   const handleTokenUrl = (id2) => {
     const url2 = `https://ucarecdn.com/${id2}/-/preview/1000x562/`;
-    console.log("Received file URLsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdS:", url2);
     setFormFields({ tokenImage: url2 });
   };
+
   useEffect(() => {
     if (accounts && accounts.length > 0) {
       setFormFields({ userAddress: accounts[0].address }); // Set the userAddress
     }
   }, [accounts, setFormFields]);
-const handleViewChange=()=>{
-    setView("4")
-}
+
+  const handleViewChange = () => {
+    setView("4");
+  };
+
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
-        const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/blueprint`
-        );
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/blueprint`);
         setData(res.data);
       } catch (error) {
         console.error("Error fetching blueprint data:", error);
@@ -55,21 +66,29 @@ const handleViewChange=()=>{
     navigate("/");
     return null;
   }
+
   const allFieldsFilled = () => {
     return (
       formFields.communityName.trim() !== "" &&
       formFields.description.trim() !== "" &&
       formFields.communityImage.trim() !== "" &&
       formFields.tokenImage.trim() !== "" && 
-       formFields.daoPurpose.trim() !== ""
+      formFields.daoPurpose.trim() !== "" &&
+      formFields.tags && formFields.tags.length > 0 // Ensure tags are selected
     );
   };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ [name]: value });
   };
+
   const handleDaoPurposeChange = (value) => {
     setFormFields({ daoPurpose: value });
+  };
+
+  const handleTagsChange = (selectedTags) => {
+    setFormFields({ tags: selectedTags });
   };
 
   return (
@@ -117,7 +136,7 @@ const handleViewChange=()=>{
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">What is the purpose of creating this DAO. </span>
-          <Select onValueChange={handleDaoPurposeChange}>
+          <Select2 onValueChange={handleDaoPurposeChange}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select the purpose" />
             </SelectTrigger>
@@ -127,43 +146,48 @@ const handleViewChange=()=>{
               <SelectItem value="fundraising">Fundraising</SelectItem>
               <SelectItem value="socialImpact">Social Impact</SelectItem>
             </SelectContent>
-          </Select>
-
-  
+          </Select2>
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Community Image URL</span>
           <div className="flex items-center ">
-          <Input
-            name="communityImage"
-            className="border-slate-300 focus:ring-1 focus:ring-purple-400 rounded-r-none"
-            placeholder="Type your Community Image URL..."
-            value={formFields.communityImage}
-            //onChange={handleInputChange}
-            required
-            disabled
-          />
-          <CommunityImageUrl onUploadSuccess={handleUrlId}/>
+            <Input
+              name="communityImage"
+              className="border-slate-300 focus:ring-1 focus:ring-purple-400 rounded-r-none"
+              placeholder="Type your Community Image URL..."
+              value={formFields.communityImage}
+              required
+              disabled
+            />
+            <CommunityImageUrl onUploadSuccess={handleUrlId} />
           </div>
-  
         </div>
         <div className="flex flex-col gap-1">
           <span className="font-medium text-lg px-1">Token Image URL</span>
           <div className="flex items-center ">
-          <Input
-            name="tokenImage"
-            className="border-slate-300 focus:ring-1 focus:ring-purple-400"
-            placeholder="Type your Token Image URL..."
-            value={formFields.tokenImage}
-           //onChange={handleInputChange}
-            required
-            disabled
-            
-          />
-
-<TokenImageURL onUploadComplete2={handleTokenUrl}/>
+            <Input
+              name="tokenImage"
+              className="border-slate-300 focus:ring-1 focus:ring-purple-400"
+              placeholder="Type your Token Image URL..."
+              value={formFields.tokenImage}
+              required
+              disabled
+            />
+            <TokenImageURL onUploadComplete2={handleTokenUrl} />
           </div>
-         
+        </div>
+        <div className="flex flex-col gap-1">
+          <span className="font-medium text-lg px-1">Tags</span>
+          <Select
+            isMulti
+            name="tags"
+            options={predefinedTags}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            value={formFields.tags}
+            onChange={handleTagsChange}
+            placeholder="Select tags..."
+          />
         </div>
         <div className="flex items-center justify-between">
           <Button onClick={() => setView("2")}>Back</Button>
