@@ -14,8 +14,13 @@ const TemplateView = () => {
   const { accounts } = useAccount();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const handleViewChange=()=>{
-    setView("3")
+  const handleViewChange=(project)=>{
+    if(project.slug==="FinancialDAO"){
+      setView("5")
+    }else{
+      setView("3")
+
+    }
   }
   useEffect(() => {
     const fetchBluePrint = async () => {
@@ -88,7 +93,7 @@ const TemplateView = () => {
               }}>
                     Details
                 </Button>
-                <Button onClick={handleViewChange}>
+                <Button onClick={()=>handleViewChange(project)}>
                     Use
                 </Button>
               </div>

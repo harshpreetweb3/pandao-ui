@@ -5,6 +5,7 @@ import TemplateView from "./Create/components/TemplateView";
 import DescribeView from "./Create/components/DescribeDao";
 import DeployView from "./Create/components/DeployView";
 import GridPattern from "@/components/ui/myComponents/grid-bg";
+import FinancialView from "./Create/components/FinancialDao";
 
 const Create = () => {
   const {view} = useViewStore();
@@ -36,6 +37,9 @@ const Create = () => {
       )}
               {view === "4" && (
        <DeployView/>
+      )}
+           {view === "5" && (
+       <FinancialView/>
       )}
     </div>
   );

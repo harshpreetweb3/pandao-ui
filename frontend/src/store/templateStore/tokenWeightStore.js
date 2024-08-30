@@ -12,6 +12,9 @@ const useTokenWeightStore = create((set) => ({
     tokenImage: "",
     userAddress: "", // Adding userAddress
     daoPurpose: "", 
+    investment:"",
+    insurance:"",
+    lending_borrowing:"",
     tags: [],
   },
   formFields: {
@@ -24,6 +27,9 @@ const useTokenWeightStore = create((set) => ({
     tokenImage: "",
     userAddress: "", // Adding userAddress
     daoPurpose: "",
+    investment:"",
+    insurance:"",
+    lending_borrowing:"",
     tags: [], 
   },
   setFormFields: (fields) => set((state) => ({
