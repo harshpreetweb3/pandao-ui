@@ -76,7 +76,7 @@ const TemplateView = () => {
             <div
               key={index}
              
-              className="bg-white shadow-md rounded-lg p-6 hover:bg-slate-50 hover:shadow-lg cursor-pointer"
+              className="bg-white flex flex-col justify-between shadow-md rounded-lg p-6 hover:bg-slate-50 hover:shadow-lg cursor-pointer"
             >
               <h2 className="text-2xl font-bold mb-2">{project.slug}</h2>
               <p className="text-gray-900 mb-4 line-clamp-3">
