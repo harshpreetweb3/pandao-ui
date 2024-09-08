@@ -11,16 +11,24 @@ import ImageUpload from "./components/ImageUpload";
 import axios from "axios";
 import GridPattern from "@/components/ui/myComponents/grid-bg";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import Select from "react-select";
+const options = [
+  { value: "chocolate", label: "Chocolate" },
+  { value: "strawberry", label: "Strawberry" },
+  { value: "vanilla", label: "Vanilla" },
+];
 const SignupPage = () => {
   const { accounts } = useAccount();
   const [viewSignUp, setSignUpView] = useState(1);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+
   const navigate = useNavigate();
   const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState({
     public_address: accounts?.[0]?.address || "",
     username: accounts[0].label || "",
-    about: "",
+    bio: "",
     display_image: null,
     work_history: [
       {
@@ -102,10 +110,16 @@ const SignupPage = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const submitData = {
+      ...formData,
+      tags: selectedTags.map((tag) => tag.label), // assuming the backend needs tag IDs
+    };
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/user/signup`,
-        formData,
+        submitData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -118,21 +132,46 @@ const SignupPage = () => {
       console.error("Error in API call:", error);
     }
   };
+
+  const handleSelectChange = (selectedOptions) => {
+ 
+      setSelectedTags(selectedOptions);
+    
+  };
+
   useEffect(() => {
     const checkFormValidity = () => {
-      const { username, about, display_image } = formData;
-      setIsFormValid(
-        username &&
-          about &&
-          display_image &&
-          formData.work_history.every(
-            (entry) => entry.company_name && entry.designation
-          )
-      );
+      const isValid =
+        formData.username &&
+        formData.bio &&
+        formData.display_image &&
+        selectedTags.length >= 3 &&
+        selectedTags.length <= 5;
+  
+      setIsFormValid(isValid);
+    };
+  
+    checkFormValidity();
+  }, [formData, selectedTags]);
+  
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/tags`
+        );
+        const tagOptions = response.data.map((tag) => ({
+          value: tag.id,
+          label: tag.name,
+        }));
+        setTags(tagOptions);
+      } catch (error) {
+        console.error("Failed to fetch tags:", error);
+      }
     };
 
-    checkFormValidity();
-  }, [formData]);
+    fetchTags();
+  }, []);
 
   if (!accounts || accounts.length === 0) {
     navigate("/");
@@ -192,13 +231,13 @@ const SignupPage = () => {
                     </div>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="about">About</Label>
+                    <Label htmlFor="bio">bio</Label>
                     <Textarea
-                      id="about"
-                      name="about"
+                      id="bio"
+                      name="bio"
                       placeholder="Tell us about yourself"
                       required
-                      value={formData.about}
+                      value={formData.bio}
                       onChange={handleChange}
                       maxlength="150"
                     />
@@ -221,7 +260,7 @@ const SignupPage = () => {
                 <Button
                   className="w-full"
                   onClick={() => setSignUpView(2)}
-                  disabled={!formData.about || !formData.display_image}
+                  disabled={!formData.bio || !formData.display_image}
                 >
                   Next
                 </Button>
@@ -336,93 +375,21 @@ const SignupPage = () => {
                 <div>Max tags upto 5</div>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="grid gap-4">
-                  {formData.work_history.map((entry, index) => (
-                    <div key={index} className="grid grid-cols-1 gap-4">
-                      <Input
-                        name="company_name"
-                        placeholder="Company Name"
-                        value={entry.company_name}
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "company_name",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <Input
-                        name="start_date"
-                        type="date"
-                        value={entry.start_date}
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "start_date",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <Label className="flex items-center justify-end gap-2">
-                        <Checkbox
-                          checked={entry.current}
-                          onCheckedChange={(e) =>
-                            handleCurrentChange(index, e.target.checked)
-                          }
-                        />
-                        Currently working here
-                      </Label>
-                      {!entry.current && (
-                        <Input
-                          name="end_date"
-                          type="date"
-                          value={entry.end_date}
-                          className=""
-                          onChange={(e) =>
-                            handleWorkHistoryChange(
-                              index,
-                              "end_date",
-                              e.target.value
-                            )
-                          }
-                        />
-                      )}
-                      <Input
-                        name="designation"
-                        placeholder="Designation"
-                        value={entry.designation}
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "designation",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <Textarea
-                        name="description"
-                        placeholder="Description"
-                        value={entry.description}
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "description",
-                            e.target.value
-                          )
-                        }
-                      />
-                      <Button onClick={() => removeWorkHistory(index)}>
-                        Remove
-                      </Button>
-                    </div>
-                  ))}
-                </form>
-                <div className="flex items-center justify-between mt-2">
-                  <Button onClick={addWorkHistory}>
-                    Add Another Work History
-                  </Button>
-                  <Button onClick={() => setSignUpView(3)}>Skip</Button>
-                </div>
+                <Select
+                  options={tags}
+                  isMulti
+                  value={selectedTags}
+                  onChange={handleSelectChange}
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+                 <Button
+          onClick={handleSubmit}
+          disabled={!isFormValid}
+          className="mt-4"
+        >
+          Submit
+        </Button>
               </CardContent>
             </Card>
           )}
