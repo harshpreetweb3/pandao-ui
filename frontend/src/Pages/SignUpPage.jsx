@@ -354,14 +354,16 @@ const SignupPage = () => {
                       <Button onClick={() => removeWorkHistory(index)}>
                         Remove
                       </Button>
+                      <Button onClick={addWorkHistory}>
+                    Add 
+                  </Button>
                     </div>
                   ))}
                 </form>
                 <div className="flex items-center justify-between mt-2">
-                  <Button onClick={addWorkHistory}>
-                    Add Another Work History
-                  </Button>
+              
                   <Button onClick={() => setSignUpView(3)}>Skip</Button>
+                  <Button onClick={() => setSignUpView(3)}>Next</Button>
                 </div>
               </CardContent>
             </Card>
