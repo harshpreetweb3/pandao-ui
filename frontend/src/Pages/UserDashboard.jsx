@@ -20,6 +20,7 @@ import { FaLinkedinIn, FaXTwitter } from "react-icons/fa6";
 import { clipAddress } from "@/utils/functions/ClipAddress";
 import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Timeline from "./UserDasboard/WorkTimeLine";
 
 const UserDashboard = () => {
   const { accounts } = useAccount();
@@ -34,7 +35,7 @@ const UserDashboard = () => {
   const [copied, setCopied] = useState(false);
   const [data, setData] = useState([]);
   const [dataAll, setDataAll] = useState([]);
-
+  const [workData, setWorkData] = useState([]);
   const [userData, setUserData] = useState({});
   const [createdComminities, setCreatedCommunities] = useState([]);
   const [participatedComminities, setParticipatedCommunities] = useState([]);
@@ -106,7 +107,7 @@ const UserDashboard = () => {
             accounts[0].address
           }`
         );
-        console.log(res.data);
+        setWorkData(res.data.user_work)
         setUserData(res.data);
         setAbout(res.data.about);
         setCoverUrl(res.data.usermetadata.cover_url);
@@ -162,7 +163,7 @@ const UserDashboard = () => {
   //     setCurrentPage(newPage);
   //   }
   // };
-
+console.log(workData)
   return (
     <div className=" relative flex items-start gap-3 justify-start min-h-screen bg-slate-100 text-black pb-7 pt-2 px-7">
       <Tabs defaultValue="overview" className="w-full  t ">
@@ -271,7 +272,7 @@ const UserDashboard = () => {
                 </CardContent>
               </Card>
               <div className="grid md:grid-cols-3 grid-cols-1 w-full max-w-[1400px] mx-auto">
-                <Card className="md:col-span-2 flex mt-1  flex-col shadow-md items-center md:items-start w-full mx-auto rounded-sm p-5 text-black  ">
+                <Card className="md:col-span-1 flex mt-1  flex-col shadow-md items-center md:items-start w-full mx-auto rounded-sm p-5 text-black  ">
                   <div className="text-xl font-bold">Created Communities</div>
                   <div className="w-full mt-4 flex flex-col gap-2 h-full ">
                     {createdComminities.length === 0 && (
@@ -361,7 +362,17 @@ const UserDashboard = () => {
                       ))}
                   </div>
                 </Card>
-               
+                <Card className="w-full flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm p-5 text-black  ">
+                  <div className="text-xl font-bold"> Work History</div>
+                  <div className="w-full mt-4 flex flex-col gap-2 h-full">
+                    {workData &&  workData.length === 0 && (
+                      <div className="flex items-center justify-center text-center h-full">
+                        Please Add Work Details
+                      </div>
+                    )}
+                <Timeline items={workData} />
+                  </div>
+                </Card>
                 <Card className="w-full md:col-span-3 flex mt-1  flex-col shadow-md items-center md:items-start max-w-[1400px] mx-auto rounded-sm p-5 text-black  ">
                   <div className="text-xl font-bold"> Communities you might be interested In</div>
                   <div className="w-full mt-4 flex flex-col gap-2 h-full">
