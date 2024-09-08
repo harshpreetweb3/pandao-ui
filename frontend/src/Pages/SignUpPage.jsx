@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAccount } from "@/AccountContext";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import ImageUpload from "./components/ImageUpload";
 import axios from "axios";
 import GridPattern from "@/components/ui/myComponents/grid-bg";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const SignupPage = () => {
   const { accounts } = useAccount();
+  const [viewSignUp, setSignUpView] = useState(1);
   const navigate = useNavigate();
   const [isFormValid, setIsFormValid] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +22,16 @@ const SignupPage = () => {
     username: accounts[0].label || "",
     about: "",
     display_image: null,
+    work_history: [
+      {
+        company_name: "",
+        start_date: "",
+        end_date: "",
+        designation: "",
+        description: "",
+        current: false,
+      },
+    ],
   });
 
   const handleFileId = (id) => {
@@ -43,7 +50,56 @@ const SignupPage = () => {
       [name]: value,
     });
   };
+  const handleWorkHistoryChange = (index, field, value) => {
+    const newHistory = [...formData.work_history];
+    newHistory[index] = { ...newHistory[index], [field]: value };
+    setFormData((prevState) => ({
+      ...prevState,
+      work_history: newHistory,
+    }));
+  };
 
+  const handleCurrentChange = (index, checked) => {
+    console.log("Current checkbox for index", index, "is", checked); // Log for debugging
+    const newHistory = formData.work_history.map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          current: checked,
+          end_date: checked ? "" : item.end_date,
+        }; // Clear end_date if currently working
+      }
+      return item;
+    });
+    setFormData((prevState) => ({
+      ...prevState,
+      work_history: newHistory,
+    }));
+  };
+  const addWorkHistory = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      work_history: [
+        ...prevState.work_history,
+        {
+          company_name: "",
+          start_date: "",
+          end_date: "",
+          designation: "",
+          description: "",
+          current: false,
+        },
+      ],
+    }));
+  };
+
+  const removeWorkHistory = (index) => {
+    const filteredHistory = formData.work_history.filter((_, i) => i !== index);
+    setFormData((prevState) => ({
+      ...prevState,
+      work_history: filteredHistory,
+    }));
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -60,17 +116,19 @@ const SignupPage = () => {
       navigate("/userDashboard");
     } catch (error) {
       console.error("Error in API call:", error);
-      // Handle error - show an error message to the user
     }
   };
   useEffect(() => {
     const checkFormValidity = () => {
       const { username, about, display_image } = formData;
-      if (username && about && display_image) {
-        setIsFormValid(true);
-      } else {
-        setIsFormValid(false);
-      }
+      setIsFormValid(
+        username &&
+          about &&
+          display_image &&
+          formData.work_history.every(
+            (entry) => entry.company_name && entry.designation
+          )
+      );
     };
 
     checkFormValidity();
@@ -101,51 +159,52 @@ const SignupPage = () => {
 
       {accounts && (
         <div className="max-w-[1440px] flex items-center justify-center mx-auto p-3 gap-3">
-          <Card className=" w-[500px] shadow-xl bg-white z-30 ">
-            <CardHeader>
-              <CardTitle className="text-4xl font-semibold w-full text-center">
-                Sign Up
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="">
-              <form onSubmit={handleSubmit} className="grid gap-4">
-                <div className="grid grid-cols-1 gap-4">
+          {viewSignUp === 1 && (
+            <Card className=" w-[500px] shadow-xl bg-white z-30 ">
+              <CardHeader>
+                <CardTitle className="text-4xl font-semibold w-full text-center">
+                  Basic Info
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="">
+                <form onSubmit={handleSubmit} className="grid gap-4">
+                  <div className="grid grid-cols-1 gap-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="public_address">Public Address</Label>
+                      <Input
+                        id="public_address"
+                        placeholder="account_tdx_2 d"
+                        required
+                        disabled
+                        value={accounts[0].address}
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="username">User Name</Label>
+                      <Input
+                        id="username"
+                        name="username"
+                        placeholder="Robinson"
+                        required
+                        disabled
+                        value={accounts[0].label}
+                      />
+                    </div>
+                  </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="public_address">Public Address</Label>
-                    <Input
-                      id="public_address"
-                      placeholder="account_tdx_2 d"
+                    <Label htmlFor="about">About</Label>
+                    <Textarea
+                      id="about"
+                      name="about"
+                      placeholder="Tell us about yourself"
                       required
-                      disabled
-                      value={accounts[0].address}
+                      value={formData.about}
+                      onChange={handleChange}
+                      maxlength="150"
                     />
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="username">User Name</Label>
-                    <Input
-                      id="username"
-                      name="username"
-                      placeholder="Robinson"
-                      required
-                      disabled
-                      value={accounts[0].label}
-                    />
-                  </div>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="about">About</Label>
-                  <Textarea
-                    id="about"
-                    name="about"
-                    placeholder="Tell us about yourself"
-                    required
-                    value={formData.about}
-                    onChange={handleChange}
-                    maxlength="150"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  {/* {imagePreview && (
+                    {/* {imagePreview && (
                   <img src={imagePreview} alt="Preview" className="mt-2 aspect-square h-32 w-32  rounded-full" />
                 )}
                 <Label htmlFor="display_image">Display Image</Label>
@@ -156,18 +215,217 @@ const SignupPage = () => {
                   required
                   onChange={handleFileChange}
                 /> */}
-                  <ImageUpload onUploadSuccess={handleFileId} />
-                </div>
+                    <ImageUpload onUploadSuccess={handleFileId} />
+                  </div>
+                </form>
                 <Button
-                  type="submit"
                   className="w-full"
-                  disabled={!isFormValid}
+                  onClick={() => setSignUpView(2)}
+                  disabled={!formData.about || !formData.display_image}
                 >
-                  Sign up
+                  Next
                 </Button>
-              </form>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          )}
+          {viewSignUp === 2 && (
+            <Card className="w-[500px] shadow-xl bg-white z-30">
+              <CardHeader>
+                <CardTitle className="text-4xl font-semibold w-full text-center">
+                  Work History
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="grid gap-4">
+                  {formData.work_history.map((entry, index) => (
+                    <div key={index} className="grid grid-cols-1 gap-4">
+                      <Input
+                        name="company_name"
+                        placeholder="Company Name"
+                        value={entry.company_name}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "company_name",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Input
+                        name="start_date"
+                        type="date"
+                        value={entry.start_date}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "start_date",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Label className="flex items-center justify-end gap-2">
+                        <Checkbox
+                          checked={entry.current}
+                          onCheckedChange={(checked) =>
+                            handleCurrentChange(index, checked)
+                          }
+                        />
+                        Currently working here
+                      </Label>
+
+                      <Input
+                        name="end_date"
+                        type="date"
+                        disabled={entry.current}
+                        value={entry.end_date}
+                        className=""
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "end_date",
+                            e.target.value
+                          )
+                        }
+                      />
+
+                      <Input
+                        name="designation"
+                        placeholder="Designation"
+                        value={entry.designation}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "designation",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Textarea
+                        name="description"
+                        placeholder="Description"
+                        value={entry.description}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Button onClick={() => removeWorkHistory(index)}>
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </form>
+                <div className="flex items-center justify-between mt-2">
+                  <Button onClick={addWorkHistory}>
+                    Add Another Work History
+                  </Button>
+                  <Button onClick={() => setSignUpView(3)}>Skip</Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+          {viewSignUp === 3 && (
+            <Card className="w-[500px] shadow-xl bg-white z-30">
+              <CardHeader className="flex flex-col items-center gap-1">
+                <CardTitle className="text-4xl font-semibold w-full text-center">
+                  Select Tags
+                </CardTitle>
+                <div>Max tags upto 5</div>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="grid gap-4">
+                  {formData.work_history.map((entry, index) => (
+                    <div key={index} className="grid grid-cols-1 gap-4">
+                      <Input
+                        name="company_name"
+                        placeholder="Company Name"
+                        value={entry.company_name}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "company_name",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Input
+                        name="start_date"
+                        type="date"
+                        value={entry.start_date}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "start_date",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Label className="flex items-center justify-end gap-2">
+                        <Checkbox
+                          checked={entry.current}
+                          onCheckedChange={(e) =>
+                            handleCurrentChange(index, e.target.checked)
+                          }
+                        />
+                        Currently working here
+                      </Label>
+                      {!entry.current && (
+                        <Input
+                          name="end_date"
+                          type="date"
+                          value={entry.end_date}
+                          className=""
+                          onChange={(e) =>
+                            handleWorkHistoryChange(
+                              index,
+                              "end_date",
+                              e.target.value
+                            )
+                          }
+                        />
+                      )}
+                      <Input
+                        name="designation"
+                        placeholder="Designation"
+                        value={entry.designation}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "designation",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Textarea
+                        name="description"
+                        placeholder="Description"
+                        value={entry.description}
+                        onChange={(e) =>
+                          handleWorkHistoryChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                      />
+                      <Button onClick={() => removeWorkHistory(index)}>
+                        Remove
+                      </Button>
+                    </div>
+                  ))}
+                </form>
+                <div className="flex items-center justify-between mt-2">
+                  <Button onClick={addWorkHistory}>
+                    Add Another Work History
+                  </Button>
+                  <Button onClick={() => setSignUpView(3)}>Skip</Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       )}
     </div>
