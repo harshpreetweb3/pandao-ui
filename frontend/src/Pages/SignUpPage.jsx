@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount } from "@/AccountContext";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,12 +13,21 @@ import axios from "axios";
 import GridPattern from "@/components/ui/myComponents/grid-bg";
 import { Checkbox } from "@/components/ui/checkbox";
 import Select from "react-select";
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
+import StepIndicator from "./SignUpPageComponents/StepIndicator";
+import { CircleHelp, FileQuestion, Plus, Trash2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 const SignupPage = () => {
+  const steps = [
+    { label: "Basic Info" },
+    { label: "Work History" },
+    { label: "Select Tags" },
+  ];
   const { accounts } = useAccount();
   const [viewSignUp, setSignUpView] = useState(1);
   const [tags, setTags] = useState([]);
@@ -74,7 +84,7 @@ const SignupPage = () => {
         return {
           ...item,
           current: checked,
-          end_date: checked ? "" : item.end_date,
+          end_date: checked ? null : item.end_date,
         }; // Clear end_date if currently working
       }
       return item;
@@ -134,9 +144,7 @@ const SignupPage = () => {
   };
 
   const handleSelectChange = (selectedOptions) => {
- 
-      setSelectedTags(selectedOptions);
-    
+    setSelectedTags(selectedOptions);
   };
 
   useEffect(() => {
@@ -147,13 +155,13 @@ const SignupPage = () => {
         formData.display_image &&
         selectedTags.length >= 3 &&
         selectedTags.length <= 5;
-  
+
       setIsFormValid(isValid);
     };
-  
+
     checkFormValidity();
   }, [formData, selectedTags]);
-  
+
   useEffect(() => {
     const fetchTags = async () => {
       try {
@@ -195,21 +203,31 @@ const SignupPage = () => {
           [15, 10],
         ]}
       />
+      <div>
+        <Card className="container z-50 bg-white px-2 py-2 ">
+          <StepIndicator currentStep={viewSignUp - 1} steps={steps} />
+        </Card>
+      </div>
 
       {accounts && (
         <div className="max-w-[1440px] flex items-center justify-center mx-auto p-3 gap-3">
           {viewSignUp === 1 && (
-            <Card className=" w-[500px] shadow-xl bg-white z-30 ">
+            <Card className=" container shadow-xl bg-white z-30 ">
               <CardHeader>
-                <CardTitle className="text-4xl font-semibold w-full text-center">
-                  Basic Info
+                <CardTitle className="text-4xl font-semibold w-full my-2 text-center">
+                  How would you like to describe yourself?
                 </CardTitle>
               </CardHeader>
               <CardContent className="">
                 <form onSubmit={handleSubmit} className="grid gap-4">
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                      <Label htmlFor="public_address">Public Address</Label>
+                      <Label
+                        htmlFor="public_address"
+                        className="text-xl font-bold"
+                      >
+                        Public Address
+                      </Label>
                       <Input
                         id="public_address"
                         placeholder="account_tdx_2 d"
@@ -219,7 +237,9 @@ const SignupPage = () => {
                       />
                     </div>
                     <div className="grid gap-2">
-                      <Label htmlFor="username">User Name</Label>
+                      <Label htmlFor="username" className="text-xl font-bold">
+                        User Name
+                      </Label>
                       <Input
                         id="username"
                         name="username"
@@ -231,7 +251,7 @@ const SignupPage = () => {
                     </div>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="bio">bio</Label>
+                    <Label htmlFor="bio" className="text-xl font-bold"></Label>
                     <Textarea
                       id="bio"
                       name="bio"
@@ -259,6 +279,7 @@ const SignupPage = () => {
                 </form>
                 <Button
                   className="w-full"
+                  variant="radix"
                   onClick={() => setSignUpView(2)}
                   disabled={!formData.bio || !formData.display_image}
                 >
@@ -268,12 +289,27 @@ const SignupPage = () => {
             </Card>
           )}
           {viewSignUp === 2 && (
-            <Card className="w-[500px] shadow-xl bg-white z-30">
-              <CardHeader>
-                <CardTitle className="text-4xl font-semibold w-full text-center">
-                  Work History
+            <Card className="container shadow-xl bg-white z-30">
+              <div className="flex items-center justify-between w-full py-6">
+                <CardTitle className="text-4xl font-semibold w-full text-left pl-6">
+                  Employment Details
                 </CardTitle>
-              </CardHeader>
+                <div className="flex items-center justify-end w-full gap-2 text-sm">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger className="flex items-center gap-2">
+                        <span> Why PANDAO need your employment details  </span>
+                     
+                      <CircleHelp className="h-4 w-4" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Reason</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                
+                </div>
+              </div>
               <CardContent>
                 <form onSubmit={handleSubmit} className="grid gap-4">
                   {formData.work_history.map((entry, index) => (
@@ -290,18 +326,43 @@ const SignupPage = () => {
                           )
                         }
                       />
-                      <Input
-                        name="start_date"
-                        type="date"
-                        value={entry.start_date}
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "start_date",
-                            e.target.value
-                          )
-                        }
-                      />
+                      <div className="flex md:flex-row flex-col w-full gap-3">
+                        <div className="flex flex-col w-full gap-2">
+                          <Label className="px-1 ">Start Date</Label>
+                          <Input
+                            name="start_date"
+                            type="date"
+                            value={entry.start_date}
+                            onChange={(e) =>
+                              handleWorkHistoryChange(
+                                index,
+                                "start_date",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+
+                        <div className="flex w-full">
+                          <div className="flex flex-col w-full gap-2">
+                            <Label className="px-1 ">End Date</Label>
+                            <Input
+                              name="end_date"
+                              type="date"
+                              disabled={entry.current}
+                              value={entry.end_date}
+                              className=""
+                              onChange={(e) =>
+                                handleWorkHistoryChange(
+                                  index,
+                                  "end_date",
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
                       <Label className="flex items-center justify-end gap-2">
                         <Checkbox
                           checked={entry.current}
@@ -311,22 +372,6 @@ const SignupPage = () => {
                         />
                         Currently working here
                       </Label>
-
-                      <Input
-                        name="end_date"
-                        type="date"
-                        disabled={entry.current}
-                        value={entry.end_date}
-                        className=""
-                        onChange={(e) =>
-                          handleWorkHistoryChange(
-                            index,
-                            "end_date",
-                            e.target.value
-                          )
-                        }
-                      />
-
                       <Input
                         name="designation"
                         placeholder="Designation"
@@ -351,47 +396,61 @@ const SignupPage = () => {
                           )
                         }
                       />
-                      <Button onClick={() => removeWorkHistory(index)}>
-                        Remove
-                      </Button>
-                      <Button onClick={addWorkHistory}>
-                    Add 
-                  </Button>
+                      <div className="flex items-center justify-end">
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="radix"
+                            className="rounded-sm"
+                            onClick={() => removeWorkHistory(index)}
+                          >
+                            <Trash2 className="h-5 w-5"/>
+                          </Button>
+                          <Button
+                            variant="radix"
+                            className="rounded-sm"
+                            onClick={addWorkHistory}
+                          >
+                            <Plus className="h-5 w-5"/>
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </form>
-                <div className="flex items-center justify-between mt-2">
-              
-                  <Button onClick={() => setSignUpView(3)}>Skip</Button>
+                <div className="flex items-center justify-between mt-4">
+                  <Button variant="outline" onClick={() => setSignUpView(3)}>
+                    Skip
+                  </Button>
                   <Button onClick={() => setSignUpView(3)}>Next</Button>
                 </div>
               </CardContent>
             </Card>
           )}
           {viewSignUp === 3 && (
-            <Card className="w-[500px] shadow-xl bg-white z-30">
+            <Card className="container shadow-xl bg-white z-30">
               <CardHeader className="flex flex-col items-center gap-1">
                 <CardTitle className="text-4xl font-semibold w-full text-center">
                   Select Tags
                 </CardTitle>
                 <div>Max tags upto 5</div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex flex-col items-center justify-center">
                 <Select
                   options={tags}
                   isMulti
                   value={selectedTags}
                   onChange={handleSelectChange}
-                  className="basic-multi-select"
+                  className="basic-multi-select w-full"
                   classNamePrefix="select"
                 />
-                 <Button
-          onClick={handleSubmit}
-          disabled={!isFormValid}
-          className="mt-4"
-        >
-          Submit
-        </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!isFormValid}
+                  variant="radix"
+                  className="mt-4 w-[100%] "
+                >
+                  Submit
+                </Button>
               </CardContent>
             </Card>
           )}
