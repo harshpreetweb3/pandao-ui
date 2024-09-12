@@ -10,6 +10,8 @@ import ImageUpdater from "../components/ImageUpdater";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import axios from "axios";
 import { toast } from "sonner";
+import WorkHistoryItem from "./WorkHistory";
+
 
 const EditPage = () => {
   const { accounts } = useAccount();
@@ -24,7 +26,7 @@ const EditPage = () => {
     linkedin: "",
     tiktok: "",
   });
-
+  const [workHistory, setWorkHistory] = useState([]);
   // Fetch user data when the component mounts or when accounts change
   useEffect(() => {
     const fetchUserData = async () => {
@@ -46,6 +48,7 @@ const EditPage = () => {
           linkedin: data.usermetadata.linkedin || "",
        
         });
+        setWorkHistory(res.data.user_work|| []);
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -73,6 +76,7 @@ const EditPage = () => {
         image_url: fileUrl || userData.image_url,
         cover_url: coverUrl,
         ...socialLinks,
+        work_history: workHistory
       };
       await axios.patch(
         `${import.meta.env.VITE_BACKEND_URL}/user/update-user`,
@@ -85,7 +89,21 @@ const EditPage = () => {
       console.error("Error updating user data:", error);
     }
   };
+  const handleAddWorkHistory = () => {
+    setWorkHistory([...workHistory, { company_name: "", start_date: "", end_date: "", designation: "", description: "", current: false }]);
+  };
 
+  const handleWorkHistoryChange = (index, field, value) => {
+    const updatedWorkHistory = [...workHistory];
+    updatedWorkHistory[index] = { ...updatedWorkHistory[index], [field]: value };
+    setWorkHistory(updatedWorkHistory);
+  };
+
+  const handleRemoveWorkHistory = (index) => {
+    const updatedWorkHistory = [...workHistory];
+    updatedWorkHistory.splice(index, 1);
+    setWorkHistory(updatedWorkHistory);
+  };
   return (
     <div className="pt-20 px-4 min-h-screen bg-blue-50 overflow-hidden">
          <Card className="w-full relative flex md:flex-row flex-col shadow-md items-center md:items-start max-w-[1200px] mx-auto rounded-sm  text-black border-b-0 h-48">
@@ -171,16 +189,37 @@ const EditPage = () => {
               className="px-3 py-1 text-sm w-full bg-transparent border-2 rounded-lg outline-none text-black"
             />
           </div> */}
-          <div className="flex gap-2 items-center w-full">
+    
+   
+          {/* <div className="flex gap-2 items-center w-full">
             <Button
               onClick={handleUpdateUser}
               className="bg-green-600 hover:bg-green-700 border-2 w-full"
             >
               Save
             </Button>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
+      <Card className=" max-w-[1200px] mx-auto gap-3 p-5 mt-4 ">
+      {workHistory.map((item, index) => (
+        <WorkHistoryItem
+          key={index}
+          history={item}
+          onChange={(value, field) => handleWorkHistoryChange(index, field, value)}
+          onRemove={() => handleRemoveWorkHistory(index)}
+        />
+      ))}
+         <Button className="w-full mt-2" onClick={handleAddWorkHistory}>Add Work History</Button>
+      </Card>
+      <Card className="flex gap-2 items-center w-full p-3 mb-5 max-w-[1200px] mx-auto">
+            <Button
+              onClick={handleUpdateUser}
+              className="bg-green-600 hover:bg-green-700 border-2 w-full"
+            >
+              Save All
+            </Button>
+          </Card>
     </div>
   );
 };
