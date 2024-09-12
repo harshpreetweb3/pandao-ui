@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 const TimelineItem = ({ item }) => {
   return (
-    <Card  className="flex items-start mb-8 p-2 rounded-none border-l-0">
-      <div className="w-4 h-4 bg-blue-500 rounded-full mt-1 mr-4"></div>
+    <Card  className="flex items-start mb-2 p-2 rounded-xl rounded-tl-none ml-4">
+      <div className="w-4 h-4 bg-blue-500 rounded-full mt-1 mr-4 -translate-x-[34px]"></div>
       <div className="flex flex-col flex-grow">
         <span className="text-sm font-semibold text-gray-500">
           {new Date(item.from_date).toLocaleDateString()} - {item.to_date ? new Date(item.to_date).toLocaleDateString() : 'Present'}
