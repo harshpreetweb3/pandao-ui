@@ -77,9 +77,7 @@ const Navbar = () => {
         <div className="md:hidden block">
           <MobileSidebar />
         </div>
-        <button onClick={ ()=>  rdt.disconnect()}>
-          disconnect
-        </button>
+      
       </div>
     </div>
   );
