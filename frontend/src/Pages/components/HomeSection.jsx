@@ -1,40 +1,14 @@
 import { useAccount } from "@/AccountContext";
 import { Button } from "../../components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import axios from "axios";
-import { useRdt } from "@/hooks/useRdt";
+
 
 const HomeSection = () => {
   const { accounts } = useAccount();
   const navigate = useNavigate();
-  const rdt = useRdt();
 
-  useEffect(() => {
-    const checkSignup = async () => {
-      if (accounts && accounts.length > 0) {
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/user/check-signup/${accounts[0].address}`
-          );
-          
-          console.log('Signup status:', response.data.exist);
-          if (response.data.exist === false) {
-            await rdt.disconnect();
-          
-          } 
-          
-        } catch (error) {
-          console.error("Error checking signup status:", error);
-      
-        }
-      }
-    };
 
-    checkSignup();
-  }, [accounts, navigate])
-// const some= "bg-gradient-to-r from-[#0097b2] from-20%  to-[#7ed957]"
-// const some2="bg-gradient-to-r from-[#375e91] from-0%  to-[#68237b]"
+
   return (
     <div className="bg-gradient-to-r from-[#375e91] from-0%  to-[#68237b]">
       <div className="h-[500px] flex items-start  justify-start  text-white max-w-[1200px] mx-auto">

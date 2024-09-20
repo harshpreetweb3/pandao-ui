@@ -4,11 +4,14 @@ import MobileSidebar from "./MobileSidebar";
 import { Rocket } from "lucide-react";
 import { useRdt } from "@/hooks/useRdt";
 import axios from "axios";
+import { useEffect } from "react";
+import { useAccount } from "@/AccountContext";
 
 
 
 const Navbar = () => {
   const rdt = useRdt();
+  const { accounts } = useAccount();
   const navigate=useNavigate()
  rdt.walletApi.provideConnectResponseCallback(async (result) => {
   if (result.isErr()) {
@@ -43,6 +46,29 @@ const Navbar = () => {
 });
 
 
+useEffect(() => {
+  const checkSignup = async () => {
+    if (accounts && accounts.length > 0) {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user/check-signup/${accounts[0].address}`
+        );
+        
+        console.log('Signup status:', response.data.exist);
+        if (response.data.exist === false) {
+          await rdt.disconnect();
+        
+        } 
+        
+      } catch (error) {
+        console.error("Error checking signup status:", error);
+    
+      }
+    }
+  };
+
+  checkSignup();
+}, [])
 
   return (
     <div className="z-50 p-4  w-full bg-gradient-to-r from-[#375e91] from-0%  to-[#68237b] bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-0   text-white fixed ">
