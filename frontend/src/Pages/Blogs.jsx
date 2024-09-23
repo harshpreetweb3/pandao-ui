@@ -49,7 +49,7 @@ const Blog = () => {
         <div className="px-2 mt-2 text-3xl font-semibold">Blogs</div>
         {!loading && data.length === 0 && (
           <div className="flex items-center justify-center bg-white mt-3 h-32 rounded-lg shadow-xl">
-            No Blog
+            No Blogs
           </div>
         )}
         {loading ? (
