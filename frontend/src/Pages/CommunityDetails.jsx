@@ -134,18 +134,14 @@ const CommunityDetails = () => {
   // };
 
   const handleBuyToken = async () => {
-    // Prepare the data payload
     const data = {
       community_id: params.id,
       userAddress: accounts[0].address,
       tokenSupply: token,
     };
-  
-    // Start loading
     setLoading(true);
   
     try {
-      // Make the initial POST request to buy tokens
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/build/buy_token/token_weighted_dao`,
         data,
@@ -156,24 +152,19 @@ const CommunityDetails = () => {
         }
       );
   
-      // Ensure response.data is a string before trimming
       const responseData =
         typeof response.data === "string" ? response.data.trim() : JSON.stringify(response.data);
   
-      console.log("Response:", responseData); // Removed removeNewLines for simplicity
+      console.log("Response:", responseData); 
   
-      // Optionally set the manifest if needed elsewhere
       setManifest(responseData);
   
-      // Send the transaction using the response data
       const { receipt } = await sendTransaction(responseData);
   
-      // Extract the transaction ID
       const txId = receipt?.transaction?.intent_hash;
   
       if (txId) {
         try {
-          // Submit the transaction ID to the backend
           const submitResponse = await axios.post(
             `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
             {
@@ -189,14 +180,11 @@ const CommunityDetails = () => {
   
           console.log("Submit Transaction Response:", submitResponse.data);
   
-          // Provide user feedback
           toast.success("Token Bought Successfully!");
           setText("Token Bought");
           setOpen(true);
           setBuyModal(false);
   
-          // Optionally, update state instead of reloading
-          // For example, refresh token balance or transaction history here
         } catch (submitError) {
           console.error("Error submitting transaction:", submitError);
           toast.error("Failed to submit transaction.");
@@ -206,10 +194,14 @@ const CommunityDetails = () => {
         toast.error("Transaction failed. Please try again.");
       }
     } catch (error) {
-      console.error("Error buying token:", error);
+      console.error("Error buying token:", error.response.data.detail);
+      if( error.response.data.detail === "not a community participant"){
+        setText("Please join the community");
+        setOpen(true);
+        return
+      }
       toast.error("Something went wrong while buying tokens.");
-      setText("Please join the community");
-      setOpen(true);
+     
     } finally {
       // Ensure loading is stopped regardless of success or failure
       setLoading(false);
@@ -222,51 +214,75 @@ const CommunityDetails = () => {
       userAddress: accounts[0].address,
       tokenSupply: token,
     };
-
+  
+    setLoading(true);
+  
     try {
-      setLoading(true);
       const response = await axios.post(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/manifest/build/sell_token/token_weighted_dao`,
-        data
-      );
-      console.log("Response:", removeNewLines(response.data.trim("")));
-      setManifest(response.data);
-    } catch (error) {
-      console.log("Error joining community:", error);
-      toast.error("Something went wrong");
-    }
-    const { receipt } = await sendTransaction(manifest).finally(() =>
-      setLoading(false)
-    );
-    let txId = receipt.transaction.intent_hash;
-    if (txId) {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
-          {
-            tx_id: txId,
-            user_address: accounts[0].address,
+        `${import.meta.env.VITE_BACKEND_URL}/manifest/build/sell_token/token_weighted_dao`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
+        }
+      );
+  
+      const responseData = 
+        typeof response.data === "string" ? response.data.trim() : JSON.stringify(response.data);
+        
+      console.log("Response:", responseData);
+      setManifest(responseData);
+      
+      const { receipt } = await sendTransaction(responseData);
+  
+      const txId = receipt?.transaction?.intent_hash;
+  
+      if (txId) {
+        try {
+          const submitResponse = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+            {
+              tx_id: txId,
+              user_address: accounts[0].address,
             },
-          }
-        );
-        console.log(response.data);
-        toast.success("Token Sold");
-        setText("Token Sold");
-        setOpen(true);
-        setSellModal(false);
-        setLoading(false);
-        window.location.reload()
-      } catch (error) {
-        window.alert(error);
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+  
+          console.log("Submit Transaction Response:", submitResponse.data);
+          toast.success("Token Sold Successfully!");
+          setText("Token Sold");
+          setOpen(true);
+          setSellModal(false);
+  
+        } catch (submitError) {
+          console.error("Error submitting transaction:", submitError);
+          toast.error("Failed to submit transaction.");
+        }
+      } else {
+        console.error("Transaction ID not found in receipt:", receipt);
+        toast.error("Transaction failed. Please try again.");
       }
+    } catch (error) {
+      console.error("Error selling token:", error.response.data.detail);
+      
+      // Handle specific error cases
+      if (error.response.data.detail === "not a community participant") {
+        setText("Please join the community");
+        setOpen(true);
+        return;
+      }
+      
+      toast.error("Something went wrong while selling tokens.");
+    } finally {
+      setLoading(false);
     }
   };
+  
   const fetchDetails = async () => {
     try {
       const res = await axios.get(
