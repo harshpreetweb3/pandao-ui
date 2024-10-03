@@ -32,6 +32,7 @@ import { Input } from "@/components/ui/input";
 import useCustomAlertStore from "@/store/customAlertStore";
 import { CustomAlert } from "./GlobalComponents/CustomAlert";
 import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
+import { Badge } from "@/components/ui/badge";
 
 function removeNewLines(input) {
   return input.replace(/\n\s*/g, " ");
@@ -366,9 +367,9 @@ const CommunityDetails = () => {
                     <p className=" mt-2">{data.description}</p>
                   </div>
                   <div>
-                    <h2 className="text-md font-semibold">Owner Name</h2>
+                    <h2 className="text-md font-semibold">Pupose</h2>
                     <p className="text-gray-800 dark:text-gray-400 mt-2">
-                      {data.owner?.name || "N/A"}
+                      {data.purpose || "N/A"}
                     </p>
                   </div>
                   <div>
@@ -395,6 +396,17 @@ const CommunityDetails = () => {
                       {data.component_address || "N/A"}
                     </p>
                   </div>
+                  {/* <div>
+                    <h2 className="text-md font-semibold">Tags</h2>
+                    <div className="flex items-center gap-1">
+                        {data.tags &&
+                          data.tags.map((token, index) => (
+                            <Badge key={index} variant="outline">
+                              {token}{' '}
+                            </Badge>
+                          ))}
+                      </div>
+                  </div> */}
                 </div>
               </div>
             </Card>
