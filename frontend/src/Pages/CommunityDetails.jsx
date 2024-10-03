@@ -53,6 +53,7 @@ const CommunityDetails = () => {
   const [loading, setLoading] = useState(false);
   const [manifest, setManifest] = useState("");
   const [token, setToken] = useState(0);
+  const [tokenToSell, setTokenToSell] = useState(0);
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
     setCopied(true);
@@ -212,7 +213,7 @@ const CommunityDetails = () => {
     const data = {
       community_id: params.id,
       userAddress: accounts[0].address,
-      tokenSupply: token,
+      tokenSupply: tokenToSell,
     };
   
     setLoading(true);
@@ -258,14 +259,16 @@ const CommunityDetails = () => {
           setText("Token Sold");
           setOpen(true);
           setSellModal(false);
-  
+  setTokenToSell(0)
         } catch (submitError) {
           console.error("Error submitting transaction:", submitError);
           toast.error("Failed to submit transaction.");
+          setTokenToSell(0)
         }
       } else {
         console.error("Transaction ID not found in receipt:", receipt);
         toast.error("Transaction failed. Please try again.");
+        setTokenToSell(0)
       }
     } catch (error) {
       console.error("Error selling token:", error.response.data.detail);
@@ -274,12 +277,14 @@ const CommunityDetails = () => {
       if (error.response.data.detail === "not a community participant") {
         setText("Please join the community");
         setOpen(true);
+        setTokenToSell(0)
         return;
       }
       
       toast.error("Something went wrong while selling tokens.");
     } finally {
       setLoading(false);
+      setTokenToSell(0)
     }
   };
   
@@ -469,8 +474,8 @@ const CommunityDetails = () => {
                 <div className="flex flex-col gap-2 w-full ">
                   <Card className="bg-white md:w-[100%] w-full mx-auto md:p-10 p-4 shadow-lg space-y-10 md:h-80">
                     <div className="flex items-center justify-between">
-                      <div className="bg-slate-200 w-fit p-2 rounded-full">
-                        <Bitcoin className=" text-blue-700" />
+                      <div className="bg-slate-200 w-fit rounded-full">
+                        <img src="/radix.webp" className="h-10 w-10"/>
                       </div>
                       <div className="flex items-center gap-1">
                         {data.total_token > 0 && data.token_bought > 0 && (
@@ -499,7 +504,7 @@ const CommunityDetails = () => {
                                       className="col-span-3"
                                       placeholder="How many Token you want to Sell"
                                       type="number"
-                                      onChange={(e) => setToken(e.target.value)}
+                                      onChange={(e) => setTokenToSell(e.target.value)}
                                       required
                                     />
                                   </div>
@@ -513,7 +518,7 @@ const CommunityDetails = () => {
                                     <Button
                                       variant="radix"
                                       onClick={handleSellToken}
-                                      disabled={!token}
+                                      disabled={!tokenToSell}
                                     >
                                       Sell Token
                                     </Button>
