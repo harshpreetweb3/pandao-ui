@@ -1,8 +1,8 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import useViewStore from "@/store/view";
-import axios from "axios";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import useViewStore from '@/store/view'
+import axios from 'axios'
 import {
   Banknote,
   Building2,
@@ -10,22 +10,22 @@ import {
   Filter,
   GraduationCap,
   Users,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { SkeletonCard } from "../GlobalComponents/Skeleton";
+} from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { SkeletonCard } from '../GlobalComponents/Skeleton'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { useAccount } from "@/AccountContext";
+} from '@/components/ui/popover'
+import { useAccount } from '@/AccountContext'
 import {
   Dialog,
   DialogContent,
@@ -33,53 +33,57 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
+import { Badge } from '@/components/ui/badge'
 
 const ExploreSection = () => {
-  const [data, setData] = useState([]);
-  const { setView } = useViewStore();
-  const { accounts } = useAccount();
-  const [loading, setLoading] = useState(true);
-  const [selectedOption, setSelectedOption] = useState("participants");
-  const [open, setOpen] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const navigate = useNavigate();
+  const [data, setData] = useState([])
+  const { setView } = useViewStore()
+  const { accounts } = useAccount()
+  const [loading, setLoading] = useState(true)
+  const [selectedOption, setSelectedOption] = useState('participants')
+  const [open, setOpen] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const navigate = useNavigate()
   useEffect(() => {
     const fetchBluePrint = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/community?sort=${selectedOption}`
-        );
-        setData(res.data);
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/community?sort=${selectedOption}`,
+        )
+        setData(res.data)
       } catch (error) {
-        console.error("Error fetching blueprint data:", error);
+        console.error('Error fetching blueprint data:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
-    setView("1");
-    fetchBluePrint();
-  }, [setView, selectedOption]);
+    }
+    setView('1')
+    fetchBluePrint()
+  }, [setView, selectedOption])
   const options = [
-    { id: "participants", label: "Participants" },
-    { id: "funds", label: "Funds" },
-    { id: "name", label: "Name" },
-  ];
+    { id: 'participants', label: 'Participants' },
+    { id: 'funds', label: 'Funds' },
+    { id: 'name', label: 'Name' },
+  ]
   const handleOptionSelect = (optionId) => {
-    setSelectedOption(optionId);
-    setOpen(false);
-  };
+    setSelectedOption(optionId)
+    setOpen(false)
+  }
   const handleNavigation = (path) => {
     if (accounts && accounts.length > 0) {
-      navigate(path);
+      navigate(path)
     } else {
-      setIsDialogOpen(true);
+      setIsDialogOpen(true)
     }
-  };
+  }
   // if (!accounts || accounts.length === 0 || !data) {
   //   navigate("/");
   //   return null;
   // }
+  console.log(data)
   return (
     <div className="bg-slate-100 ">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -88,7 +92,7 @@ const ExploreSection = () => {
           <DialogHeader>
             <DialogTitle>You have not connected your Wallet</DialogTitle>
             <DialogDescription>
-             Please connect your wallet your Radix Wallet
+              Please connect your wallet your Radix Wallet
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
@@ -108,7 +112,7 @@ const ExploreSection = () => {
             </p>
             <div className="w-full">
               <Button
-                onClick={() => handleNavigation("/create")}
+                onClick={() => handleNavigation('/create')}
                 variant="radix"
               >
                 Create a DAO
@@ -126,7 +130,7 @@ const ExploreSection = () => {
               Learn about DAOs.How to create them using Radix
             </p>
             <div className="w-full">
-              <Button onClick={() => navigate("/resources")} variant="radix">
+              <Button onClick={() => navigate('/resources')} variant="radix">
                 Learn about DAOs
               </Button>
             </div>
@@ -145,7 +149,7 @@ const ExploreSection = () => {
                     key={option.id}
                     onClick={() => handleOptionSelect(option.id)}
                     className={`flex items-center justify-between p-2 cursor-pointer hover:bg-gray-100 rounded-md ${
-                      selectedOption === option.id ? "bg-gray-100" : ""
+                      selectedOption === option.id ? 'bg-gray-100' : ''
                     }`}
                   >
                     <span>{option.label}</span>
@@ -165,7 +169,7 @@ const ExploreSection = () => {
           {loading ? (
             <div className="mt-5 grid md:grid-cols-2 grid-cols-1 gap-3">
               <SkeletonCard />
-              <SkeletonCard /> <SkeletonCard /> <SkeletonCard />{" "}
+              <SkeletonCard /> <SkeletonCard /> <SkeletonCard />{' '}
               <SkeletonCard /> <SkeletonCard />
             </div>
           ) : (
@@ -175,7 +179,7 @@ const ExploreSection = () => {
                   <Card
                     key={index}
                     onClick={() => {
-                      handleNavigation(`/community/detail/${dao.id}`);
+                      handleNavigation(`/community/detail/${dao.id}`)
                     }}
                     className="flex overflow-hidden flex-col items-start justify-between p-5 h-[180px] cursor-pointer hover:shadow-md ga "
                   >
@@ -198,17 +202,17 @@ const ExploreSection = () => {
                       </div>
                     </div>
                     <div className="line-clamp-2">{dao.description}</div>
-                    <div className="flex items-center justify-start w-full mt-1">
+                    <div className="flex items-center justify-between w-full mt-1">
                       <div className="flex items-center  gap-2 ">
                         <div className="flex items-center gap-2 border-2 px-2 rounded-md shadow-sm ">
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
-                                <Users className="h-4 w-4" />{" "}
+                                <Users className="h-4 w-4" />{' '}
                                 <p className="text-sm">
-                                  {" "}
-                                  {dao.number_of_participants}{" "}
-                                </p>{" "}
+                                  {' '}
+                                  {dao.number_of_participants}{' '}
+                                </p>{' '}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Number of Participant</p>
@@ -217,12 +221,12 @@ const ExploreSection = () => {
                           </TooltipProvider>
                         </div>
                         <div className="flex items-center gap-2   border-2 px-2 rounded-md shadow-sm ">
-                          {" "}
+                          {' '}
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger className="flex items-center gap-1">
-                                <Banknote className="h-4 w-4" />{" "}
-                                <p className="text-sm"> {dao.funds || 0} </p>{" "}
+                                <Banknote className="h-4 w-4" />{' '}
+                                <p className="text-sm"> {dao.funds || 0} </p>{' '}
                               </TooltipTrigger>
                               <TooltipContent side="bottom">
                                 <p>Total Funds</p>
@@ -230,6 +234,14 @@ const ExploreSection = () => {
                             </Tooltip>
                           </TooltipProvider>
                         </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {dao.tags &&
+                          dao.tags.slice(0, 2).map((token, index) => (
+                            <Badge key={index} variant="outline">
+                              {token}{' '}
+                            </Badge>
+                          ))}
                       </div>
                     </div>
                   </Card>
@@ -239,7 +251,7 @@ const ExploreSection = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ExploreSection;
+export default ExploreSection
