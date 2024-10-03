@@ -73,7 +73,7 @@ const DescribeView = () => {
       formFields.description.trim() !== "" &&
       formFields.communityImage.trim() !== "" &&
       formFields.tokenImage.trim() !== "" && 
-      formFields.daoPurpose.trim() !== "" &&
+      formFields.purpose.trim() !== "" &&
       formFields.tags && formFields.tags.length > 0 // Ensure tags are selected
     );
   };
@@ -84,13 +84,17 @@ const DescribeView = () => {
   };
 
   const handleDaoPurposeChange = (value) => {
-    setFormFields({ daoPurpose: value });
+    setFormFields({ purpose: value });
   };
 
   const handleTagsChange = (selectedTags) => {
-    setFormFields({ tags: selectedTags });
+    const labels = selectedTags.map(tag => tag.label);
+    // console.log(labels);
+    setFormFields({ tags: labels });
   };
-
+  const selectedTags = formFields.tags ? formFields.tags.map(label => 
+    predefinedTags.find(tag => tag.label === label)
+  ).filter(tag => tag) : [];
   return (
     <div className="max-w-[1000px] mx-auto mt-20">
       <Card className="bg-white relative z-40 text-black mt-10 p-12 flex flex-col gap-3 rounded-xl shadow-sm">
@@ -184,7 +188,7 @@ const DescribeView = () => {
             options={predefinedTags}
             className="basic-multi-select"
             classNamePrefix="select"
-            value={formFields.tags}
+            value={selectedTags}
             onChange={handleTagsChange}
             placeholder="Select tags..."
           />

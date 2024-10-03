@@ -181,7 +181,7 @@ navigate("/");
     setFormFields({ tags: selectedTags });
   };
   const handleDaoPurposeChange = (value) => {
-    setFormFields({ daoPurpose: value });
+    setFormFields({ purpose: value });
   };
   return (
 

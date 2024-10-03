@@ -11,7 +11,7 @@ const useTokenWeightStore = create((set) => ({
     communityImage: "",
     tokenImage: "",
     userAddress: "", // Adding userAddress
-    daoPurpose: "", 
+    purpose: "", 
     investment:"",
     insurance:"",
     lending_borrowing:"",
@@ -26,7 +26,7 @@ const useTokenWeightStore = create((set) => ({
     communityImage: "",
     tokenImage: "",
     userAddress: "", // Adding userAddress
-    daoPurpose: "",
+    purpose: "",
     investment:"",
     insurance:"",
     lending_borrowing:"",
