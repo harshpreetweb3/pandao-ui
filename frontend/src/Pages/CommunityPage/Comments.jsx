@@ -110,16 +110,20 @@ const Comments = () => {
         `${import.meta.env.VITE_BACKEND_URL}/community/discussion/comments`,
         data
       );
-      console.log("Add Comment Response:", response.data);
+      console.log("Add Comment Response:", response);
+   
+      if(response.status==200){
+        toast.success("Comment Added");
+        setNewComment("");
+        setCommentUrl("")
+        fetchDiscussionComments(selectedDiscussion, selectedDiscussionTitle);
+      }
       if(response.data.status_code===401){
         toast.warning("Not a community member");
         setNewComment("")
         return
       }
-      toast.success("Comment Added");
-      setNewComment("");
-      setCommentUrl("")
-      fetchDiscussionComments(selectedDiscussion, selectedDiscussionTitle);
+   
     } catch (error) {
       console.error("Error adding comment:", error);
     }
