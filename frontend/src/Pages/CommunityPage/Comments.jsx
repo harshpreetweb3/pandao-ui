@@ -253,7 +253,7 @@ const Comments = () => {
                           key={index}
                           className="p-2 flex flex-col gap-2 shadow-md "
                         >
-                          <div className="bg-purple-50 p-2 font-semibold rounded-sm">{comment.comment}</div>
+                          <div className="bg-purple-50 p-2 font-semibold rounded-sm"  style={{ whiteSpace: 'pre-wrap' }}>{comment.comment}</div>
                           <div>
                             {comment.image && comment.image!=="string" &&
                             <img
