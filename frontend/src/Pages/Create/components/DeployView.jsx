@@ -33,12 +33,14 @@ const DeployView = () => {
   }, [accounts, setFormFields]);
   const handleClaimToken = async () => {
     console.log("selectedAccount:", accounts[0].address);
+  
     if (!accounts[0].address) {
       alert("Please select an account first.");
       return;
     }
+  
     setLoading(true);
-
+  
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/build/deploy_token_weighted_dao`,
@@ -49,20 +51,15 @@ const DeployView = () => {
           },
         }
       );
+  
       console.log(response.data);
-      setManifest(response.data)
-    } catch (error) {
-      window.alert(error);
-    }
-    
-
-    const { receipt } = await sendTransaction(manifest).finally(() =>
-      setLoading(false)
-    );
-
-    let txId = receipt.transaction.intent_hash;
-    if (txId) {
-      try {
+      setManifest(response.data);
+  
+      const { receipt } = await sendTransaction(response.data).finally(() => setLoading(false));
+      
+      let txId = receipt.transaction.intent_hash;
+      
+      if (txId) {
         const response = await axios.post(
           `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
           {
@@ -75,42 +72,51 @@ const DeployView = () => {
             },
           }
         );
+  
         console.log(response.data);
-      } catch (error) {
-        window.alert(error);
+  
+        // Step 4: Extract transaction data
+        const recipt = await extractTransactionsData(txId);
+        console.log(recipt);
+        setRecipt(() => recipt);
+  
+        // Step 5: Open success modal
+        setSuccessOpen(true);
+  
+        // Optional: Community registration code can be included here if needed
+        /*
+        let communityPostBody = {
+          name: organizationName,
+          component_address: "not defined",
+          description: organizationDescription,
+          owner_address: accounts[0].address,
+        };
+  
+        const communityResponse = await axios.post(
+          `${import.meta.env.VITE_BACKEND_URL}/community`,
+          communityPostBody,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+  
+        console.log(communityResponse.data);
+        */
+  
+      } else {
+        throw new Error("Transaction ID not found");
       }
+  
+    } catch (error) {
+      console.error("Error occurred:", error);
+      window.alert(error.message || "An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // Ensure loading state is reset
     }
-      
-    
-    // create a transaction recipt
-    const recipt = await extractTransactionsData(txId);
-    console.log(receipt);
-    if (receipt) {
-      setSuccessOpen(true);
-
-      // also send community registrartion data
-      // let communityPostBody = {
-      //   name: organizationName,
-      //   component_address: "not defined",
-      //   description: organizationDescription,
-      //   owner_address: accounts[0].address,
-      // };
-      // try {
-      //   const response = await axios.post(
-      //     `${import.meta.env.VITE_BACKEND_URL}/community`,
-      //     communityPostBody,
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   );
-      // } catch (error) {
-      //   window.alert(error);
-      // }
-    }
-    setRecipt(() => recipt);
   };
+  
 
   const handleDeploy = () => {
     console.log(formFields)

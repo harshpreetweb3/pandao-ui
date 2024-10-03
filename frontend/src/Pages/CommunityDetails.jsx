@@ -391,7 +391,7 @@ const CommunityDetails = () => {
                   </div>
                   <div>
                     <h2 className="text-md font-semibold">Component Address</h2>
-                    <p className="text-gray-900 dark:text-gray-400 mt-2">
+                    <p className="text-gray-900 dark:text-gray-400 mt-2 text-ellipsis w-fit ">
                       {data.component_address || "N/A"}
                     </p>
                   </div>
