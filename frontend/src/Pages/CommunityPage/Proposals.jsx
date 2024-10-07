@@ -25,7 +25,7 @@ const Proposals = () => {
   const params = useParams()
   const [proposal, setProposal] = useState('')
   const [comment, setComment] = useState('')
-
+const [loadingCom,setLoadingCom]=useState(false)
   const [loading, setLoading] = useState(true)
   const [loadingCommnets, setLoadingComments] = useState(true)
   const [loadingAgainst, setLoadingAgainst] = useState(true)
@@ -62,7 +62,7 @@ const Proposals = () => {
       comment: comment,
       proposal_id: proposal.id,
     }
-
+setLoadingCom(true)
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments`,
@@ -72,8 +72,12 @@ const Proposals = () => {
       toast.success('Comment Added')
       setComment('')
       fetchProposalsComments()
+      setLoadingCom(false)
     } catch (error) {
       console.error('Error adding comment:', error)
+    }finally{
+      setLoadingCom(false)
+      setComment('')
     }
   }
   const fetchProposals = async () => {
@@ -469,8 +473,8 @@ const Proposals = () => {
                           required
                           onChange={(e) => setComment(e.target.value)}
                         />
-                        <Button onClick={handleAddComment} variant="radix">
-                          Submit
+                        <Button onClick={handleAddComment} variant="radix" disabled={loadingCom}>
+                        {loadingCom ? "Submiting..." :" Submit"}  
                         </Button>
                       </div>
                     </div>
@@ -565,7 +569,7 @@ const Proposals = () => {
                   Submitting....
                 </Button>
               ) : (
-                <Button variant="radix" className="w-full mt-2">
+                <Button variant="radix" className="w-full mt-2" >
                   Submit Proposal
                 </Button>
               )}
