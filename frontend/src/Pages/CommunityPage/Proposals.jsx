@@ -181,11 +181,12 @@ const Proposals = () => {
   }
   const handleAgainst = async () => {
     setVote(true)
+    setLoadingButtonAgainst(true)
+
     try {
-      setLoadingButtonAgainst(true)
+      // First, post the vote
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
-
         {
           proposal_address: proposal.proposal_address,
           userAddress: accounts[0].address,
@@ -193,49 +194,57 @@ const Proposals = () => {
         },
       )
 
-      // Handle successful submission (e.g., navigate to success page, show confirmation)
       console.log('Vote submitted successfully:', res.data)
-      setManifestForVoteAgainst(res.data)
-    } catch (error) {
-      console.log(error)
-    }
-    const { receipt } = await sendTransaction(manifestForVoteAgainst).finally(
-      () => {
-        setLoadingAgainst(false)
-        setLoadingButtonAgainst(false)
-      },
-    )
-    let txId = receipt.transaction.intent_hash
-    if (txId) {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
-          {
-            tx_id: txId,
-            user_address: accounts[0].address,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
+      setManifestForVoteAgainst(res.data) // Store vote data for further use
+
+      // Send the transaction
+      const { receipt } = await sendTransaction(res.data) // Use the response data for the transaction
+      let txId = receipt.transaction.intent_hash
+
+      if (txId) {
+        try {
+          // Post transaction ID to backend
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+            {
+              tx_id: txId,
+              user_address: accounts[0].address,
             },
-          },
-        )
-        console.log(response.data)
-        toast.success('Vote Submitted')
-        setLoadingButtonAgainst(false)
-      } catch (error) {
-        toast.error('Something went wrong')
-        setLoadingButtonAgainst(false)
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+
+          console.log(response.data)
+          toast.success('Vote Submitted')
+        } catch (error) {
+          toast.error('Something went wrong while submitting the transaction')
+          console.error(error)
+        }
       }
+    } catch (error) {
+      if (error.response.data.detail.error === 'does not hold any token') {
+        toast.error('Please buy some token first before voting')
+        return
+      }
+      toast.error('Something Went wrong')
+      console.error('Error submitting vote:', error)
+    } finally {
+      setLoadingAgainst(false)
+      setLoadingButtonAgainst(false)
     }
   }
+
   const handleFor = async () => {
     setVote(false)
+    setLoadingButtonFor(true)
+
     try {
-      setLoadingButtonFor(true)
+      // First, post the vote
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
-
         {
           proposal_address: proposal.proposal_address,
           userAddress: accounts[0].address,
@@ -243,42 +252,49 @@ const Proposals = () => {
         },
       )
 
-      // Handle successful submission (e.g., navigate to success page, show confirmation)
       console.log('Vote submitted successfully:', res.data)
-      setManifestForVoteFor(res.data)
-    } catch (error) {
-      console.log(error)
-    }
-    const { receipt } = await sendTransaction(manifestForVoteFor).finally(
-      () => {
-        setLoadingFor(false)
-        setLoadingButtonFor(false)
-      },
-    )
-    let txId = receipt.transaction.intent_hash
-    if (txId) {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
-          {
-            tx_id: txId,
-            user_address: accounts[0].address,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
+      setManifestForVoteFor(res.data) // Store vote data for further use
+
+      // Send the transaction
+      const { receipt } = await sendTransaction(res.data) // Use the response data for the transaction
+      let txId = receipt.transaction.intent_hash
+
+      if (txId) {
+        try {
+          // Post transaction ID to backend
+          const response = await axios.post(
+            `${import.meta.env.VITE_BACKEND_URL}/submit-tx`,
+            {
+              tx_id: txId,
+              user_address: accounts[0].address,
             },
-          },
-        )
-        console.log(response.data)
-        toast.success('Vote Submitted')
-        setLoadingButtonFor(false)
-      } catch (error) {
-        toast.error('Something went wrong')
-        setLoadingButtonFor(false)
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            },
+          )
+
+          console.log(response.data)
+          toast.success('Vote Submitted')
+        } catch (error) {
+          toast.error('Something went wrong while submitting the transaction')
+          console.error(error)
+        }
       }
+    } catch (error) {
+      if (error.response.data.detail.error === 'does not hold any token') {
+        toast.error('Please buy some token first before voting')
+        return
+      }
+      toast.error('Something Went wrong')
+      console.error('Error submitting vote:', error)
+    } finally {
+      setLoadingFor(false)
+      setLoadingButtonFor(false)
     }
   }
+
   useEffect(() => {
     fetchProposals()
   }, [params.id])
@@ -523,24 +539,23 @@ const Proposals = () => {
                   />
                 </div>
                 <div className="flex flex-col gap-2">
-  <Label className="text-2xl p-1">Bond Issuer Address</Label>
-  <Input
-    placeholder="Enter Bond Issuer Address"
-    value={bondIssuerAddress}
-    onChange={(e) => setBondIssuerAddress(e.target.value)}
-  />
-</div>
+                  <Label className="text-2xl p-1">Bond Issuer Address</Label>
+                  <Input
+                    placeholder="Enter Bond Issuer Address"
+                    value={bondIssuerAddress}
+                    onChange={(e) => setBondIssuerAddress(e.target.value)}
+                  />
+                </div>
 
-<div className="flex flex-col gap-2">
-  <Label className="text-2xl p-1">Target XRD Amount</Label>
-  <Input
-    placeholder="Enter Target XRD Amount"
-    type="number"
-    value={targetXrdAmount}
-    onChange={(e) => setTargetXrdAmount(e.target.value)}
-  />
-</div>
-
+                <div className="flex flex-col gap-2">
+                  <Label className="text-2xl p-1">Target XRD Amount</Label>
+                  <Input
+                    placeholder="Enter Target XRD Amount"
+                    type="number"
+                    value={targetXrdAmount}
+                    onChange={(e) => setTargetXrdAmount(e.target.value)}
+                  />
+                </div>
               </div>
               {loadingButton ? (
                 <Button variant="radix" disabled className="w-full mt-2">
