@@ -146,6 +146,7 @@ const Proposals = () => {
       // Handle successful submission (e.g., navigate to success page, show confirmation)
       console.log('Proposal submitted successfully:', res.data)
       setManifest(res.data)
+
       // Optionally update UI or navigate to another page after successful submission
     } catch (error) {
       console.error('Error submitting proposal:', error)
@@ -219,6 +220,7 @@ const Proposals = () => {
 
           console.log(response.data)
           toast.success('Vote Submitted')
+          fetchProposals()
         } catch (error) {
           toast.error('Something went wrong while submitting the transaction')
           console.error(error)
@@ -277,6 +279,7 @@ const Proposals = () => {
 
           console.log(response.data)
           toast.success('Vote Submitted')
+          fetchProposals()
         } catch (error) {
           toast.error('Something went wrong while submitting the transaction')
           console.error(error)
