@@ -1,121 +1,132 @@
-import { useAccount } from "@/AccountContext";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { clipAddress } from "@/utils/functions/ClipAddress";
-import axios from "axios";
-import { ChevronLeft, HandHelping } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import CustomDatePicker from "./components/CustomDatePicker";
-import { Input } from "@/components/ui/input";
-import { useSendTransaction } from "@/hooks/useSendTransaction";
-import { toast } from "sonner";
-import { convertUnixTimestamp } from "@/utils/functions/ConvertDate";
-import { formatStandardDateTime } from "@/utils/functions/convertActivityData";
+import { useAccount } from '@/AccountContext'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { clipAddress } from '@/utils/functions/ClipAddress'
+import axios from 'axios'
+import { ChevronLeft, HandHelping } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+import CustomDatePicker from './components/CustomDatePicker'
+import { Input } from '@/components/ui/input'
+import { useSendTransaction } from '@/hooks/useSendTransaction'
+import { toast } from 'sonner'
+import { convertUnixTimestamp } from '@/utils/functions/ConvertDate'
+import { formatStandardDateTime } from '@/utils/functions/convertActivityData'
 
 const Proposals = () => {
-  const { accounts } = useAccount();
-  const [vote, setVote] = useState(Boolean);
-  const navigate = useNavigate();
-  const params = useParams();
-  const [proposal, setProposal] = useState("");
-  const [comment, setComment] = useState("");
+  const { accounts } = useAccount()
+  const [vote, setVote] = useState(Boolean)
+  const navigate = useNavigate()
+  const params = useParams()
+  const [proposal, setProposal] = useState('')
+  const [comment, setComment] = useState('')
 
-  const [loading, setLoading] = useState(true);
-  const [loadingCommnets, setLoadingComments] = useState(true);
-  const [loadingAgainst, setLoadingAgainst] = useState(true);
-  const [loadingFor, setLoadingFor] = useState(true);
-  const [loadingButtonAgainst, setLoadingButtonAgainst] = useState(false);
-  const [loadingButtonFor, setLoadingButtonFor] = useState(false);
-  const [loadingButton, setLoadingButton] = useState(false);
-  const [form, setShowForm] = useState(true);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [comments, setComments] = useState([]);
-  const [minimumQuorum, setMinimumQuorum] = useState("");
-  const [proposalText, setProposalText] = useState("");
-  const [proposalDescription, setProposalDescription] = useState("");
-  const [manifest, setManifest] = useState("");
-  const [manifestForVoteAgainst, setManifestForVoteAgainst] = useState("");
-  const [manifestForVoteFor, setManifestForVoteFor] = useState("");
-  const sendTransaction = useSendTransaction();
+  const [loading, setLoading] = useState(true)
+  const [loadingCommnets, setLoadingComments] = useState(true)
+  const [loadingAgainst, setLoadingAgainst] = useState(true)
+  const [loadingFor, setLoadingFor] = useState(true)
+  const [loadingButtonAgainst, setLoadingButtonAgainst] = useState(false)
+  const [loadingButtonFor, setLoadingButtonFor] = useState(false)
+  const [loadingButton, setLoadingButton] = useState(false)
+  const [form, setShowForm] = useState(true)
+  const [bondIssuerAddress, setBondIssuerAddress] = useState('')
+  const [targetXrdAmount, setTargetXrdAmount] = useState('')
+
+  const [startDate, setStartDate] = useState(new Date())
+  const [endDate, setEndDate] = useState(new Date())
+  const [comments, setComments] = useState([])
+  const [minimumQuorum, setMinimumQuorum] = useState('')
+  const [proposalText, setProposalText] = useState('')
+  const [proposalDescription, setProposalDescription] = useState('')
+  const [manifest, setManifest] = useState('')
+  const [manifestForVoteAgainst, setManifestForVoteAgainst] = useState('')
+  const [manifestForVoteFor, setManifestForVoteFor] = useState('')
+  const sendTransaction = useSendTransaction()
   const handleAddComment = async () => {
     if (!proposal || !proposal.id) {
-      toast.error("Proposal not loaded");
-      return;
+      toast.error('Proposal not loaded')
+      return
     }
-    if (comment.trim() === "") {
-      toast.error("Add Something");
-      return;
+    if (comment.trim() === '') {
+      toast.error('Add Something')
+      return
     }
     const data = {
       user_addr: accounts[0].address,
 
       comment: comment,
       proposal_id: proposal.id,
-    };
+    }
 
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments`,
-        data
-      );
-      console.log("Comment Response:", response.data);
-      toast.success("Comment Added");
-      setComment("");
-      fetchProposalsComments();
+        data,
+      )
+      console.log('Comment Response:', response.data)
+      toast.success('Comment Added')
+      setComment('')
+      fetchProposalsComments()
     } catch (error) {
-      console.error("Error adding comment:", error);
+      console.error('Error adding comment:', error)
     }
-  };
+  }
   const fetchProposals = async () => {
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/active/${
           params.id
-        }`
-      );
-      setProposal(res.data);
-      setLoading(false);
+        }`,
+      )
+      setProposal(res.data)
+      setLoading(false)
     } catch (error) {
-      console.error("Error fetching blueprint data:", error);
+      console.error('Error fetching blueprint data:', error)
     }
-  };
+  }
   const fetchProposalsComments = async () => {
     if (!proposal || !proposal.id) {
-      console.error("Proposal not available for fetching comments.");
-      return;
+      console.error('Proposal not available for fetching comments.')
+      return
     }
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments/${
           proposal.id
-        }`
-      );
-      setComments(res.data);
+        }`,
+      )
+      setComments(res.data)
       console.log(res.data)
-      setLoadingComments(false);
+      setLoadingComments(false)
     } catch (error) {
-      console.error("Error fetching blueprint data:", error);
+      console.error('Error fetching blueprint data:', error)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Validate form inputs
-    if (!proposalText || !startDate || !endDate || !minimumQuorum ||!proposalDescription ) {
-      alert("Please fill out all fields.");
-      return;
+    if (
+      !proposalText ||
+      !startDate ||
+      !endDate ||
+      !minimumQuorum ||
+      !proposalDescription ||
+      !bondIssuerAddress ||
+      !targetXrdAmount
+    ) {
+      alert('Please fill out all fields.')
+      return
     }
 
     try {
-      setLoadingButton(true);
+      setLoadingButton(true)
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/build/praposal`,
 
@@ -126,23 +137,25 @@ const Proposals = () => {
           start_time: JSON.stringify(Math.floor(startDate.getTime() / 1000)),
           end_time: JSON.stringify(Math.floor(endDate.getTime() / 1000)),
           proposal: proposalText,
-          description: proposalDescription
-        }
-      );
+          description: proposalDescription,
+          bond_issuer_address: bondIssuerAddress,
+          target_xrd_amount: targetXrdAmount,
+        },
+      )
 
       // Handle successful submission (e.g., navigate to success page, show confirmation)
-      console.log("Proposal submitted successfully:", res.data);
-      setManifest(res.data);
+      console.log('Proposal submitted successfully:', res.data)
+      setManifest(res.data)
       // Optionally update UI or navigate to another page after successful submission
     } catch (error) {
-      console.error("Error submitting proposal:", error);
+      console.error('Error submitting proposal:', error)
       // Handle error (e.g., show error message to user)
     }
     const { receipt } = await sendTransaction(manifest).finally(() => {
-      setLoading(false);
-      setLoadingButton(false);
-    });
-    let txId = receipt.transaction.intent_hash;
+      setLoading(false)
+      setLoadingButton(false)
+    })
+    let txId = receipt.transaction.intent_hash
     if (txId) {
       try {
         const response = await axios.post(
@@ -153,23 +166,23 @@ const Proposals = () => {
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
-        );
-        console.log(response.data);
-        toast.success("Proposal Submitted");
-        setLoadingButton(false);
+          },
+        )
+        console.log(response.data)
+        toast.success('Proposal Submitted')
+        setLoadingButton(false)
       } catch (error) {
-        toast.error("Something went wrong");
-        setLoadingButton(false);
+        toast.error('Something went wrong')
+        setLoadingButton(false)
       }
     }
-  };
+  }
   const handleAgainst = async () => {
-    setVote(true);
+    setVote(true)
     try {
-      setLoadingButtonAgainst(true);
+      setLoadingButtonAgainst(true)
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
 
@@ -177,22 +190,22 @@ const Proposals = () => {
           proposal_address: proposal.proposal_address,
           userAddress: accounts[0].address,
           vote_against: vote,
-        }
-      );
+        },
+      )
 
       // Handle successful submission (e.g., navigate to success page, show confirmation)
-      console.log("Vote submitted successfully:", res.data);
-      setManifestForVoteAgainst(res.data);
+      console.log('Vote submitted successfully:', res.data)
+      setManifestForVoteAgainst(res.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
     const { receipt } = await sendTransaction(manifestForVoteAgainst).finally(
       () => {
-        setLoadingAgainst(false);
-        setLoadingButtonAgainst(false);
-      }
-    );
-    let txId = receipt.transaction.intent_hash;
+        setLoadingAgainst(false)
+        setLoadingButtonAgainst(false)
+      },
+    )
+    let txId = receipt.transaction.intent_hash
     if (txId) {
       try {
         const response = await axios.post(
@@ -203,23 +216,23 @@ const Proposals = () => {
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
-        );
-        console.log(response.data);
-        toast.success("Vote Submitted");
-        setLoadingButtonAgainst(false);
+          },
+        )
+        console.log(response.data)
+        toast.success('Vote Submitted')
+        setLoadingButtonAgainst(false)
       } catch (error) {
-        toast.error("Something went wrong");
-        setLoadingButtonAgainst(false);
+        toast.error('Something went wrong')
+        setLoadingButtonAgainst(false)
       }
     }
-  };
+  }
   const handleFor = async () => {
-    setVote(false);
+    setVote(false)
     try {
-      setLoadingButtonFor(true);
+      setLoadingButtonFor(true)
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
 
@@ -227,22 +240,22 @@ const Proposals = () => {
           proposal_address: proposal.proposal_address,
           userAddress: accounts[0].address,
           vote_against: vote,
-        }
-      );
+        },
+      )
 
       // Handle successful submission (e.g., navigate to success page, show confirmation)
-      console.log("Vote submitted successfully:", res.data);
-      setManifestForVoteFor(res.data);
+      console.log('Vote submitted successfully:', res.data)
+      setManifestForVoteFor(res.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
     const { receipt } = await sendTransaction(manifestForVoteFor).finally(
       () => {
-        setLoadingFor(false);
-        setLoadingButtonFor(false);
-      }
-    );
-    let txId = receipt.transaction.intent_hash;
+        setLoadingFor(false)
+        setLoadingButtonFor(false)
+      },
+    )
+    let txId = receipt.transaction.intent_hash
     if (txId) {
       try {
         const response = await axios.post(
@@ -253,28 +266,28 @@ const Proposals = () => {
           },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
-          }
-        );
-        console.log(response.data);
-        toast.success("Vote Submitted");
-        setLoadingButtonFor(false);
+          },
+        )
+        console.log(response.data)
+        toast.success('Vote Submitted')
+        setLoadingButtonFor(false)
       } catch (error) {
-        toast.error("Something went wrong");
-        setLoadingButtonFor(false);
+        toast.error('Something went wrong')
+        setLoadingButtonFor(false)
       }
     }
-  };
+  }
   useEffect(() => {
-    fetchProposals();
-  }, [params.id]);
+    fetchProposals()
+  }, [params.id])
   useEffect(() => {
-    fetchProposalsComments();
-  }, [proposal]);
+    fetchProposalsComments()
+  }, [proposal])
   if (!accounts || accounts.length === 0) {
-    navigate("/");
-    return null;
+    navigate('/')
+    return null
   }
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
@@ -318,8 +331,8 @@ const Proposals = () => {
                             <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
                               <span>End Time :</span>
                               <span className="font-semibold">
-                                {" "}
-                                {convertUnixTimestamp(proposal.ends_time)}{" "}
+                                {' '}
+                                {convertUnixTimestamp(proposal.ends_time)}{' '}
                               </span>
                             </div>
                           </div>
@@ -363,10 +376,10 @@ const Proposals = () => {
                             )}
                           </div>
                           <div className="text-xs">
-                            Published by{" "}
+                            Published by{' '}
                             <span className="text-purple-700">
-                              {" "}
-                              {clipAddress(proposal.id)}{" "}
+                              {' '}
+                              {clipAddress(proposal.id)}{' '}
                             </span>
                           </div>
                         </div>
@@ -381,7 +394,6 @@ const Proposals = () => {
                 </Card>
                 <div className="grid  md:grid-cols-3 grid-cols-1 gap-3 px-1">
                   <div className="bg-white col-span-2 rounded-md p-2">
-               
                     <div>
                       {loadingCommnets && proposal ? (
                         <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
@@ -405,7 +417,7 @@ const Proposals = () => {
                                       className="group"
                                       onClick={() =>
                                         navigate(
-                                          `/userDashboard/userProfile/${comment.public_address}`
+                                          `/userDashboard/userProfile/${comment.public_address}`,
                                         )
                                       }
                                     >
@@ -501,7 +513,6 @@ const Proposals = () => {
                     />
                   </label>
                 </div>
-
                 <div className="flex flex-col gap-2">
                   <Label className="text-2xl p-1">Minimum Quorum</Label>
                   <Input
@@ -511,6 +522,25 @@ const Proposals = () => {
                     onChange={(e) => setMinimumQuorum(e.target.value)}
                   />
                 </div>
+                <div className="flex flex-col gap-2">
+  <Label className="text-2xl p-1">Bond Issuer Address</Label>
+  <Input
+    placeholder="Enter Bond Issuer Address"
+    value={bondIssuerAddress}
+    onChange={(e) => setBondIssuerAddress(e.target.value)}
+  />
+</div>
+
+<div className="flex flex-col gap-2">
+  <Label className="text-2xl p-1">Target XRD Amount</Label>
+  <Input
+    placeholder="Enter Target XRD Amount"
+    type="number"
+    value={targetXrdAmount}
+    onChange={(e) => setTargetXrdAmount(e.target.value)}
+  />
+</div>
+
               </div>
               {loadingButton ? (
                 <Button variant="radix" disabled className="w-full mt-2">
@@ -526,7 +556,7 @@ const Proposals = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Proposals;
+export default Proposals
