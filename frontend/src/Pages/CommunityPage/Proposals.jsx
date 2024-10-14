@@ -25,7 +25,7 @@ const Proposals = () => {
   const params = useParams()
   const [proposal, setProposal] = useState('')
   const [comment, setComment] = useState('')
-const [loadingCom,setLoadingCom]=useState(false)
+  const [loadingCom, setLoadingCom] = useState(false)
   const [loading, setLoading] = useState(true)
   const [loadingCommnets, setLoadingComments] = useState(true)
   const [loadingAgainst, setLoadingAgainst] = useState(true)
@@ -39,6 +39,8 @@ const [loadingCom,setLoadingCom]=useState(false)
 
   const [startDate, setStartDate] = useState(new Date())
   const [endDate, setEndDate] = useState(new Date())
+  const [startTime, setStartTime] = useState('00:00')
+  const [endTime, setEndTime] = useState('23:59')
   const [comments, setComments] = useState([])
   const [minimumQuorum, setMinimumQuorum] = useState('')
   const [proposalText, setProposalText] = useState('')
@@ -62,7 +64,7 @@ const [loadingCom,setLoadingCom]=useState(false)
       comment: comment,
       proposal_id: proposal.id,
     }
-setLoadingCom(true)
+    setLoadingCom(true)
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments`,
@@ -75,7 +77,7 @@ setLoadingCom(true)
       setLoadingCom(false)
     } catch (error) {
       console.error('Error adding comment:', error)
-    }finally{
+    } finally {
       setLoadingCom(false)
       setComment('')
     }
@@ -123,12 +125,20 @@ setLoadingCom(true)
       !minimumQuorum ||
       !proposalDescription ||
       !bondIssuerAddress ||
-      !targetXrdAmount
+      !targetXrdAmount ||
+      !startTime ||
+      !endTime
     ) {
       alert('Please fill out all fields.')
       return
     }
+    const startDateTime = new Date(startDate)
+    const [startHours, startMinutes] = startTime.split(':')
+    startDateTime.setHours(parseInt(startHours), parseInt(startMinutes), 0, 0)
 
+    const endDateTime = new Date(endDate)
+    const [endHours, endMinutes] = endTime.split(':')
+    endDateTime.setHours(parseInt(endHours), parseInt(endMinutes), 59, 0)
     try {
       setLoadingButton(true)
       const res = await axios.post(
@@ -138,8 +148,10 @@ setLoadingCom(true)
           userAddress: accounts[0].address,
           community_id: params.id,
           minimumquorum: parseInt(minimumQuorum),
-          start_time: JSON.stringify(Math.floor(startDate.getTime() / 1000)),
-          end_time: JSON.stringify(Math.floor(endDate.getTime() / 1000)),
+          start_time: JSON.stringify(
+            Math.floor(startDateTime.getTime() / 1000),
+          ),
+          end_time: JSON.stringify(Math.floor(endDateTime.getTime() / 1000)),
           proposal: proposalText,
           description: proposalDescription,
           bond_issuer_address: bondIssuerAddress,
@@ -473,8 +485,12 @@ setLoadingCom(true)
                           required
                           onChange={(e) => setComment(e.target.value)}
                         />
-                        <Button onClick={handleAddComment} variant="radix" disabled={loadingCom}>
-                        {loadingCom ? "Submiting..." :" Submit"}  
+                        <Button
+                          onClick={handleAddComment}
+                          variant="radix"
+                          disabled={loadingCom}
+                        >
+                          {loadingCom ? 'Submiting...' : ' Submit'}
                         </Button>
                       </div>
                     </div>
@@ -518,21 +534,33 @@ setLoadingCom(true)
               </div>
               <div className="flex flex-col mt-3 gap-3 w-full ">
                 <div className="text-xl p-1">Proposal Timing</div>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between space-x-2">
                   <div>To:</div>
-                  <label className="">
+                  <label className=" flex items-center">
                     <DatePicker
                       selected={startDate}
                       onChange={(date) => setStartDate(date)}
                       customInput={<CustomDatePicker />}
                     />
+                    <Input
+                      type="time"
+                      value={startTime}
+                      onChange={(e) => setStartTime(e.target.value)}
+                      className="ml-2 w-fit"
+                    />
                   </label>
                   <div>From:</div>
-                  <label>
+                  <label className='flex items-center '>
                     <DatePicker
                       selected={endDate}
                       onChange={(date) => setEndDate(date)}
                       customInput={<CustomDatePicker />}
+                    />
+                    <Input
+                      type="time"
+                      value={endTime}
+                      onChange={(e) => setEndTime(e.target.value)}
+                      className="ml-2 w-fit"
                     />
                   </label>
                 </div>
@@ -569,7 +597,7 @@ setLoadingCom(true)
                   Submitting....
                 </Button>
               ) : (
-                <Button variant="radix" className="w-full mt-2" >
+                <Button variant="radix" className="w-full mt-2">
                   Submit Proposal
                 </Button>
               )}

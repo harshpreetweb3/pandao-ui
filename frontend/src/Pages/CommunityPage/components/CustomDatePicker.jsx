@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Calendar } from "lucide-react";
 
 const CustomDatePicker = ({value,onClick}) => {
-    return ( <div className="flex items-center bg-white p-1 gap-2">
+    return ( <div className="flex items-center bg-white  gap-2">
 <Input
 type="text"
 value={value}
