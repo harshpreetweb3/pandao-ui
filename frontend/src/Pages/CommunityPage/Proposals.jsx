@@ -20,6 +20,7 @@ import { formatStandardDateTime } from '@/utils/functions/convertActivityData'
 
 const Proposals = () => {
   const { accounts } = useAccount()
+  const [activeProposal, setActiveProposal] = useState(null)
   const [vote, setVote] = useState(Boolean)
   const navigate = useNavigate()
   const params = useParams()
@@ -73,7 +74,7 @@ const Proposals = () => {
       console.log('Comment Response:', response.data)
       toast.success('Comment Added')
       setComment('')
-      fetchProposalsComments()
+      // fetchProposalsComments()
       setLoadingCom(false)
     } catch (error) {
       console.error('Error adding comment:', error)
@@ -89,21 +90,24 @@ const Proposals = () => {
           params.id
         }`,
       )
+      console.log(res.data, 'res.data')
       setProposal(res.data)
       setLoading(false)
     } catch (error) {
       console.error('Error fetching blueprint data:', error)
+    } finally {
+      setLoading(false)
     }
   }
   const fetchProposalsComments = async () => {
-    if (!proposal || !proposal.id) {
+    if (!activeProposal || !activeProposal.id) {
       console.error('Proposal not available for fetching comments.')
       return
     }
     try {
       const res = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/community/proposal/comments/${
-          proposal.id
+          activeProposal.id
         }`,
       )
       setComments(res.data)
@@ -205,7 +209,7 @@ const Proposals = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
         {
-          proposal_address: proposal.proposal_address,
+          proposal_address: activeProposal.proposal_address,
           userAddress: accounts[0].address,
           vote_against: vote,
         },
@@ -264,7 +268,7 @@ const Proposals = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/manifest/proposal/vote`,
         {
-          proposal_address: proposal.proposal_address,
+          proposal_address: activeProposal.proposal_address,
           userAddress: accounts[0].address,
           vote_against: vote,
         },
@@ -319,27 +323,33 @@ const Proposals = () => {
   }, [params.id])
   useEffect(() => {
     fetchProposalsComments()
-  }, [proposal])
+  }, [activeProposal])
   if (!accounts || accounts.length === 0) {
     navigate('/')
     return null
   }
   return (
     <div className="pt-20 pb-10 items-start gap-3 justify-start min-h-screen overflow-hidden bg-blue-50  text-black px-2">
-      {form ? (
+      {form && !activeProposal ? (
         <div className="flex md:flex-row flex-col gap-6 px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
           <div className="space-y-6 md:w-[100%] ">
             <div className="flex md:flex-row flex-col md:w-[100%] mx-auto gap-2">
               <div className="md:w-[100%] space-y-2  ">
                 <div className="w-full  flex items-end justify-end">
-                  <Button onClick={() => setShowForm(!form)} variant="radix">
+                  <Button
+                    onClick={() => {
+                      setActiveProposal(null)
+                      setShowForm(!form)
+                    }}
+                    variant="radix"
+                  >
                     Create Proposal
                   </Button>
                 </div>
 
                 <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 space-y-2 ">
                   <div className="p-2 border-b-2 -translate-x-2">
-                    Active Proposal
+                    All Proposals.
                   </div>
                   {!loading && (
                     <div className="space-y-4">
@@ -351,83 +361,204 @@ const Proposals = () => {
                     </div>
                   )}
                   {!loading && proposal && (
-                    <div className="space-y-4">
-                      {proposal && (
-                        <div className="flex  flex-col items-start gap-4 bg-white border-b-2 rounded-none p-3  text-black">
-                          <div>{proposal.proposal}</div>
+                    <div className=" grid md:grid-cols-3 grid-cols-1 gap-5 mt-3">
+                      {proposal.map((proposalItem, index) => (
+                        <Card
+                          key={index}
+                          onClick={() => {
+                            setActiveProposal(proposalItem)
+                            setShowForm(null)
+                          }}
+                          className="flex flex-col hover:shadow-lg cursor-pointer items-start gap-4 bg-white border-b-2 rounded-none p-3 text-black"
+                        >
+                          <div className="capitalize font-semibold text-xl">
+                            {proposalItem.proposal}
+                          </div>
 
-                          <div className="flex flex-col items-center gap-3 ">
+                          <div className="flex flex-col items-center gap-3">
                             <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
                               <span>Start Time :</span>
                               <span className="font-semibold">
-                                {convertUnixTimestamp(proposal.start_time)}
+                                {convertUnixTimestamp(proposalItem.start_time)}
                               </span>
                             </div>
                             <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
                               <span>End Time :</span>
                               <span className="font-semibold">
-                                {' '}
-                                {convertUnixTimestamp(proposal.ends_time)}{' '}
+                                {convertUnixTimestamp(proposalItem.ends_time)}
                               </span>
                             </div>
                           </div>
-                          <div className="flex  items-center gap-3 ">
-                            {loadingButtonFor ? (
-                              <Button
-                                size="sm"
-                                disabled
-                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
-                              >
-                                Voting...
-                              </Button>
-                            ) : (
-                              <Button
-                                size="sm"
-                                onClick={handleFor}
-                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
-                              >
-                                <span>Voted For :</span>
-                                <span>{proposal.voted_for}</span>
-                              </Button>
-                            )}
 
-                            {loadingButtonAgainst ? (
-                              <Button
-                                size="sm"
-                                disabled
-                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
-                              >
-                                Voting..
-                              </Button>
-                            ) : (
-                              <Button
-                                size="sm"
-                                onClick={handleAgainst}
-                                className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
-                              >
-                                <span>Voted Against : </span>
-                                <span> {proposal.voted_against} </span>
-                              </Button>
-                            )}
-                          </div>
+                          {/* Voting buttons (commented out) */}
+                          {/* <div className="flex items-center gap-3 ">
+          {loadingButtonFor ? (
+            <Button
+              size="sm"
+              disabled
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+            >
+              Voting...
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onClick={handleFor}
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+            >
+              <span>Voted For :</span>
+              <span>{proposalItem.voted_for}</span>
+            </Button>
+          )}
+
+          {loadingButtonAgainst ? (
+            <Button
+              size="sm"
+              disabled
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+            >
+              Voting..
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onClick={handleAgainst}
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+            >
+              <span>Voted Against : </span>
+              <span> {proposalItem.voted_against} </span>
+            </Button>
+          )}
+        </div> */}
+
                           <div className="text-xs">
                             Published by{' '}
                             <span className="text-purple-700">
-                              {' '}
-                              {clipAddress(proposal.id)}{' '}
+                              {clipAddress(proposalItem.id)}
                             </span>
                           </div>
-                        </div>
-                      )}
+                        </Card>
+                      ))}
                     </div>
                   )}
+
                   {loading && (
                     <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
                       <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
                     </div>
                   )}
                 </Card>
-                <div className="grid  md:grid-cols-3 grid-cols-1 gap-3 px-1">
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : activeProposal && !form ? (
+        <div className="flex  flex-col  px-4 md:px-6 py-8 md:py-12 max-w-[1440px] mx-auto ">
+          <div
+            onClick={() => {
+              setActiveProposal(null) // Reset active proposal
+              setShowForm(false) // Ensure the form is hidden
+            }}
+            className="w-full cursor-pointer flex items-start m-2"
+          >
+            <ChevronLeft /> <span>Back</span>
+          </div>
+          <Card className="bg-white md:w-[100%] mx-auto md:p-4 p-4 space-y-2 ">
+            <div className="p-2 border-b-2 -translate-x-2 font-bold capitalize text-4xl">
+              {activeProposal.proposal}
+            </div>
+            {!loading && (
+              <div className="space-y-4">
+                {!proposal && (
+                  <div className="flex items-center justify-center h-10">
+                    No Active Proposal
+                  </div>
+                )}
+              </div>
+            )}
+            {!loading && activeProposal && (
+              <div className=" grid md:grid-cols-3 grid-cols-1 gap-5 mt-3">
+                {activeProposal && (
+                  <div className="flex flex-col  items-start gap-4 bg-white  rounded-none p-3 text-black">
+                    <div className="capitalize font-semibold text-xl">
+                      {activeProposal.proposal}
+                    </div>
+
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
+                        <span>Start Time :</span>
+                        <span className="font-semibold">
+                          {convertUnixTimestamp(activeProposal.start_time)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
+                        <span>End Time :</span>
+                        <span className="font-semibold">
+                          {convertUnixTimestamp(activeProposal.ends_time)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Voting buttons (commented out) */}
+                    <div className="flex items-center gap-3 ">
+          {loadingButtonFor ? (
+            <Button
+              size="sm"
+              disabled
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+            >
+              Voting...
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onClick={handleFor}
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-green-500 to-green-700 hover:to-green-800 "
+            >
+              <span>Voted For :</span>
+              <span>{activeProposal.voted_for}</span>
+            </Button>
+          )}
+
+          {loadingButtonAgainst ? (
+            <Button
+              size="sm"
+              disabled
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+            >
+              Voting..
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              onClick={handleAgainst}
+              className="flex items-center gap-1 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-500 to-red-700 hover:to-red-800"
+            >
+              <span>Voted Against : </span>
+              <span> {activeProposal.voted_against} </span>
+            </Button>
+          )}
+        </div>
+
+                    <div className="text-xs">
+                      Published by{' '}
+                      <span className="text-purple-700">
+                        {clipAddress(activeProposal.id)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {loading && (
+              <div className="flex h-[200px] items-center justify-center text-center  mt-5 ">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-blue-500" />
+              </div>
+            )}
+          </Card>
+            <div className="grid mt-3  md:grid-cols-3 grid-cols-1 gap-3 px-1">
                   <div className="bg-white col-span-2 rounded-md p-2">
                     <div>
                       {loadingCommnets && proposal ? (
@@ -463,7 +594,7 @@ const Proposals = () => {
                                         {clipAddress(comment.public_address)}
                                       </div>
                                     </div>
-                                    {/* <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div> */}
+                                    <div className="text-xs text-gray-700 dark:text-gray-700">2 days ago</div>
                                   </div>
                                   <p className="text-gray-800 dark:text-gray-400 font-medium">
                                     {comment.comment}
@@ -499,9 +630,6 @@ const Proposals = () => {
                     Previous
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center max-w-[1440px] mx-auto my-6 p-2">
@@ -550,7 +678,7 @@ const Proposals = () => {
                     />
                   </label>
                   <div>From:</div>
-                  <label className='flex items-center '>
+                  <label className="flex items-center ">
                     <DatePicker
                       selected={endDate}
                       onChange={(date) => setEndDate(date)}
