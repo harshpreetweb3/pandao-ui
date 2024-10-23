@@ -478,14 +478,14 @@ const Proposals = () => {
               </div>
             )}
             {!loading && activeProposal && (
-              <div className=" grid md:grid-cols-3 grid-cols-1 gap-5 mt-3">
+              <div className="  gap-5 mt-3">
                 {activeProposal && (
                   <div className="flex flex-col  items-start gap-4 bg-white  rounded-none p-3 text-black">
-                    <div className="capitalize font-semibold text-xl">
+                    {/* <div className="capitalize font-semibold text-xl">
                       {activeProposal.proposal}
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-col items-center gap-3">
+                    <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2 bg-slate-100 shadow-md p-2">
                         <span>Start Time :</span>
                         <span className="font-semibold">
