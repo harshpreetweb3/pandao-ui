@@ -51,7 +51,7 @@ const Proposals = () => {
   const [manifestForVoteFor, setManifestForVoteFor] = useState('')
   const sendTransaction = useSendTransaction()
   const handleAddComment = async () => {
-    if (!proposal || !proposal.id) {
+    if (!activeProposal || !activeProposal.id) {
       toast.error('Proposal not loaded')
       return
     }
@@ -63,7 +63,7 @@ const Proposals = () => {
       user_addr: accounts[0].address,
 
       comment: comment,
-      proposal_id: proposal.id,
+      proposal_id: activeProposal.id,
     }
     setLoadingCom(true)
     try {
@@ -74,7 +74,7 @@ const Proposals = () => {
       console.log('Comment Response:', response.data)
       toast.success('Comment Added')
       setComment('')
-      // fetchProposalsComments()
+      fetchProposalsComments()
       setLoadingCom(false)
     } catch (error) {
       console.error('Error adding comment:', error)
